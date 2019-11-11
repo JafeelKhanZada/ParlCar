@@ -14,10 +14,10 @@ export default class Model extends Component {
                 onRequestClose={() => {
                     Alert.alert('Modal has been closed.');
                 }}>
-                <View style={{ position: "absolute", height: "100%", width: "100%", opacity: 0.1 }}></View>
+                <View style={{ position: "absolute", height: "100%", width: "100%", opacity: 0.5, backgroundColor: "black" }}></View>
                 <View style={{ marginTop: 150 }}>
                     <View style={{ justifyContent: "center", alignItems: "center" }}>
-                        <View style={{ height: 370, width: "80%", backgroundColor: "white", }}>
+                        <View style={{ height: 390, width: "80%", backgroundColor: "white", }}>
                             <View style={{ width: "100%", backgroundColor: "white", height: 25, padding: 5 }}>
                                 <TouchableHighlight onPress={() => {
                                     this.props.setModalVisible(!this.props.modalVisible);

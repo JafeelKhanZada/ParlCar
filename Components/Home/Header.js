@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     menuimg: {
         height: 20,
         width: 30,
-        marginLeft: 10
+        marginLeft: 20
     },
     logo: {
         width: "50%",
@@ -64,8 +64,8 @@ const styles = StyleSheet.create({
         backgroundColor: "white",
     },
     notificationImg: {
-        height: 30,
-        width: 34,
+        height: 25,
+        width: 28,
         margin: 10
     }
 })

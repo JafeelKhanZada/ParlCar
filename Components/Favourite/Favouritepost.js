@@ -15,7 +15,7 @@ const MainContent = (props) => {
                             <View style={{ width: "60%", backgroundColor: "white", height: 130 }}>
                                 <View style={{ width: "100%", height: 40, padding: 5, backgroundColor: "white", flexDirection: "row", justifyContent: "space-between" }}>
                                     <Text>Export lady owned Volvo Xc60</Text>
-                                    <Icon name="heart" size={20} color="red" />
+                                    <Icon name="heart" size={20} color="red" style={{ paddingRight: 10 }} />
                                 </View>
                                 <View style={{ width: "70%", height: 55, paddingLeft: 5, backgroundColor: "white" }}>
                                     <Text style={{ color: "grey", fontSize: 10 }}>User Cars for sale Xc60</Text>

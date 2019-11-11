@@ -2,11 +2,14 @@ import React, { Component } from 'react'
 import { View, Text, TextInput, ScrollView, TouchableOpacity, StyleSheet, Image } from 'react-native'
 import { withNavigation } from "react-navigation"
 class Notification extends Component {
+    static navigationOptions = {
+        title: "jnvj"
+    }
     render() {
         return (
             <View>
                 <Text style={{ fontWeight: "bold", fontSize: 20, padding: 10, borderBottomWidth: 1, borderBottomColor: "lightgrey", borderTopWidth: 1, borderTopColor: "lightgrey" }}>Notification</Text>
-                <View style={{ height: 500, width: "100%", backgroundColor: "lightgrey", padding: 10, flexDirection: "column" }}>
+                <View style={{ height: "100%", width: "100%", backgroundColor: "#F4F4F4", padding: 10, flexDirection: "column" }}>
                     <ScrollView>
                         <View style={{ height: 100, width: "100%", backgroundColor: "white", padding: 10, marginTop: 10 }}>
                             <Text style={{ color: "tomato", fontSize: 15, fontWeight: "bold" }}>What's new</Text>
