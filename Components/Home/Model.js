@@ -6,7 +6,6 @@ import { ScrollView } from 'react-native-gesture-handler';
 export default class Model extends Component {
     render() {
         return (
-
             <Modal
                 animationType="none"
                 transparent={true}

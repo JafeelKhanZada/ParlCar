@@ -53,8 +53,8 @@ class ProfileComponent extends Component {
         return (
             <View>
                 <View>
-                    <View style={{ justifyContent: "center", padding: 10, alignItems: "center", height: 130, width: "100%", backgroundColor: "#222222" }}>
-                        <Image style={{ borderWidth: 2, borderColor: "white", height: 100, width: 200 }} source={ProfileImg} alt="fdkmb" />
+                    <View style={{ justifyContent: "center", padding: 10, alignItems: "center", width: "100%", backgroundColor: "#222222" }}>
+                        <Image resizeMethod="auto" resizeMode="center" style={{ borderWidth: 2, borderColor: "white", height: 100, width: 200 }} source={ProfileImg} alt="fdkmb" />
                     </View>
                     <View style={{ height: "100%", width: "100%", backgroundColor: "#222222" }}>
                         {Drawer.map((res, i) => {
@@ -62,15 +62,15 @@ class ProfileComponent extends Component {
                                 <TouchableOpacity onPress={() => this.props.navigation.navigate(res.Search)} key={i}>
                                     <View style={{ flexDirection: "row", width: "100%", padding: 10 }} >
                                         <View style={{ width: "25%" }}>
-                                            <Image resizeMethod="resize" resizeMode="contain" source={res.Icon} style={{ height: 38, width: 45 }} />
+                                            <Image resizeMethod="auto" resizeMode="center" style={{ height: 30, width: 30 }} source={res.Icon} style={{ height: 38, width: 45 }} />
                                         </View>
-                                        <Text style={{ color: "white", fontWeight: "bold", fontSize: 15 }}>{res.label}</Text>
+                                        <Text style={{ color: "white", fontWeight: "bold", fontSize: 12, padding: 10 }}>{res.label}</Text>
                                     </View>
                                 </TouchableOpacity>
                             )
                         })}
                         <View style={{ height: 100, width: "100%", backgroundColor: "#222222" }}>
-                            <TouchableOpacity style={{ justifyContent: "center", alignItems: "center", paddingTop: 30 }}>
+                            <TouchableOpacity style={{ justifyContent: "center", alignItems: "center", paddingTop: 10 }}>
                                 <Image source={require("../../assests/images/logOut.png")} style={{ height: 40, width: 40 }} />
                                 <Text style={{ color: "white", fontWeight: "bold" }}>Logout</Text>
                             </TouchableOpacity>
