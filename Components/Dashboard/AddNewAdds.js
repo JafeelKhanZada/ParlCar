@@ -10,10 +10,10 @@ export default class AddNewAdds extends Component {
         return (
             <View>
                 <View style={{ justifyContent: "center", alignItems: "center", borderBottomWidth: 1, borderBottomColor: "lightgrey", borderTopWidth: 1, borderTopColor: "lightgrey" }}>
-                    <Text style={{ fontWeight: "bold", fontSize: 20, padding: 10, }}>Add New</Text>
+                    <Text style={{ fontWeight: "bold", fontSize: 15, padding: 10, }}>Add New</Text>
                 </View>
                 <View style={{ height: "100%", width: "100%" }}>
-                    <View style={{ flex: 0.2, flexDirection: "row", justifyContent: "space-evenly", padding: 5 }}>
+                    <View style={{ marginTop: 10, flex: 0.3, flexDirection: "row", justifyContent: "space-evenly", padding: 5 }}>
                         <TouchableOpacity>
                             <View style={{ width: 80, height: 80, backgroundColor: "lightgrey", justifyContent: "center", alignItems: "center" }}>
                                 <Icon name="plus" size={20} color="red" />
@@ -50,45 +50,34 @@ export default class AddNewAdds extends Component {
                             </Picker>
                         </View>
                         <ScrollView>
-                            <View style={{ height: 30, borderWidth: 1, borderColor: "lightgrey", marginTop: 10 }}>
-                                <TextInput placeholder="SHOWROOM NAME" style={{ padding: 2, fontSize: 13 }} />
+                            <View style={{ borderWidth: 1, borderColor: "lightgrey", marginTop: 10 }}>
+                                <TextInput placeholder="SHOWROOM NAME" style={{ padding: 2 }} />
                             </View>
                             <View style={{ height: 30, borderWidth: 1, borderColor: "lightgrey", marginTop: 10 }}>
-                                <TextInput placeholder="CAR BRAND" style={{ padding: 2, fontSize: 13 }} />
+                                <TextInput placeholder="CAR BRAND" style={{ padding: 2 }} />
                             </View>
                             <View style={{ height: 30, borderWidth: 1, borderColor: "lightgrey", marginTop: 10 }}>
-                                <TextInput placeholder="MODEL" style={{ padding: 2, fontSize: 13 }} />
+                                <TextInput placeholder="MODEL" style={{ padding: 2 }} />
                             </View>
                             <View style={{ height: 30, borderWidth: 1, borderColor: "lightgrey", marginTop: 10 }}>
-                                <TextInput placeholder="CAR ORIGIN" style={{ padding: 2, fontSize: 13 }} />
+                                <TextInput placeholder="CAR ORIGIN" style={{ padding: 2 }} />
                             </View>
                             <View style={{ height: 30, borderWidth: 1, borderColor: "lightgrey", marginTop: 10 }}>
-                                <TextInput placeholder="YEAR" style={{ padding: 2, fontSize: 13 }} />
+                                <TextInput placeholder="YEAR" style={{ padding: 2 }} />
                             </View>
                             <View style={{ height: 30, borderWidth: 1, borderColor: "lightgrey", marginTop: 10 }}>
-                                <TextInput placeholder="KILOMETERS" style={{ padding: 2, fontSize: 13 }} />
+                                <TextInput placeholder="KILOMETERS" style={{ padding: 2 }} />
                             </View>
                             <View style={{ height: 30, borderWidth: 1, borderColor: "lightgrey", marginTop: 10 }}>
-                                <TextInput placeholder="WARRANTY" style={{ padding: 2, fontSize: 13 }} />
+                                <TextInput placeholder="WARRANTY" style={{ padding: 2 }} />
                             </View>
                             <View style={{ height: 30, borderWidth: 1, borderColor: "lightgrey", marginTop: 10 }}>
-                                <TextInput placeholder="COLOR" style={{ padding: 2, fontSize: 13 }} />
+                                <TextInput placeholder="COLOR" style={{ padding: 2 }} />
                             </View>
                             <View style={{ height: 30, borderWidth: 1, borderColor: "lightgrey", marginTop: 10 }}>
-                                <TextInput placeholder="TRANSMISSION" style={{ padding: 2, fontSize: 13 }} />
+                                <TextInput placeholder="TRANSMISSION" style={{ padding: 2 }} />
                             </View>
-                            <View style={{ height: 30, borderWidth: 1, borderColor: "lightgrey", marginTop: 10 }}>
-                                <TextInput placeholder="BODY TYPE" style={{ padding: 2, fontSize: 13 }} />
-                            </View>
-                            <View style={{ height: 30, borderWidth: 1, borderColor: "lightgrey", marginTop: 10 }}>
-                                <TextInput placeholder="FUEL TYPE" style={{ padding: 2, fontSize: 13 }} />
-                            </View>
-                            <View style={{ height: 30, borderWidth: 1, borderColor: "lightgrey", marginTop: 10 }}>
-                                <TextInput placeholder="ENGINE SIZE" style={{ padding: 2, fontSize: 13 }} />
-                            </View>
-                            <View style={{ height: 30, borderWidth: 1, borderColor: "lightgrey", marginTop: 10 }}>
-                                <TextInput placeholder="NOTES" style={{ padding: 2, fontSize: 13 }} />
-                            </View>
+
                             <View style={{ justifyContent: "center", alignItems: "center", marginTop: 10 }}>
                                 <TouchableOpacity style={{ width: 100, padding: 5, backgroundColor: "red", justifyContent: "center", alignItems: "center" }}>
                                     <Text style={{ color: "white" }}>Save</Text>

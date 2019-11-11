@@ -52,13 +52,13 @@ export default class CarDetails extends Component {
                             borderRadius: 15,
                             // marginHorizontal: 10,
                             padding: 0,
-                            marginBottom: 30
+                            marginBottom: 35
                         }}
                     />
                     <View style={{ flexDirection: "row", justifyContent: "space-between", position: "absolute", top: 160, width: "100%", }}>
                         <View style={{ height: "100%", position: "absolute", width: "100%", backgroundColor: "black", opacity: 0.5, }}>
                         </View>
-                        <Text style={{ fontSize: 22, color: "white", paddingLeft: 15 }}>Export lady owned Volvo XC60</Text>
+                        <Text style={{ fontSize: 15, color: "white", paddingLeft: 10 }}>Export lady owned Volvo XC60</Text>
                         <TouchableOpacity onPress={this.Changecolor}>
                             <View style={{ marginRight: 8, position: "relative", top: -20, height: 40, width: 40, backgroundColor: "white", borderRadius: 100, justifyContent: "center", alignItems: "center" }}>
                                 <Icon name="heart" size={20} color={this.state.color} />
@@ -70,39 +70,39 @@ export default class CarDetails extends Component {
                 <View style={{ width: "100%", flex: 1 }}>
                     <ScrollView>
                         <View style={{ flexDirection: "row", width: "100%", padding: 10, borderBottomWidth: 1, borderBottomColor: "grey" }}>
-                            <Text style={{ width: "25%", color: "grey" }}>City</Text>
+                            <Text style={{ width: "35%", color: "grey" }}>City</Text>
                             <Text style={{ width: "75%" }}>Lahore</Text>
                         </View>
                         <View style={{ flexDirection: "row", width: "100%", padding: 10, borderBottomWidth: 1, borderBottomColor: "grey" }}>
-                            <Text style={{ width: "25%", color: "grey" }}>Source</Text>
+                            <Text style={{ width: "35%", color: "grey" }}>Source</Text>
                             <Text style={{ width: "75%" }}>XYZ Showroom</Text>
                         </View>
                         <View style={{ flexDirection: "row", width: "100%", padding: 10, borderBottomWidth: 1, borderBottomColor: "grey" }}>
-                            <Text style={{ width: "25%", color: "grey" }}>Price</Text>
+                            <Text style={{ width: "35%", color: "grey" }}>Price</Text>
                             <Text style={{ width: "75%" }}>$154.22</Text>
                         </View>
                         <View style={{ flexDirection: "row", width: "100%", padding: 10, borderBottomWidth: 1, borderBottomColor: "grey" }}>
-                            <Text style={{ width: "25%", color: "grey" }}>Car Brand</Text>
+                            <Text style={{ width: "35%", color: "grey" }}>Car Brand</Text>
                             <Text style={{ width: "75%" }}>Bmw</Text>
                         </View>
                         <View style={{ flexDirection: "row", width: "100%", padding: 10, borderBottomWidth: 1, borderBottomColor: "grey" }}>
-                            <Text style={{ width: "25%", color: "grey" }}>City</Text>
+                            <Text style={{ width: "35%", color: "grey" }}>City</Text>
                             <Text style={{ width: "75%" }}>Lahore</Text>
                         </View>
                         <View style={{ flexDirection: "row", width: "100%", padding: 10, borderBottomWidth: 1, borderBottomColor: "grey" }}>
-                            <Text style={{ width: "25%", color: "grey" }}>City</Text>
+                            <Text style={{ width: "35%", color: "grey" }}>City</Text>
                             <Text style={{ width: "75%" }}>Lahore</Text>
                         </View>
                         <View style={{ flexDirection: "row", width: "100%", padding: 10, borderBottomWidth: 1, borderBottomColor: "grey" }}>
-                            <Text style={{ width: "25%", color: "grey" }}>City</Text>
+                            <Text style={{ width: "35%", color: "grey" }}>City</Text>
                             <Text style={{ width: "75%" }}>Lahore</Text>
                         </View>
                         <View style={{ flexDirection: "row", width: "100%", padding: 10, borderBottomWidth: 1, borderBottomColor: "grey" }}>
-                            <Text style={{ width: "25%", color: "grey" }}>City</Text>
+                            <Text style={{ width: "35%", color: "grey" }}>City</Text>
                             <Text style={{ width: "75%" }}>Lahore</Text>
                         </View>
                         <View style={{ flexDirection: "row", width: "100%", padding: 10, borderBottomWidth: 1, borderBottomColor: "grey" }}>
-                            <Text style={{ width: "25%", color: "grey" }}>City</Text>
+                            <Text style={{ width: "35%", color: "grey" }}>City</Text>
                             <Text style={{ width: "75%" }}>Lahore</Text>
                         </View>
 
@@ -113,14 +113,14 @@ export default class CarDetails extends Component {
                     <View style={{ flexDirection: "row", width: "100%" }}>
                         <TouchableOpacity style={{ width: "50%" }} onPress={() => this.visiblemodel1(true)}>
                             <View style={{ width: "100%", height: "100%", backgroundColor: "red", justifyContent: "center", alignItems: "center" }}>
-                                <MaterialIcon name="phone" size={25} color="white" />
+                                <MaterialIcon name="phone" size={15} color="white" />
                                 <Text style={{ color: "white" }}>call</Text>
                             </View>
                         </TouchableOpacity>
                         <View style={{ width: "1%" }}></View>
                         <TouchableOpacity style={{ width: "50%" }} onPress={() => this.visiblemodel(true)}>
                             <View style={{ width: "100%", height: "100%", backgroundColor: "red", justifyContent: "center", alignItems: "center" }}>
-                                <MaterialIcon name="drive-eta" size={25} color="white" />
+                                <MaterialIcon name="drive-eta" size={15} color="white" />
                                 <Text style={{ color: "white" }}>Test Drive</Text>
                             </View>
                         </TouchableOpacity>

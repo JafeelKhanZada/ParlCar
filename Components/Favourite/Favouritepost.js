@@ -9,30 +9,30 @@ const MainContent = (props) => {
                 <View>
                     <TouchableOpacity>
                         <View style={styles.container}>
-                            <View style={{ width: "40%", backgroundColor: "white", height: 130, justifyContent: "center", alignItems: "center" }}>
-                                <Image style={styles.Image} source={require("../../assests/images/1.png")} />
+                            <View style={{ width: "40%", backgroundColor: "white", justifyContent: "center", alignItems: "center" }}>
+                                <Image resizeMethod="resize" resizeMode="contain" source={require("../../assests/images/1.png")} />
                             </View>
-                            <View style={{ width: "60%", backgroundColor: "white", height: 130 }}>
-                                <View style={{ width: "100%", height: 40, padding: 5, backgroundColor: "white", flexDirection: "row", justifyContent: "space-between" }}>
+                            <View style={{ width: "60%", backgroundColor: "white" }}>
+                                <View style={{ width: "100%", padding: 5, backgroundColor: "white", flexDirection: "row", justifyContent: "space-between" }}>
                                     <Text>Export lady owned Volvo Xc60</Text>
                                     <Icon name="heart" size={20} color="red" style={{ paddingRight: 10 }} />
                                 </View>
-                                <View style={{ width: "70%", height: 55, paddingLeft: 5, backgroundColor: "white" }}>
-                                    <Text style={{ color: "grey", fontSize: 10 }}>User Cars for sale Xc60</Text>
-                                    <Text style={{ color: "red", fontWeight: "bold", fontSize: 15 }}>$16.995</Text>
-                                    <Text style={{ color: "grey", fontSize: 10 }}>1 Month ago</Text>
+                                <View style={{ width: "70%", paddingLeft: 5, backgroundColor: "white" }}>
+                                    <Text style={{ color: "grey", fontSize: 8 }}>User Cars for sale Xc60</Text>
+                                    <Text style={{ color: "red", fontWeight: "bold", fontSize: 12 }}>$16.995</Text>
+                                    <Text style={{ color: "grey", fontSize: 8, padding: 5 }}>1 Month ago</Text>
                                 </View>
-                                <View style={{ paddingLeft: 5, width: "100%", height: 34, backgroundColor: "white", flexDirection: "row", justifyContent: "space-between" }} >
-                                    <TouchableOpacity style={{ width: "45%", backgroundColor: "orange", justifyContent: "center", alignItems: "center", padding: 10 }}>
+                                <View style={{ paddingLeft: 5, width: "100%", backgroundColor: "white", flexDirection: "row", justifyContent: "space-between" }} >
+                                    <TouchableOpacity style={{ width: "45%", backgroundColor: "orange", justifyContent: "center", alignItems: "center" }}>
                                         <Text style={{ color: "white" }}>Sponsered</Text>
                                     </TouchableOpacity>
                                     <View style={{ width: "25%", borderRightWidth: 1, borderRightColor: "grey", alignItems: "center" }}>
-                                        <Text style={{ color: "grey", fontSize: 10 }}>71,616</Text>
-                                        <Text style={{ color: "grey", fontSize: 10 }}>miles</Text>
+                                        <Text style={{ color: "grey", fontSize: 8 }}>71,616</Text>
+                                        <Text style={{ color: "grey", fontSize: 8 }}>miles</Text>
                                     </View>
                                     <View style={{ width: "25%", alignItems: "center" }}>
-                                        <Text style={{ color: "grey", fontSize: 10 }}>2013</Text>
-                                        <Text style={{ color: "grey", fontSize: 10 }}>Model</Text>
+                                        <Text style={{ color: "grey", fontSize: 8 }}>2013</Text>
+                                        <Text style={{ color: "grey", fontSize: 8 }}>Model</Text>
                                     </View>
                                 </View>
                             </View>
@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
     },
     Image: {
-        height: 120,
-        width: 150
+        height: "100%",
+        width: "100%"
     }
 });
