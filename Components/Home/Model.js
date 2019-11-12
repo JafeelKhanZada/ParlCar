@@ -17,12 +17,11 @@ export default class Model extends Component {
                 <View style={{ marginTop: 150 }}>
                     <View style={{ justifyContent: "center", alignItems: "center" }}>
                         <View style={{ width: "80%", backgroundColor: "white", }}>
-                            <View style={{ width: "100%", backgroundColor: "white", height: 25, padding: 5 }}>
-                                <TouchableHighlight onPress={() => {
+                            <View style={{ width: "100%", backgroundColor: "white", padding: 5 }}>
+                                <TouchableHighlight style={{ padding: 10 }} onPress={() => {
                                     this.props.setModalVisible(!this.props.modalVisible);
                                 }}>
                                     <Icon name="close" size={20} />
-
                                 </TouchableHighlight>
                             </View>
                             <View style={{ height: 130, backgroundColor: "white", justifyContent: "center", alignItems: "center" }}>
@@ -43,7 +42,7 @@ export default class Model extends Component {
                                     <Text style={{ padding: 5 }}>nchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop pu</Text>
                                 </ScrollView>
                             </View>
-                            <View style={{ justifyContent: "center", alignItems: "center", marginTop: 5 }}>
+                            <View style={{ justifyContent: "center", alignItems: "center", marginTop: 5, padding: 10 }}>
                                 <TouchableOpacity style={{ padding: 10, backgroundColor: "red" }}>
                                     <Text style={{ color: "#fff", fontWeight: "bold" }}>View Showroom</Text>
                                 </TouchableOpacity>

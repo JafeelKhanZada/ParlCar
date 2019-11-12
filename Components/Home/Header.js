@@ -6,7 +6,7 @@ export default class Header extends Component {
             <View>
                 <View style={styles.container}>
                     <View style={styles.Drawer}>
-                        <TouchableOpacity onPress={() => { this.props.navigation.toggleDrawer() }}>
+                        <TouchableOpacity style={{ paddingRight: 5 }} onPress={() => { this.props.navigation.toggleDrawer() }}>
                             <Image style={styles.menuimg} source={require("../../assests/images/menu.png")} />
 
                         </TouchableOpacity>

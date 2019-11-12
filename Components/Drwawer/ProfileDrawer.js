@@ -25,28 +25,28 @@ class ProfileComponent extends Component {
             },
             {
                 label: "Bank Icons",
-                Icon: Image3
-
+                Icon: Image3,
+                Search: "DashboardDrawer"
             },
             {
                 label: "Inshurance Quotes",
-                Icon: Image4
-
+                Icon: Image4,
+                Search: "DashboardDrawer"
             },
             {
                 label: "Recovery Number",
-                Icon: Image5
-
+                Icon: Image5,
+                Search: "DashboardDrawer"
             },
             {
                 label: "Service work shops",
-                Icon: Image6
-
+                Icon: Image6,
+                Search: "DashboardDrawer"
             },
             {
                 label: "Feedback",
-                Icon: Image6
-
+                Icon: Image6,
+                Search: "DashboardDrawer"
             }
 
         ]

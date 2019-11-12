@@ -1,43 +1,51 @@
 import React, { Component } from 'react'
 import { View, Text, TextInput, ScrollView, TouchableOpacity, StyleSheet, Image } from 'react-native'
-import { Thumbnail, Icon } from "native-base"
+import Image1 from "../../assests/images/dashboard.png"
+import Image2 from "../../assests/images/addNew.png"
+import Image3 from "../../assests/images/myAd.png"
+import Image4 from "../../assests/images/balance.png"
+import Image5 from "../../assests/images/notificationWhite.png"
+import Image6 from "../../assests/images/feedback.png"
+import { Thumbnail } from "native-base"
 export default class DrawerComponent extends Component {
     render() {
         let Drawer = [
             {
                 label: "Dashboard",
-                Icon: "../../assests/images/dashboard.png",
+                Icon: Image1,
                 Add: "Dashboard"
 
             },
             {
                 label: "Add New",
-                Icon: "../../assests/images/addNew.png",
+                Icon: Image2,
                 Add: "AddNew"
             },
             {
                 label: "My Ads",
-                Icon: "../../assests/images/myAd.png"
-
+                Icon: Image3,
+                Add: "Dashboard"
             },
             {
                 label: "Balance",
-                Icon: "../../assests/images/balance.png"
-
+                Icon: Image4,
+                Add: "Dashboard"
             },
             {
                 label: "Notification",
-                Icon: "../../assests/images/notificationWhite.png"
-
+                Icon: Image5,
+                Add: "Dashboard"
             },
             {
                 label: "Feedback",
-                Icon: "../../assests/images/feedback.png"
-
+                Icon: Image6,
+                Add: "Dashboard"
             },
             {
                 label: "profile",
-                // Icon: "../../assests/images/aprofile.png"
+                Icon: Image6,
+                Add: "Drawer"
+                // Icon: Image7
 
             }
 
@@ -52,10 +60,10 @@ export default class DrawerComponent extends Component {
                     <View style={{ height: "100%", width: "100%", backgroundColor: "#222222" }}>
                         {Drawer.map((res, i) => {
                             return (
-                                <TouchableOpacity onPress={() => { this.props.navigation.navigate(res.Add) }}>
+                                <TouchableOpacity onPress={() => { this.props.navigation.navigate(res.Add) }} key={i}>
                                     <View style={{ flexDirection: "row", width: "100%", padding: 10 }} key={i}>
                                         <View style={{ width: "25%" }}>
-                                            <Image resizeMethod="auto" resizeMode="center" source={require("../../assests/images/feedback.png")} style={{ height: 38, width: 45 }} />
+                                            <Image resizeMethod="auto" resizeMode="center" source={res.Icon} style={{ height: 38, width: 45 }} />
                                         </View>
                                         <Text style={{ color: "white", fontWeight: "bold", fontSize: 12, padding: 10 }}>{res.label}</Text>
                                     </View>

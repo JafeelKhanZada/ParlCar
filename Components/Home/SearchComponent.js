@@ -16,7 +16,7 @@ export default class SearchComponent extends Component {
         return (
             <View style={{ top: 25, position: "absolute", opacity: 0.99, backgroundColor: "white", width: "100%", zIndex: 100, padding: 10 }}>
                 <View style={{ flexDirection: "row", justifyContent: "flex-end", paddingTop: 10 }}>
-                    <TouchableOpacity onPress={() => this.props.Visibel(false)}>
+                    <TouchableOpacity style={{ padding: 10 }} onPress={() => this.props.Visibel(false)}>
                         <Icon active name='close' />
                     </TouchableOpacity>
 
