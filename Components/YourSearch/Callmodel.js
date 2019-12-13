@@ -1,48 +1,121 @@
-import React, { Component } from 'react'
-import { Modal, Text, TouchableHighlight, View, Alert, Image, TouchableOpacity, ScrollView } from 'react-native';
-import Icon from "react-native-vector-icons/FontAwesome"
+import React, {Component} from 'react';
+import {
+  Modal,
+  Text,
+  TouchableHighlight,
+  View,
+  Alert,
+  Image,
+  TouchableOpacity,
+  ScrollView,
+} from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 export default class Model extends Component {
-    render() {
-        return (
-            <Modal
-                animationType="none"
-                transparent={true}
-                visible={this.props.modalVisible}
-                onRequestClose={() => {
-                    Alert.alert('Modal has been closed.');
-                }}>
-
-                <View style={{ position: "absolute", height: "100%", width: "100%", opacity: 0.5, backgroundColor: "black" }}></View>
-                <View style={{ marginTop: 300 }}>
-                    <View style={{ justifyContent: "center", alignItems: "center" }}>
-                        <View style={{ height: 150, width: "80%", backgroundColor: "white", }}>
-                            <View style={{ width: "100%", backgroundColor: "white", height: 25, padding: 5 }}>
-                                <TouchableHighlight onPress={() => {
-                                    this.props.setModalVisible(!this.props.modalVisible);
-                                }}>
-                                    <Icon name="close" size={20} />
-
-                                </TouchableHighlight>
-                            </View>
-
-                            <View>
-                                <View style={{ justifyContent: "center", alignItems: "center" }} >
-                                    <Text style={{ fontWeight: "bold", fontSize: 23 }}>Razi nazam</Text>
-                                    <View style={{ width: "100%", height: 30, backgroundColor: "black", justifyContent: "center", alignItems: "center" }}>
-                                        <Text style={{ color: "white" }}>+9215 700 300</Text>
-                                    </View>
-                                    <TouchableOpacity style={{ width: 140, marginTop: 10, flexDirection: "row", padding: 5, backgroundColor: "red", justifyContent: "center", alignItems: "center" }}>
-                                        <Text style={{ color: "white" }}>Call</Text>
-                                    </TouchableOpacity>
-                                </View>
-                            </View>
-                        </View>
-
-                    </View>
-                </View>
-            </Modal>
-
-
-        )
+  state = {
+    data: [],
+  };
+  componentDidMount = () => {
+    if (this.props.data !== undefined && this.props.data !== null) {
+      if (
+        this.props.data[0].UserData !== undefined &&
+        this.props.data[0].UserData !== null
+      ) {
+        this.setState({
+          data: this.props.data[0].UserData,
+        });
+      }
     }
+  };
+  render() {
+    console.log(this.state);
+    return (
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={this.props.modalVisible}>
+        <View
+          style={{
+            position: 'absolute',
+            height: '100%',
+            width: '100%',
+            opacity: 0.5,
+            backgroundColor: '#333',
+          }}></View>
+        <View
+          style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '100%',
+          }}>
+          <View
+            style={{width: '80%', backgroundColor: 'white', paddingBottom: 20}}>
+            <View
+              style={{
+                width: '100%',
+                alignItems: 'flex-end',
+                paddingRight: 10,
+                paddingTop:5
+              }}>
+              <TouchableHighlight
+                onPress={() => {
+                  this.props.setModalVisible(!this.props.modalVisible);
+                }}>
+                <Icon name="close" size={20} color="#c7c7c7" />
+              </TouchableHighlight>
+            </View>
+
+            <View>
+              <View
+                style={{
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginTop: 50,
+                }}>
+                <View
+                  style={{
+                    width: '100%',
+                    height: 30,
+                    backgroundColor: '#333',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}>
+                  <Text style={{color: 'white', fontFamily: 'Poppins-Medium'}}>
+                    {this.state.data.map((v, k) => v.UserName)}
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    width: '100%',
+                    height: 30,
+                    backgroundColor: '#333',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    marginTop: 5,
+                  }}>
+                  <Text style={{color: 'white', fontFamily: 'Poppins-Medium'}}>
+                    {this.state.data.map((v, k) => v.ShowroomTelephone)}
+                  </Text>
+                </View>
+                <TouchableOpacity
+                  style={{
+                    width: 150,
+                    marginTop: 20,
+                    flexDirection: 'row',
+                    padding: 5,
+                    backgroundColor: '#d81f25',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    borderRadius: 3,
+                  }}>
+                  <Text style={{color: 'white', fontFamily: 'Poppins-Medium'}}>
+                    Call
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+        </View>
+      </Modal>
+    );
+  }
 }
