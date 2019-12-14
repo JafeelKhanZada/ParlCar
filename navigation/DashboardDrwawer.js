@@ -6,9 +6,6 @@ export const DashboardDrawer = createDrawerNavigator({
     Dashboard: {
         screen: Dashboard
     },
-    AddNew: {
-        screen: AddNew
-    },
 },
     {
         initialRouteName: 'Dashboard',

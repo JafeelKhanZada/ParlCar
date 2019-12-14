@@ -1,7 +1,7 @@
-import React, {Component} from 'react';
-import {StyleSheet} from 'react-native';
-import {TouchableOpacity} from 'react-native';
-import {withNavigation} from 'react-navigation';
+import React, { Component } from 'react';
+import { StyleSheet } from 'react-native';
+import { TouchableOpacity } from 'react-native';
+import { withNavigation } from 'react-navigation';
 
 import {
   Container,
@@ -25,20 +25,21 @@ class SearchEngin extends Component {
   };
   render() {
     return (
-      <View style={{backgroundColor: 'white'}}>
-        <Item>
+      <View style={{ backgroundColor: 'white' }}>
+
+        {this.state.Visible == true ? <SearchComponent Visible={() => this.Visibel()} /> : <Item>
           <TouchableOpacity
-            style={{flexDirection: 'row', alignItems: 'center', padding: 5}}
+            style={{ flexDirection: 'row', alignItems: 'center', padding: 5 }}
             onPress={() => this.Visibel(true)}>
             <Icon
               name="search"
               color="#949494"
-              style={{color: '#949494', paddingLeft: 5}}
+              style={{ color: '#949494', paddingLeft: 5 }}
             />
             <Text style={Styles.text}>Start searching for Used Cars</Text>
           </TouchableOpacity>
-        </Item>
-        {/* <SearchComponent Visibel={this.Visibel} /> */}
+        </Item>}
+
       </View>
     );
   }

@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -8,9 +8,9 @@ import {
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
-import {withNavigation} from 'react-navigation';
+import { withNavigation } from 'react-navigation';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {useSelector, useDispatch} from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import moment from 'moment';
 import * as Action from '../../redux/actions';
 const MainContent = props => {
@@ -21,13 +21,14 @@ const MainContent = props => {
     setData(Ads);
   }, [Ads]);
   return (
-    <View>
+    <View style={{ backgroundColor: "#F4F4F4" }}>
       <ScrollView>
         <View>
           {Data &&
             Data.map((v, k) => {
               return (
                 <TouchableOpacity
+                  style={{ margin: 13 }}
                   onPress={() => {
                     dispatch(Action.selectAd([v]));
                     props.navigation.navigate('Details');
@@ -42,13 +43,14 @@ const MainContent = props => {
                       }}>
                       <Image
                         resizeMode="cover"
-                        style={{width: 120, height: 80}}
+                        resizeMethod="resize"
+                        style={{ width: 130, height: 90 }}
                         source={{
                           uri: `data:image/${v.Images[0].ImageExtension};base64,${v.Images[0].nImage}`,
                         }}
                       />
                     </View>
-                    <View style={{width: '60%'}}>
+                    <View style={{ width: '60%' }}>
                       <View
                         style={{
                           width: '100%',
@@ -69,7 +71,7 @@ const MainContent = props => {
                           name="heart"
                           size={15}
                           color="grey"
-                          style={{paddingRight: 10}}
+                          style={{ paddingRight: 10 }}
                         />
                       </View>
                       <View
@@ -78,7 +80,7 @@ const MainContent = props => {
                           paddingLeft: 5,
                         }}>
                         <Text
-                          style={{color: 'grey', fontSize: 10, ...styles.text}}>
+                          style={{ color: 'grey', fontSize: 10, ...styles.text }}>
                           User Cars for sale Xc60
                         </Text>
                         <Text
@@ -149,7 +151,7 @@ const MainContent = props => {
                             Miles
                           </Text>
                         </View>
-                        <View style={{width: '25%', alignItems: 'center'}}>
+                        <View style={{ width: '25%', alignItems: 'center' }}>
                           <Text
                             style={{
                               color: 'grey',
@@ -173,12 +175,14 @@ const MainContent = props => {
                 </TouchableOpacity>
               );
             })}
+
         </View>
       </ScrollView>
     </View>
   );
 };
 export default withNavigation(MainContent);
+
 const styles = StyleSheet.create({
   container: {
     width: '100%',
