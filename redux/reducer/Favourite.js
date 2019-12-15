@@ -1,21 +1,21 @@
-import * as Action from "../constant"
+import * as Action from '../constant';
 const initstate = {
-    FavAds: [],
-    SelectAds: []
-}
+  FavAds: [],
+  SelectAds: [],
+};
 const FavAdsReducer = (state = initstate, action) => {
-    switch (action.type) {
-        case Action.GET_FAV_DATA: {
-            return {
-                ...state,
-                FavAds: action.payload,
-            };
-        }
-        default: {
-            return {
-                ...state,
-            };
-        }
+  switch (action.type) {
+    case Action.GET_FAV_DATA: {
+      return {
+        ...state,
+        FavAds: action.payload === null ? [] : action.payload,
+      };
     }
+    default: {
+      return {
+        ...state,
+      };
+    }
+  }
 };
 export default FavAdsReducer;

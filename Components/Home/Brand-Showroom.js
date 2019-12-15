@@ -1,28 +1,25 @@
 import React from 'react';
 import {View, StyleSheet, Button, Text, TouchableOpacity} from 'react-native';
 import {withNavigation} from 'react-navigation';
-
+import * as Action from '../../redux/actions';
+import {useSelector, useDispatch} from 'react-redux';
 const Navbutton = props => {
-  console.log(props);
+  const Type = useSelector(state => state.Modal.Tab);
+  const dispatch = useDispatch();
+  console.log('Type', Type);
   return (
     <View>
       <View style={styles.button}>
         <TouchableOpacity
           style={{
             ...styles.container,
-            backgroundColor:
-              props.navigation.state.routeName === 'Brand'
-                ? '#d81f25'
-                : 'white',
+            backgroundColor: Type === 'BRAND' ? '#d81f25' : 'white',
           }}
-          onPress={() => props.navigation.navigate('Brand')}>
+          onPress={() => dispatch(Action.toggleButton('BRAND'))}>
           <Text
             style={{
               ...styles.text,
-              color:
-                props.navigation.state.routeName === 'Brand'
-                  ? 'white'
-                  : '#c7c7c7',
+              color: Type === 'BRAND' ? 'white' : '#c7c7c7',
             }}>
             BRAND
           </Text>
@@ -30,17 +27,13 @@ const Navbutton = props => {
         <TouchableOpacity
           style={{
             ...styles.container,
-            backgroundColor:
-              props.navigation.state.routeName === 'Home' ? '#d81f25' : 'white',
+            backgroundColor: Type === 'SHOWROOM' ? '#d81f25' : 'white',
           }}
-          onPress={() => props.navigation.navigate('Home')}>
+          onPress={() => dispatch(Action.toggleButton('SHOWROOM'))}>
           <Text
             style={{
               ...styles.text,
-              color:
-                props.navigation.state.routeName === 'Home'
-                  ? 'white'
-                  : '#c7c7c7',
+              color: Type === 'SHOWROOM' ? 'white' : '#c7c7c7',
             }}>
             SHOWROOM
           </Text>

@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import { StyleSheet } from 'react-native';
-import { TouchableOpacity } from 'react-native';
-import { withNavigation } from 'react-navigation';
+import React, {Component} from 'react';
+import {StyleSheet} from 'react-native';
+import {TouchableOpacity} from 'react-native';
+import {withNavigation} from 'react-navigation';
 
 import {
   Container,
@@ -13,6 +13,7 @@ import {
   View,
   Text,
 } from 'native-base';
+
 import SearchComponent from './SearchComponent';
 class SearchEngin extends Component {
   state = {
@@ -25,22 +26,32 @@ class SearchEngin extends Component {
   };
   render() {
     return (
-      <View style={{ backgroundColor: 'white' }}>
-
-        {this.state.Visible == true ? <SearchComponent Visible={() => this.Visibel()} /> : <Item>
-          <TouchableOpacity
-            style={{ flexDirection: 'row', alignItems: 'center', padding: 5 }}
-            onPress={() => this.Visibel(true)}>
-            <Icon
-              name="search"
-              color="#949494"
-              style={{ color: '#949494', paddingLeft: 5 }}
-            />
-            <Text style={Styles.text}>Start searching for Used Cars</Text>
-          </TouchableOpacity>
-        </Item>}
-
-      </View>
+      <React.Fragment>
+        {this.state.Visible === true ? (
+          <SearchComponent Visible={() => this.Visibel()} />
+        ) : (
+          <React.Fragment></React.Fragment>
+        )}
+        <View style={{backgroundColor: 'white'}}>
+          <Item>
+            <TouchableOpacity
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                padding: 12,
+              }}
+              onPress={() => this.Visibel(true)}>
+              <Icon
+                size={10}
+                name="search"
+                color="#949494"
+                style={{color: '#949494', paddingLeft: 10}}
+              />
+              <Text style={Styles.text}>Start searching for Used Cars</Text>
+            </TouchableOpacity>
+          </Item>
+        </View>
+      </React.Fragment>
     );
   }
 }

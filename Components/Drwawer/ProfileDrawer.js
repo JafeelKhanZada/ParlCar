@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
   View,
   Text,
@@ -16,8 +16,8 @@ import Image4 from '../../assests/images/myAd.png';
 import Image5 from '../../assests/images/notificationWhite.png';
 import Image6 from '../../assests/images/feedback.png';
 import ProfileImg from '../../assests/NewAssets/logo.png';
-import { withNavigation } from 'react-navigation';
-import { useSelector, useDispatch } from 'react-redux';
+import {withNavigation} from 'react-navigation';
+import {useSelector, useDispatch} from 'react-redux';
 function ProfileComponent(props) {
   const Auth = useSelector(state => state.Auth.auth);
   const dispatch = useDispatch();
@@ -106,7 +106,7 @@ function ProfileComponent(props) {
                   <Image
                     resizeMethod="auto"
                     resizeMode="center"
-                    style={{ height: 30, width: 40 }}
+                    style={{height: 30, width: 40}}
                     source={res.Icon}
                   />
                 </View>
@@ -136,9 +136,9 @@ function ProfileComponent(props) {
           <Image
             source={require('../../assests/images/logOut.png')}
             resizeMode="stretch"
-            style={{ height: 20, width: 20 }}
+            style={{height: 20, width: 20}}
           />
-          <Text style={{ color: 'white', fontFamily: 'Poppins-Medium' }}>
+          <Text style={{color: 'white', fontFamily: 'Poppins-Medium'}}>
             {Auth === true ? 'Logout' : 'Login'}
           </Text>
         </TouchableOpacity>
@@ -146,5 +146,6 @@ function ProfileComponent(props) {
     </React.Fragment>
   );
 }
-
+ProfileComponent.navigationOptions = {
+};
 export default withNavigation(ProfileComponent);

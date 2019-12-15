@@ -11,3 +11,9 @@ export const toggleLoader = payload => {
     payload,
   };
 };
+export const toggleButton = payload => {
+  return {
+    type: Action.TOGGLEBUTTON,
+    payload,
+  };
+};

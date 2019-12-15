@@ -8,6 +8,7 @@ import {
   Image,
   TouchableOpacity,
   ScrollView,
+  Linking,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 export default class Model extends Component {
@@ -27,7 +28,6 @@ export default class Model extends Component {
     }
   };
   render() {
-    console.log(this.state);
     return (
       <Modal
         animationType="fade"
@@ -54,7 +54,7 @@ export default class Model extends Component {
                 width: '100%',
                 alignItems: 'flex-end',
                 paddingRight: 10,
-                paddingTop:5
+                paddingTop: 5,
               }}>
               <TouchableHighlight
                 onPress={() => {
@@ -106,6 +106,11 @@ export default class Model extends Component {
                     justifyContent: 'center',
                     alignItems: 'center',
                     borderRadius: 3,
+                  }}
+                  onPress={() => {
+                    Linking.openURL(
+                      `tel:${this.state.data[0].ShowroomTelephone}`,
+                    );
                   }}>
                   <Text style={{color: 'white', fontFamily: 'Poppins-Medium'}}>
                     Call

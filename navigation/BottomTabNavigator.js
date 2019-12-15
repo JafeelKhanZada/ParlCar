@@ -6,9 +6,6 @@ import YourSerach from '../Screens/YourSearch/YourSerach';
 import Favourate from '../Screens/Favouratscreen/Favouratscreen';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import FoundationIcon from 'react-native-vector-icons/Foundation';
-function tab(){
-  
-}
 export default Tabnavigator = createBottomTabNavigator(
   {
     Home: {

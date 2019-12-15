@@ -1,46 +1,36 @@
-import React, {Component} from 'react';
+import React, {useState, useEffect} from 'react';
 import Header from '../../Components/Home/Header';
 import Search from '../../Components/Home/SearchEngin';
 import BrandShowroom from '../../Components/Home/Brand-Showroom';
 import Tab from '../../Components/Home/Tabs';
 import Slider from '../../Components/Home/Slider';
-import {View, Text, TextInput, ScrollView} from 'react-native';
 import Showroom from '../../Components/Home/Showroom';
-import {connect} from 'react-redux';
+import BRAND from '../../Components/Brand/Brand';
+import {View, ScrollView} from 'react-native';
+import {useSelector} from 'react-redux';
 import * as Action from '../../redux/actions';
-import axios from 'axios';
-class HomeScreen extends Component {
-  state = {
-    check: true,
-  };
-  static navigationOptions = {
-    headerTitle: () => <Header />,
-  };
-  render() {
-    return (
-      <View>
+function HomeScreen() {
+  const Type = useSelector(state => state.Modal.Tab);
+  // const [Tabs, setTab] = useState('BRAND');
+  // useEffect(() => {
+  //   setTab(Type);
+  // }, [Type]);
+  return (
+    <React.Fragment>
+      <View style={{position: 'absolute', zIndex: 1}}>
+        <Search />
         <ScrollView>
           {/* <Header /> */}
-          <Search />
           <BrandShowroom />
           <Tab />
           <Slider />
-          <Showroom />
+          {Type === 'BRAND' ? <BRAND /> : <Showroom />}
         </ScrollView>
       </View>
-    );
-  }
+    </React.Fragment>
+  );
 }
-const mapStateToProps = state => {
-  return {
-    ...state,
-  };
+HomeScreen.navigationOptions = {
+  headerTitle: () => <Header />,
 };
-const mapDispatchToProps = dispatch => {
-  return {
-    GetAds: () => {
-      dispatch(Action.getAds());
-    },
-  };
-};
-export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen);
+export default HomeScreen;

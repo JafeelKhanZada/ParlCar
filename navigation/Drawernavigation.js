@@ -1,8 +1,8 @@
 import React from 'react';
-import { createDrawerNavigator } from 'react-navigation-drawer';
+import {createDrawerNavigator} from 'react-navigation-drawer';
 import Brand from '../Screens/Brandscreen/Brandscreen';
 import Home from '../Screens/Homescreen/HomeScreen';
-import { DashboardDrawer } from './DashboardDrwawer';
+import {DashboardDrawer} from './DashboardDrwawer';
 import Tab from './BottomTabNavigator';
 import AddNew from '../Components/Dashboard/AddNewAdds';
 import ProfileDrwawer from '../Components/Drwawer/ProfileDrawer';
@@ -16,8 +16,8 @@ export const ProfileDrawer = createDrawerNavigator(
       screen: Brand,
     },
     AddNew: {
-      screen: AddNew
-    }
+      screen: AddNew,
+    },
   },
   {
     initialRouteName: 'Home',
