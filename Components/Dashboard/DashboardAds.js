@@ -16,13 +16,13 @@ class Notification extends Component {
         <Text
           style={{
             textAlign: 'center',
-            fontWeight: 'bold',
             fontSize: 15,
             padding: 10,
             borderBottomWidth: 1,
             borderBottomColor: 'lightgrey',
             borderTopWidth: 1,
             borderTopColor: 'lightgrey',
+            fontFamily: 'Poppins-Medium',
           }}>
           Dashboard
         </Text>
@@ -35,7 +35,12 @@ class Notification extends Component {
             flexDirection: 'column',
           }}>
           <ScrollView>
-            <Text style={{fontSize: 15, fontFamily:"Poppins-Bold", paddingLeft: 10}}>
+            <Text
+              style={{
+                fontSize: 15,
+                fontFamily: 'Poppins-Medium',
+                paddingLeft: 5,
+              }}>
               My Adds
             </Text>
             <View
@@ -45,10 +50,22 @@ class Notification extends Component {
                 padding: 10,
                 marginTop: 10,
               }}>
-              <Text style={{color: 'tomato', fontSize: 12, fontWeight: 'bold'}}>
+              <Text
+                style={{
+                  fontFamily: 'Poppins-Medium',
+                  color: 'tomato',
+                  fontSize: 12,
+                }}>
                 Active Adds
               </Text>
-              <Text style={{fontSize: 15, fontWeight: '300'}}>256 Adds</Text>
+              <Text
+                style={{
+                  fontFamily: 'Poppins',
+                  fontSize: 15,
+                  fontWeight: '300',
+                }}>
+                256 Adds
+              </Text>
               <View
                 style={{
                   flexDirection: 'row',
@@ -58,13 +75,21 @@ class Notification extends Component {
                 <TouchableOpacity
                   onPress={() => this.props.navigation.navigate('Activeads')}
                   style={{
-                    width: 100,
+                    width: 90,
                     padding: 5,
                     justifyContent: 'center',
                     alignItems: 'center',
-                    backgroundColor: 'red',
+                    backgroundColor: '#d81f25',
+                    borderRadius: 3,
                   }}>
-                  <Text style={{color: 'white'}}>View All</Text>
+                  <Text
+                    style={{
+                      fontFamily: 'Poppins',
+                      color: 'white',
+                      fontSize: 12,
+                    }}>
+                    View All
+                  </Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -75,10 +100,22 @@ class Notification extends Component {
                 padding: 10,
                 marginTop: 10,
               }}>
-              <Text style={{color: 'tomato', fontSize: 12, fontWeight: 'bold'}}>
+              <Text
+                style={{
+                  fontFamily: 'Poppins-Medium',
+                  color: 'tomato',
+                  fontSize: 12,
+                }}>
                 Expired Adds
               </Text>
-              <Text style={{fontSize: 15, fontWeight: '300'}}>256 Adds</Text>
+              <Text
+                style={{
+                  fontFamily: 'Poppins',
+                  fontSize: 15,
+                  fontWeight: '300',
+                }}>
+                256 Adds
+              </Text>
               <View
                 style={{
                   flexDirection: 'row',
@@ -88,13 +125,21 @@ class Notification extends Component {
                 <TouchableOpacity
                   onPress={() => this.props.navigation.navigate('Expiredads')}
                   style={{
-                    width: 100,
+                    width: 90,
                     padding: 5,
                     justifyContent: 'center',
                     alignItems: 'center',
-                    backgroundColor: 'red',
+                    backgroundColor: '#d81f25',
+                    borderRadius: 3,
                   }}>
-                  <Text style={{color: 'white'}}>View All</Text>
+                  <Text
+                    style={{
+                      fontFamily: 'Poppins',
+                      color: 'white',
+                      fontSize: 12,
+                    }}>
+                    View All
+                  </Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -105,10 +150,22 @@ class Notification extends Component {
                 padding: 10,
                 marginTop: 10,
               }}>
-              <Text style={{color: 'tomato', fontSize: 12, fontWeight: 'bold'}}>
+              <Text
+                style={{
+                  fontFamily: 'Poppins-Medium',
+                  color: 'tomato',
+                  fontSize: 12,
+                }}>
                 Pending Adds
               </Text>
-              <Text style={{fontSize: 15, fontWeight: '300'}}>256 Adds</Text>
+              <Text
+                style={{
+                  fontFamily: 'Poppins',
+                  fontSize: 15,
+                  fontWeight: '300',
+                }}>
+                256 Adds
+              </Text>
               <View
                 style={{
                   flexDirection: 'row',
@@ -118,13 +175,22 @@ class Notification extends Component {
                 <TouchableOpacity
                   onPress={() => this.props.navigation.navigate('PendingAds')}
                   style={{
-                    width: 100,
+                    width: 90,
                     padding: 5,
                     justifyContent: 'center',
                     alignItems: 'center',
-                    backgroundColor: 'red',
+                    backgroundColor: '#d81f25',
+                    borderRadius: 3,
                   }}>
-                  <Text style={{color: 'white'}}>View All</Text>
+                  <Text
+                    style={{
+                      fontFamily: 'Poppins',
+                      color: 'white',
+                      fontFamily: 'Poppins',
+                      fontSize: 12,
+                    }}>
+                    View All
+                  </Text>
                 </TouchableOpacity>
               </View>
             </View>

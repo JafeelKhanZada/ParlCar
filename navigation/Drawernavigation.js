@@ -6,22 +6,41 @@ import {DashboardDrawer} from './DashboardDrwawer';
 import Tab from './BottomTabNavigator';
 import AddNew from '../Components/Dashboard/AddNewAdds';
 import ProfileDrwawer from '../Components/Drwawer/ProfileDrawer';
-// import DashboardDrawer from "../Components/Drwawer/DashboardDrawer"
+import Activeads from '../Components/Dashboard/ActiveAds';
+import Expiredads from '../Components/Dashboard/ExpiredAdds';
+import PendingAds from '../Components/Dashboard/PendingAds';
+import DashboardAds from '../Screens/Dashboard/Dashboard';
+import Drawer from '../Components/Drwawer/Drawers';
+import Header from '../Components/Home/Header';
+// import DashboardDrawe from '../Components/Drwawer/DashboardDrawer';
 export const ProfileDrawer = createDrawerNavigator(
   {
     Home: {
       screen: Tab,
     },
-    Brand: {
-      screen: Brand,
-    },
     AddNew: {
       screen: AddNew,
+    },
+    Activeads: {
+      screen: Activeads,
+    },
+    Expiredads: {
+      screen: Expiredads,
+    },
+    PendingAds: {
+      screen: PendingAds,
+    },
+    Dashboard: {
+      screen: DashboardAds,
     },
   },
   {
     initialRouteName: 'Home',
-    contentComponent: ProfileDrwawer,
-    drawerType: 'front',
+    contentComponent: Drawer,
+    drawerType: 'slide',
+    navigationOptions: {
+      drawerLabel: () => null, // to hide this header
+      header: null,
+    },
   },
 );

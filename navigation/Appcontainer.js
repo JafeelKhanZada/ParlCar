@@ -8,39 +8,28 @@ import Serach from '../Components/Home/SearchComponent';
 import Details from '../Components/YourSearch/CarDetails';
 import Header from '../Components/Home/Header';
 import Notification from '../Screens/Notification/Notification';
-import Activeads from '../Components/Dashboard/ActiveAds';
-import Expiredads from '../Components/Dashboard/ExpiredAdds';
 import DashboardHEader from '../Components/Dashboard/DashboardHeader';
-import PendingAds from '../Components/Dashboard/PendingAds';
+import Drawer from '../Components/Drwawer/Drawers';
 import {DashboardDrawer} from './DashboardDrwawer';
 const Appcontainer = createStackNavigator(
   {
     Drawer: {
       screen: ProfileDrawer,
       navigationOptions: ({navigation}) => ({
-        header: <Header navigation={navigation} />,
+        header: null,
       }),
     },
-    DashboardDrawer: {
-      screen: DashboardDrawer,
-      navigationOptions: ({navigation}) => ({
-        header: <DashboardHEader navigation={navigation} />,
-      }),
-    },
+    // DashboardDrawer: {
+    //   screen: DashboardDrawer,
+    //   navigationOptions: ({navigation}) => ({
+    //     header: <DashboardHEader navigation={navigation} />,
+    //   }),
+    // },
     Details: {
       screen: Details,
     },
     Notification: {
       screen: Notification,
-    },
-    Activeads: {
-      screen: Activeads,
-    },
-    Expiredads: {
-      screen: Expiredads,
-    },
-    PendingAds: {
-      screen: PendingAds,
     },
   },
   {

@@ -15,121 +15,151 @@ import Image4 from '../../assests/images/balance.png';
 import Image5 from '../../assests/images/notificationWhite.png';
 import Image6 from '../../assests/images/feedback.png';
 import {Thumbnail} from 'native-base';
-import {useSelector} from 'react-redux';
-export default function DrawerComponent() {
+import {useSelector, useDispatch} from 'react-redux';
+import * as Action from '../../redux/actions';
+import {withNavigation} from 'react-navigation';
+import {heightPercentageToDP as Hp} from 'react-native-responsive-screen';
+function DrawerComponent(props) {
+  const dispatch = useDispatch();
   const Auth = useSelector(state => state.Auth.auth);
+  const User = useSelector(state => state.Auth.UserData);
   let Drawer = [
     {
       label: 'Dashboard',
       Icon: Image1,
-      Add: 'Dashboard',
+      Search: 'Home',
     },
     {
       label: 'Add New',
       Icon: Image2,
-      Add: 'AddNew',
+      Search: 'AddNew',
     },
     {
       label: 'My Ads',
       Icon: Image3,
-      Add: 'Dashboard',
+      Search: 'Dashboard',
     },
     {
       label: 'Balance',
       Icon: Image4,
-      Add: 'Dashboard',
+      Search: '',
     },
     {
       label: 'Notification',
       Icon: Image5,
-      Add: 'Dashboard',
+      Search: '',
     },
     {
       label: 'Feedback',
       Icon: Image6,
-      Add: 'Dashboard',
+      Search: '',
     },
     {
-      label: 'profile',
+      label: 'Profile',
       Icon: Image6,
-      Add: 'Drawer',
+      Search: '',
       // Icon: Image7
     },
   ];
-  console.log(Auth)
   return (
-    <View>
-      <View>
-        <View
+    <ScrollView style={{height: Hp('100%'), backgroundColor: '#222222'}}>
+      <View
+        style={{
+          justifyContent: 'center',
+          alignItems: 'center',
+          width: '100%',
+        }}>
+        <Thumbnail
+          style={{borderWidth: 2, borderColor: 'white', marginTop: 30}}
+          large
+          source={{
+            uri: `data:image/jpeg
+            ;base64,${User.Logo}`,
+          }}
+        />
+        <Text
+          style={{
+            fontSize: 15,
+            color: 'white',
+            fontFamily: 'Poppins',
+            letterSpacing: 1,
+            padding: 20,
+          }}>
+          {User.ShowromName}
+        </Text>
+      </View>
+      <View
+        style={{
+          height: '100%',
+          width: '100%',
+        }}>
+        {Drawer.map((res, i) => {
+          return (
+            <TouchableOpacity
+              onPress={() => props.navigation.navigate(res.Search)}
+              style={{
+                backgroundColor:
+                  props.navigation.state.index === i
+                    ? '#363535'
+                    : 'transparent',
+              }}
+              key={i}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  width: '100%',
+                  alignItems: 'center',
+                  padding: 7,
+                  borderBottomColor: '#c7c7c7',
+                }}>
+                <View
+                  style={{
+                    justifyContent: 'center',
+                  }}>
+                  <Image
+                    resizeMethod="auto"
+                    resizeMode="center"
+                    style={{height: 30, width: 40}}
+                    source={res.Icon}
+                  />
+                </View>
+                <Text
+                  style={{
+                    color: 'white',
+                    fontSize: 12,
+                    fontFamily: 'Poppins-Medium',
+                  }}>
+                  {res.label}
+                </Text>
+              </View>
+            </TouchableOpacity>
+          );
+        })}
+        <TouchableOpacity
           style={{
             justifyContent: 'center',
-            padding: 10,
             alignItems: 'center',
-            height: 130,
-            width: '100%',
-            backgroundColor: '#222222',
+            marginTop: 20,
+          }}
+          onPress={() => {
+            Auth !== true
+              ? dispatch(Action.Toggle_PopUp(true))
+              : dispatch(Action.logout());
           }}>
-          <Thumbnail
-            style={{borderWidth: 2, borderColor: 'white'}}
-            large
-            source={require('../../assests/images/showroom.png')}
+          <Image
+            source={require('../../assests/images/logOut.png')}
+            resizeMode="stretch"
+            style={{height: 20, width: 20}}
           />
-          <Text style={{fontSize: 15, color: 'white', padding: 5}}>
-            SHOW ROOM USER
+          <Text style={{color: 'white', fontFamily: 'Poppins-Medium'}}>
+            {Auth === true ? 'Logout' : 'Login'}
           </Text>
-        </View>
-        <View
-          style={{height: '100%', width: '100%', backgroundColor: '#222222'}}>
-          {Drawer.map((res, i) => {
-            return (
-              <TouchableOpacity
-                onPress={() => {
-                  props.navigation.navigate(res.Add);
-                }}
-                key={i}>
-                <View
-                  style={{flexDirection: 'row', width: '100%', padding: 10}}
-                  key={i}>
-                  <View style={{width: '25%'}}>
-                    <Image
-                      resizeMethod="auto"
-                      resizeMode="center"
-                      source={res.Icon}
-                      style={{height: 38, width: 45}}
-                    />
-                  </View>
-                  <Text
-                    style={{
-                      color: 'white',
-                      fontWeight: 'bold',
-                      fontSize: 12,
-                      padding: 10,
-                    }}>
-                    {res.label}
-                  </Text>
-                </View>
-              </TouchableOpacity>
-            );
-          })}
-          <View
-            style={{height: 100, width: '100%', backgroundColor: '#222222'}}>
-            <TouchableOpacity
-              style={{
-                justifyContent: 'center',
-                alignItems: 'center',
-                paddingTop: 10,
-              }}>
-              <Image
-                source={require('../../assests/images/logOut.png')}
-                style={{height: 40, width: 40}}
-              />
-              <Text style={{color: 'white', fontWeight: 'bold'}}>
-                {Auth === true ? 'Logout' : 'Login'}
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
+        </TouchableOpacity>
       </View>
-    </View>
+    </ScrollView>
   );
 }
+DrawerComponent.navigationOptions = {
+  drawerLabel: () => null,
+};
+export default withNavigation(DrawerComponent);

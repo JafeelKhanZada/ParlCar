@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -9,113 +9,150 @@ import {
   Image,
 } from 'react-native';
 import {withNavigation} from 'react-navigation';
-import Header from './Header';
-class Activeads extends Component {
-  static navigationOptions = {
-    // headerTitle instead of title
-    headerTitle: () => <Header />,
-  };
-  render() {
-    return (
-      <View>
-        <ScrollView>
-          <Text
-            style={{
-              textAlign: 'center',
-              fontSize: 15,
-              padding: 10,
-              borderBottomWidth: 1,
-              borderBottomColor: 'lightgrey',
-              borderTopWidth: 1,
-              borderTopColor: 'lightgrey',
-              fontFamily: 'Poppins-Bold',
-            }}>
-            Active Adds
-          </Text>
-          <View
-            style={{
-              height: '100%',
-              width: '100%',
-              backgroundColor: '#F4F4F4',
-              padding: 5,
-            }}>
-            <TouchableOpacity style={{margin: 10, marginBottom: -3}}>
-              <View
-                style={{
-                  height: 80,
-                  padding: 10,
-                  width: '100%',
-                  backgroundColor: 'white',
-                  flexDirection: 'row',
-                }}>
-                <View style={{width: '25%', backgroundColor: 'white'}}>
-                  <Image
-                    resizeMethod="resize"
-                    resizeMode="contain"
-                    style={{height: '100%', width: '100%'}}
-                    source={require('../../assests/images/bimage.png')}
-                  />
-                </View>
-                <View
-                  style={{width: '75%', backgroundColor: 'white', padding: 5}}>
-                  <Text
-                    style={{
-                      fontWeight: 'bold',
-                      fontSize: 11,
-                      fontFamily: 'Poppins-Light',
-                    }}>
-                    Export lady owned Volvo..
-                  </Text>
-                  <Text
-                    style={{
-                      color: 'grey',
-                      fontSize: 8,
-                      fontFamily: 'Poppins-Medium',
-                    }}>
-                    User car for sale
-                  </Text>
+import Header from '../Home/Header';
+import {useSelector, useDispatch} from 'react-redux';
+import * as Action from '../../redux/actions';
+import moment from 'moment';
+import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
+
+function Activeads(props) {
+  const dispatch = useDispatch();
+  const [activeAds, setActiveAds] = useState([]);
+  const Ads = useSelector(state => state.Ads.ActiveAds);
+  const ID = useSelector(state => state.Auth.ID);
+  useEffect(() => {
+    if (Ads) {
+      setActiveAds(Ads);
+    }
+  }, [Ads]);
+  useEffect(() => {
+    dispatch(Action.getAds({Status: 2, UserId: ID}));
+  }, [props.navigation.state.key]);
+  return (
+    <View>
+      <Header />
+      <ScrollView
+        style={{
+          backgroundColor: '#F4F4F4',
+          height: hp('100%'),
+        }}>
+        <Text
+          style={{
+            textAlign: 'center',
+            fontSize: 15,
+            padding: 10,
+            borderBottomWidth: 1,
+            borderBottomColor: 'lightgrey',
+            backgroundColor: 'white',
+            borderTopWidth: 1,
+            borderTopColor: 'lightgrey',
+            fontFamily: 'Poppins-Bold',
+          }}>
+          Active Adds
+        </Text>
+        <View
+          style={{
+            height: '100%',
+            width: '100%',
+            padding: 10,
+          }}>
+          {activeAds &&
+            activeAds.map((v, k) => {
+              return (
+                <React.Fragment key={k}>
                   <View
                     style={{
+                      height: 70,
+                      padding: 3,
+                      paddingLeft: 0,
+                      paddingRight: 10,
+                      width: '100%',
+                      backgroundColor: 'white',
                       flexDirection: 'row',
-                      justifyContent: 'flex-end',
-                      marginTop: -20,
+                      marginTop: k === 0 ? 0 : 6,
                     }}>
-                    <TouchableOpacity>
+                    <View style={{width: '30%', backgroundColor: 'white'}}>
                       <Image
                         resizeMethod="resize"
                         resizeMode="contain"
-                        style={{height: 20, width: 20}}
+                        style={{height: '100%', width: '100%'}}
+                        source={{
+                          uri: `data:image/${v.Images[0].ImageExtension};base64,${v.Images[0].nImage}`,
+                        }}
+                      />
+                    </View>
+                    <View
+                      style={{
+                        width: '60%',
+                        padding: 5,
+                        justifyContent: 'space-between',
+                      }}>
+                      <View>
+                        <Text
+                          style={{
+                            fontWeight: 'bold',
+                            fontSize: 12,
+                            fontFamily: 'Poppins-Light',
+                            letterSpacing: 1,
+                          }}>
+                          {v.BrandName}
+                        </Text>
+                        <Text
+                          style={{
+                            color: 'lightgrey',
+                            fontSize: 9,
+                            fontFamily: 'Poppins-Medium',
+                            letterSpacing: 1,
+                          }}>
+                          User car for sale
+                        </Text>
+                      </View>
+                      <View
+                        style={{
+                          width: '100%',
+                          flexDirection: 'row',
+                          justifyContent: 'space-between',
+                        }}>
+                        <Text
+                          style={{
+                            color: 'grey',
+                            fontSize: 9,
+                            letterSpacing: 1,
+                            fontFamily: 'Poppins',
+                          }}>
+                          {moment(v.CreatedDate).format('DD/MMMM/YYYY')}
+                        </Text>
+                        <Text
+                          style={{
+                            color: 'grey',
+                            fontSize: 9,
+                            fontFamily: 'Poppins-Bold',
+                          }}>
+                          71,619 Views
+                        </Text>
+                      </View>
+                    </View>
+                    <TouchableOpacity
+                      style={{
+                        width: '15%',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      onPress={() => dispatch(Action.deleteAd(v.ID, ID))}>
+                      <Image
+                        resizeMethod="resize"
+                        resizeMode="contain"
+                        style={{height: 15, width: 15}}
                         source={require('../../assests/images/delRed.png')}
                       />
                     </TouchableOpacity>
                   </View>
-                  <View
-                    style={{
-                      width: '100%',
-                      backgroundColor: 'white',
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                    }}>
-                    <Text style={{color: 'grey', fontSize: 8}}>
-                      13/March/2019
-                    </Text>
-                    <Text
-                      style={{
-                        color: 'grey',
-                        fontSize: 8,
-                        paddingRight: 100,
-                        fontFamily: 'Poppinf-Light',
-                      }}>
-                      71,619 Views
-                    </Text>
-                  </View>
-                </View>
-              </View>
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
-      </View>
-    );
-  }
+                </React.Fragment>
+              );
+            })}
+        </View>
+      </ScrollView>
+    </View>
+  );
 }
 export default withNavigation(Activeads);

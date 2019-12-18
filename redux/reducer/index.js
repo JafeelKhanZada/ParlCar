@@ -1,11 +1,12 @@
-import { combineReducers } from 'redux';
+import {combineReducers} from 'redux';
 import Auth from './Authentication';
 import Ads from './Ads';
 import Modal from '../reducer/Modals';
 import Showroom from './showroom';
-import Favourite from "./Favourite"
+import Favourite from './Favourite';
+import Mis from './Mis';
 import * as Action from '../constant';
-const stateLoader = { value: false };
+const stateLoader = {value: false};
 const loaderReducer = (state = stateLoader, action) => {
   switch (action.type) {
     case Action.TOGGLE_LOADER: {
@@ -27,6 +28,7 @@ const ROOT_REDUCER = combineReducers({
   Modal,
   Loader: loaderReducer,
   Showroom,
-  Favourite
+  Favourite,
+  Mis,
 });
 export default ROOT_REDUCER;

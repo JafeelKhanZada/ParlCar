@@ -17,6 +17,7 @@ const MainContent = props => {
   const dispatch = useDispatch();
   const Ads = useSelector(state => state.Ads.ActiveAds);
   const [Data, setData] = useState([]);
+
   useEffect(() => {
     setData(Ads);
   }, [Ads]);
@@ -44,7 +45,7 @@ const MainContent = props => {
                       <Image
                         resizeMode="cover"
                         resizeMethod="resize"
-                        style={{width: 130, height: 90}}
+                        style={{width: 130, height: 100}}
                         source={{
                           uri: `data:image/${v.Images[0].ImageExtension};base64,${v.Images[0].nImage}`,
                         }}
@@ -112,11 +113,12 @@ const MainContent = props => {
                         }}>
                         <TouchableOpacity
                           style={{
-                            width: '45%',
+                            width: '40%',
                             backgroundColor: 'orange',
                             justifyContent: 'center',
                             alignItems: 'center',
                             borderRadius: 3,
+                            height: 20,
                           }}>
                           <Text
                             style={{
@@ -187,7 +189,8 @@ const styles = StyleSheet.create({
     width: '100%',
     backgroundColor: 'white',
     flexDirection: 'row',
-    padding: 10,
+    padding: 5,
+    paddingTop: 0,
   },
   text: {
     fontFamily: 'Poppins-Medium',

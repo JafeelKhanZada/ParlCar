@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -8,210 +8,68 @@ import {
   StyleSheet,
   Image,
 } from 'react-native';
-export default class Showroom extends Component {
-  state = {
-    modalVisible: false,
-  };
-  visiblemodel = visible => {
-    this.setState({modalVisible: visible});
-  };
-  static navigationOptiosn = {
-    tabBarVisible: true,
-  };
-  render() {
-    return (
-      <View>
-        <View style={style.Showroom}>
-          <Text style={{fontWeight: 'bold', marginLeft: 20}}>Brand</Text>
-          <Text style={{color: 'red', marginRight: 10}}>View All</Text>
-        </View>
-        <View style={{paddingRight: 20, paddingLeft: 20}}>
-          <View style={style.Names}>
-            <TouchableOpacity style={style.Image}>
-              <Image
-                style={{height: '100%', borderWidth: 1, width: '100%'}}
-                resizeMethod="resize"
-                resizeMode="contain"
-                source={require('../../assests/images/1.png')}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity style={style.Image}>
-              <Image
-                style={{height: '100%', borderWidth: 1, width: '100%'}}
-                resizeMethod="resize"
-                resizeMode="contain"
-                source={require('../../assests/images/2.png')}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity style={style.Image}>
-              <Image
-                style={{height: '100%', borderWidth: 1, width: '100%'}}
-                resizeMethod="resize"
-                resizeMode="contain"
-                source={require('../../assests/images/3.png')}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity style={style.Image}>
-              <Image
-                style={{height: '100%', borderWidth: 1, width: '100%'}}
-                resizeMethod="resize"
-                resizeMode="contain"
-                source={require('../../assests/images/1.png')}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity style={style.Image}>
-              <Image
-                style={{height: '100%', borderWidth: 1, width: '100%'}}
-                resizeMethod="resize"
-                resizeMode="contain"
-                source={require('../../assests/images/2.png')}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity style={style.Image}>
-              <Image
-                style={{height: '100%', borderWidth: 1, width: '100%'}}
-                resizeMethod="resize"
-                resizeMode="contain"
-                source={require('../../assests/images/3.png')}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity style={style.Image}>
-              <Image
-                style={{height: '100%', borderWidth: 1, width: '100%'}}
-                resizeMethod="resize"
-                resizeMode="contain"
-                source={require('../../assests/images/1.png')}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity style={style.Image}>
-              <Image
-                style={{height: '100%', borderWidth: 1, width: '100%'}}
-                resizeMethod="resize"
-                resizeMode="contain"
-                source={require('../../assests/images/2.png')}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity style={style.Image}>
-              <Image
-                style={{height: '100%', borderWidth: 1, width: '100%'}}
-                resizeMethod="resize"
-                resizeMode="contain"
-                source={require('../../assests/images/3.png')}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity style={style.Image}>
-              <Image
-                style={{height: '100%', borderWidth: 1, width: '100%'}}
-                resizeMethod="resize"
-                resizeMode="contain"
-                source={require('../../assests/images/1.png')}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity style={style.Image}>
-              <Image
-                style={{height: '100%', borderWidth: 1, width: '100%'}}
-                resizeMethod="resize"
-                resizeMode="contain"
-                source={require('../../assests/images/2.png')}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity style={style.Image}>
-              <Image
-                style={{height: '100%', borderWidth: 1, width: '100%'}}
-                resizeMethod="resize"
-                resizeMode="contain"
-                source={require('../../assests/images/3.png')}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity style={style.Image}>
-              <Image
-                style={{height: '100%', borderWidth: 1, width: '100%'}}
-                resizeMethod="resize"
-                resizeMode="contain"
-                source={require('../../assests/images/3.png')}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity style={style.Image}>
-              <Image
-                style={{height: '100%', borderWidth: 1, width: '100%'}}
-                resizeMethod="resize"
-                resizeMode="contain"
-                source={require('../../assests/images/1.png')}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity style={style.Image}>
-              <Image
-                style={{height: '100%', borderWidth: 1, width: '100%'}}
-                resizeMethod="resize"
-                resizeMode="contain"
-                source={require('../../assests/images/2.png')}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity style={style.Image}>
-              <Image
-                style={{height: '100%', borderWidth: 1, width: '100%'}}
-                resizeMethod="resize"
-                resizeMode="contain"
-                source={require('../../assests/images/3.png')}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity style={style.Image}>
-              <Image
-                style={{height: '100%', borderWidth: 1, width: '100%'}}
-                resizeMethod="resize"
-                resizeMode="contain"
-                source={require('../../assests/images/3.png')}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity style={style.Image}>
-              <Image
-                style={{height: '100%', borderWidth: 1, width: '100%'}}
-                resizeMethod="resize"
-                resizeMode="contain"
-                source={require('../../assests/images/1.png')}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity style={style.Image}>
-              <Image
-                style={{height: '100%', borderWidth: 1, width: '100%'}}
-                resizeMethod="resize"
-                resizeMode="contain"
-                source={require('../../assests/images/2.png')}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity style={style.Image}>
-              <Image
-                style={{height: '100%', borderWidth: 1, width: '100%'}}
-                resizeMethod="resize"
-                resizeMode="contain"
-                source={require('../../assests/images/3.png')}
-              />
-            </TouchableOpacity>
-          </View>
+import {useDispatch, useSelector} from 'react-redux';
+import * as Action from '../../redux/actions';
+import {withNavigation} from 'react-navigation';
+function Showroom(props) {
+  const dispatch = useDispatch();
+  const Brands = useSelector(state => state.Mis.Brands);
+  const [renderBrands, setBrands] = useState([]);
+  useEffect(() => {
+    dispatch(Action.getBrands());
+  }, [props.navigation.state.key]);
+  useEffect(() => {
+    setBrands(Brands);
+  }, [Brands]);
+  const [modalVisible, visiblemodel] = useState(false);
+  return (
+    <View>
+      <View style={style.Showroom}>
+        <Text style={{fontFamily: 'Poppins-Medium'}}>Brand</Text>
+        <Text style={{color: '#d81f25'}}>View All</Text>
+      </View>
+      <View style={{paddingRight: 20, paddingLeft: 20}}>
+        <View style={style.Names}>
+          {renderBrands &&
+            renderBrands.map((v, k) => {
+              return (
+                <TouchableOpacity style={style.Image} key={k}>
+                  <Image
+                    style={{height: '100%', borderWidth: 1, width: '100%'}}
+                    resizeMethod="resize"
+                    resizeMode="contain"
+                    source={{
+                      uri: `data:image/jpeg;base64,${v.Image}`,
+                    }}
+                  />
+                </TouchableOpacity>
+              );
+            })}
         </View>
       </View>
-    );
-  }
+    </View>
+  );
 }
-
+Showroom.navigationOptiosn = {
+  tabBarVisible: true,
+};
+export default withNavigation(Showroom);
 const style = StyleSheet.create({
   Showroom: {
-    paddingTop: 12,
     backgroundColor: '#f4f4f4',
-    marginTop: 10,
-    height: 50,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    padding: 10,
   },
   Names: {
     marginTop: 10,
-    justifyContent: 'space-evenly',
+    justifyContent: 'flex-start',
     flexDirection: 'row',
     flexWrap: 'wrap',
   },
   Image: {
-    padding: 5,
-    height: 55,
-    width: '25%',
+    height: 50,
+    width: 70,
+    margin: 5,
   },
 });

@@ -20,15 +20,17 @@ class SearchEngin extends Component {
     Visible: false,
   };
   Visibel = v => {
-    this.setState({
-      Visible: v,
+    this.setState(state => {
+      return {
+        Visible: !state.Visible,
+      };
     });
   };
   render() {
     return (
       <React.Fragment>
         {this.state.Visible === true ? (
-          <SearchComponent Visible={() => this.Visibel()} />
+          <SearchComponent Visible={this.Visibel} />
         ) : (
           <React.Fragment></React.Fragment>
         )}
@@ -40,7 +42,7 @@ class SearchEngin extends Component {
                 alignItems: 'center',
                 padding: 12,
               }}
-              onPress={() => this.Visibel(true)}>
+              onPress={() => this.Visibel()}>
               <Icon
                 size={10}
                 name="search"

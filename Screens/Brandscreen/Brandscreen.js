@@ -6,6 +6,7 @@ import SLider from '../../Components/Home/Slider';
 import Tabs from '../../Components/Home/Tabs';
 import Brand from '../../Components/Brand/Brand';
 import {ScrollView} from 'react-native-gesture-handler';
+import Header from "../../Components/Home/Header"
 export default class Brandscreen extends Component {
   render() {
     return (

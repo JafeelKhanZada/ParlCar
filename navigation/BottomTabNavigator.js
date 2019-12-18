@@ -6,6 +6,7 @@ import YourSerach from '../Screens/YourSearch/YourSerach';
 import Favourate from '../Screens/Favouratscreen/Favouratscreen';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import FoundationIcon from 'react-native-vector-icons/Foundation';
+import {Image} from 'react-native';
 export default Tabnavigator = createBottomTabNavigator(
   {
     Home: {
@@ -25,34 +26,37 @@ export default Tabnavigator = createBottomTabNavigator(
     defaultNavigationOptions: ({navigation}) => ({
       tabBarIcon: ({focused, horizontal, tintColor}) => {
         const {routeName} = navigation.state;
-        let IconComponent = Ionicons;
         let iconName;
         if (routeName === 'Home') {
-          iconName = `home`;
-          IconComponent = Icon;
+          iconName = require('../assests/NewAssets/search.png');
         }
         if (routeName === 'YourSerach') {
-          iconName = `clock`;
-          IconComponent = FoundationIcon;
+          iconName = require('../assests/NewAssets/history.png');
         }
         if (routeName === 'Favourite') {
-          iconName = `heart`;
+          iconName = require('../assests/NewAssets/heart.png');
           // Sometimes we want to add badges to some icons.
           // You can check the implementation below.
-          IconComponent = FoundationIcon;
         } else if (routeName === 'Settings') {
           iconName = `ios-options`;
         }
 
         // You can return any component that you like here!
-        return <IconComponent name={iconName} size={25} color={tintColor} />;
+        return (
+          <Image
+            source={iconName}
+            style={{width: 17, height: 17}}
+            resizeMethod="auto"
+            resizeMode="center"
+          />
+        );
       },
     }),
     tabBarOptions: {
       tabStyle: {
         backgroundColor: '#d81f25',
       },
-      activeTintColor: '#CCCCCC',
+      activeTintColor: 'white',
       inactiveTintColor: 'white',
     },
   },

@@ -8,7 +8,6 @@ import {
   ScrollView,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import Header from './Header';
 import RegisterModal from './RegisterModal';
 import Callmodel from './Callmodel';
@@ -21,17 +20,26 @@ function CarDetails() {
   const [Detail, setDetail] = useState([]);
   const [modalVisible, setModel] = useState(false);
   const [modalVisible1, setModel1] = useState(false);
-  const images = [
-    'https://source.unsplash.com/1024x768/?nature',
-    'https://source.unsplash.com/1024x768/?water',
-    'https://source.unsplash.com/1024x768/?girl',
-    'https://source.unsplash.com/1024x768/?tree',
-  ];
+  const [images, setImages] = useState(['']);
   useEffect(() => {
     if (AdDetail) {
       setDetail(AdDetail);
+      if (AdDetail[0]) {
+        if (AdDetail[0].ImagesForSlider !== '') {
+          let arr = AdDetail[0].ImagesForSlider.split(',');
+          const newarr = converstation(arr);
+          setImages(newarr);
+        }
+      }
     }
   }, [AdDetail]);
+  const converstation = array => {
+    let Arr = [];
+    for (let i = 0; i < array.length; i++) {
+      Arr.push(`http://207.180.230.73/palcar/${array[i]}`);
+    }
+    return Arr;
+  };
   const visiblemodel = visible => {
     setModel(visible);
   };
@@ -49,7 +57,14 @@ function CarDetails() {
         />
         <View style={styles.header}>
           <View style={styles.innerHeader}></View>
-          <Text style={{fontSize: 15, color: 'white', paddingLeft: 10}}>
+          <Text
+            style={{
+              fontSize: 13,
+              color: 'white',
+              paddingLeft: 10,
+              paddingTop: 3,
+              fontFamily: 'Poppins',
+            }}>
             Export lady owned Volvo XC60
           </Text>
           <TouchableOpacity>
@@ -154,8 +169,14 @@ function CarDetails() {
                 justifyContent: 'center',
                 alignItems: 'center',
               }}>
-              <MaterialIcon name="phone" size={15} color="white" />
-              <Text style={{color: 'white'}}>call</Text>
+              <Image
+                source={require('../../assests/NewAssets/Call.png')}
+                resizeMode="contain"
+                style={{width: 15, height: 15}}
+              />
+              <Text style={{color: 'white', fontFamily: 'Poppins-Medium'}}>
+                CALL
+              </Text>
             </View>
           </TouchableOpacity>
           <View style={{width: '1%'}}></View>
@@ -170,8 +191,14 @@ function CarDetails() {
                 justifyContent: 'center',
                 alignItems: 'center',
               }}>
-              <MaterialIcon name="drive-eta" size={15} color="white" />
-              <Text style={{color: 'white'}}>Test Drive</Text>
+              <Image
+                source={require('../../assests/NewAssets/drive.png')}
+                resizeMode="contain"
+                style={{width: 15, height: 15}}
+              />
+              <Text style={{color: 'white', fontFamily: 'Poppins-Medium'}}>
+                Drive
+              </Text>
             </View>
           </TouchableOpacity>
         </View>
@@ -199,18 +226,20 @@ const styles = StyleSheet.create({
     height: 10,
     borderRadius: 15,
     padding: 0,
-    marginBottom: 35,
+    marginBottom: 20,
+    margin: -10,
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     position: 'absolute',
-    top: 160,
+    top: 174,
     width: '100%',
   },
   innerHeader: {
-    height: '100%',
+    height: '65%',
     position: 'absolute',
+    // top:10,
     width: '100%',
     backgroundColor: 'black',
     opacity: 0.5,
@@ -230,7 +259,7 @@ const styles = StyleSheet.create({
   grid: {
     flexDirection: 'row',
     width: '100%',
-    borderBottomWidth: 0.5,
+    borderBottomWidth: 0.2,
     borderBottomColor: 'grey',
     justifyContent: 'center',
     padding: 5,

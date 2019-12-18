@@ -27,7 +27,7 @@ export const getShowroom = (
     nPageSize: size || 12,
   };
   let request = axios.post(
-    'http://palcar.graffitecs.com/Api/GetAllUser_Pagged',
+    'http://207.180.230.73/palcar/Api/GetAllUser_Pagged',
     config,
     {headers: Action.headers},
   );

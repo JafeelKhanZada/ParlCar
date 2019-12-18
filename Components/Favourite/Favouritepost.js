@@ -86,7 +86,7 @@ const MainContent = props => {
                               fontSize: 10,
                               ...styles.text,
                             }}>
-                            User Cars for sale Xc60
+                            User Cars for sale {v.BrandName}
                           </Text>
                           <Text
                             style={{

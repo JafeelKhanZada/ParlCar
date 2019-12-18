@@ -16,6 +16,7 @@ export default class Model extends Component {
     data: [],
   };
   componentDidMount = () => {
+    console.log('Proper', this.props);
     if (this.props.data !== undefined && this.props.data !== null) {
       if (
         this.props.data[0].UserData !== undefined &&
