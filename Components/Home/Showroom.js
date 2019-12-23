@@ -12,6 +12,8 @@ import Modal from './Model';
 import {withNavigation} from 'react-navigation';
 import {useDispatch, useSelector} from 'react-redux';
 import * as Action from '../../redux/actions';
+import SvgAnimatedLinearGradient from 'react-native-svg-animated-linear-gradient';
+import {Circle, Rect} from 'react-native-svg';
 function Showroom(props) {
   const dispatch = useDispatch();
   const [modalVisible, visiblemodel] = useState(false);
@@ -24,7 +26,7 @@ function Showroom(props) {
   }, [showrooms]);
   useEffect(() => {
     dispatch(Action.getShowroom());
-  }, [props.navigation.state.key]);
+  }, []);
   return (
     <View>
       <View style={{...style.Showroom, padding: 10, alignItems: 'center'}}>
@@ -48,7 +50,7 @@ function Showroom(props) {
       </View>
       <View style={{paddingRight: 20, paddingLeft: 20}}>
         <View style={style.Names}>
-          {showroom &&
+          {showroom.length !== 0 ? (
             showroom.map((v, k) => {
               return (
                 <TouchableOpacity
@@ -62,11 +64,36 @@ function Showroom(props) {
                     style={{height: '100%', borderWidth: 1, width: '100%'}}
                     resizeMethod="resize"
                     resizeMode="contain"
-                    source={require('../../assests/images/showroom.png')}
+                    source={
+                      v.Logo == null || v.Logo === ''
+                        ? require('../../assests/images/showroom.png')
+                        : {
+                            uri: `http://207.180.230.73/palcar${v.Logo}`,
+                          }
+                    }
                   />
                 </TouchableOpacity>
               );
-            })}
+            })
+          ) : (
+            <SvgAnimatedLinearGradient
+              primaryColor="#f4f4f4"
+              secondaryColor="#E3E3E3"
+              width={'100%'}>
+              <Rect x="0%" y="10" width="23%" height="50" />
+              <Rect x="25%" y="10" width="23%" height="50" />
+              <Rect x="50%" y="10" width="23%" height="50" />
+              <Rect x="75%" y="10" width="23%" height="50" />
+              <Rect x="0%" y="70" width="23%" height="50" />
+              <Rect x="25%" y="70" width="23%" height="50" />
+              <Rect x="50%" y="70" width="23%" height="50" />
+              <Rect x="75%" y="70" width="23%" height="50" />
+              <Rect x="0%" y="130" width="23%" height="50" />
+              <Rect x="25%" y="130" width="23%" height="50" />
+              <Rect x="50%" y="130" width="23%" height="50" />
+              <Rect x="75%" y="130" width="23%" height="50" />
+            </SvgAnimatedLinearGradient>
+          )}
         </View>
       </View>
       <Modal modalVisible={modalVisible} setModalVisible={visiblemodel} />

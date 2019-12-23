@@ -28,12 +28,14 @@ export const login = (username, password) => {
         dispatch(setType(response.data.UserData[0].Type));
         dispatch({
           type: Action.SET_USER_AUTHENTICATE,
-          payload: response.data.UserData,
+          payload: response.data.UserData[0],
         });
         dispatch({
           type: Action.SET_USER_ID,
           payload: response.data.UserData[0].ID,
         });
+        dispatch(Actions.getNotification(response.data.UserData[0].ID));
+
         let token = AsyncStorage.getItem('TOKEN').then(res => res);
         if (token === null) {
           AsyncStorage.setItem('TOKEN', response.data.token).then(() => {
@@ -103,5 +105,32 @@ export const setType = type => {
   return {
     type: Action.SET_TYPE,
     payload: type,
+  };
+};
+export const testDrive = (name, phone) => {
+  let config = {
+    nUserName: 'sample string 1',
+    nToken: 'sample string 2',
+    nIsNew: true,
+    nCurrentID: -1,
+    nSenderID: 1,
+    nRecieverID: 1,
+    nCity: 2,
+    nShowroom: 'sample string 8',
+    nVehicleID: 2,
+    nStatus: 'Pending',
+    oNotes: 'sample string 11',
+    nName: name,
+    nPhoneNumber: phone,
+  };
+  let request = axios.post(
+    'http://207.180.230.73/palcar/Api/UserRegisteration',
+    config,
+    {headers: Action.headers},
+  );
+  return dispatch => {
+    return request.then(response => {
+      console.log(response);
+    });
   };
 };

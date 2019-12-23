@@ -52,10 +52,13 @@ export default Tabnavigator = createBottomTabNavigator(
         );
       },
     }),
+  
     tabBarOptions: {
       tabStyle: {
         backgroundColor: '#d81f25',
+        height: '100%',
       },
+
       activeTintColor: 'white',
       inactiveTintColor: 'white',
     },

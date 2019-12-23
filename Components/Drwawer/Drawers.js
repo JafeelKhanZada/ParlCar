@@ -11,7 +11,7 @@ function Drawers() {
   }, [Type]);
   return (
     <React.Fragment>
-      {type === 'Office' ? <Dashboard /> : <Profile />}
+      {type === 'Showroom' ? <Dashboard /> : <Profile />}
     </React.Fragment>
   );
 }

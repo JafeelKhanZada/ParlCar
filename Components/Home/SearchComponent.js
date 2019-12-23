@@ -9,11 +9,14 @@ import {
 } from 'react-native';
 import {View, Text, Item, Icon} from 'native-base';
 import useForm from 'react-hook-form';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {withNavigation} from 'react-navigation';
 import * as Action from '../../redux/actions';
 function SearchComponent(props) {
-  console.log(props);
+  const [Price, setPrice] = useState([]);
+  const [Mile, setMile] = useState([]);
+  const [Years, setYears] = useState([]);
+  const State = useSelector(state => state.Mis);
   const dispatch = useDispatch();
   const slide = () => {
     Animated.timing(x, {
@@ -23,11 +26,25 @@ function SearchComponent(props) {
   };
   useEffect(() => {
     slide();
+    dispatch(Action.getPrice());
+    dispatch(Action.getMile());
+    dispatch(Action.getYears());
   }, []);
+  console.log(Price);
+  useEffect(() => {
+    if (State.PriceList) {
+      setPrice(State.PriceList);
+    }
+    if (State.MileList) {
+      setMile(State.MileList);
+    }
+    if (State.YearsList) {
+      setYears(State.YearsList);
+    }
+  }, [State]);
   const [x, setX] = useState(new Animated.Value(-500));
   const {register, setValue, getValues} = useForm({
     mode: 'onChange',
-
     defaultValues: {
       nCity: null,
       nModel: null,
@@ -48,7 +65,7 @@ function SearchComponent(props) {
     <KeyboardAvoidingView
       behavior="padding"
       enabled
-      style={{position: 'absolute', zIndex: 10}}>
+      style={{position: 'absolute', zIndex: 100}}>
       <Animated.View
         style={{
           ...Styles.Container,
@@ -104,12 +121,16 @@ function SearchComponent(props) {
               <Picker
                 selectedValue={getValues().nPriceFrom}
                 style={{width: '100%', height: 30, color: '#c7c7c7'}}
-                ref={register({name: 'nPriceTo'}, {required: true})}
+                ref={register({name: 'nPriceFrom'}, {required: true})}
                 onValueChange={(itemValue, itemIndex) =>
                   setValue('nPriceFrom', itemValue, true)
                 }>
-                <Picker.Item label="No minium" value="No minium" />
-                <Picker.Item label="JavaScript" value="js" />
+                <Picker.Item label="Price From" value={''} />
+                {Price.map((v, k) => {
+                  return (
+                    <Picker.Item label={v.Price.toString()} value={v.ID} />
+                  );
+                })}
               </Picker>
             </View>
             <Text style={Styles.Text}>To</Text>
@@ -121,8 +142,12 @@ function SearchComponent(props) {
                 onValueChange={(itemValue, itemIndex) =>
                   setValue('nPriceTo', itemValue, true)
                 }>
-                <Picker.Item label="No minium" value="No minium" />
-                <Picker.Item label="JavaScript" value="js" />
+                <Picker.Item label="Price To" value="" />
+                {Price.map((v, k) => {
+                  return (
+                    <Picker.Item label={v.Price.toString()} value={v.ID} />
+                  );
+                })}
               </Picker>
             </View>
           </View>
@@ -136,8 +161,12 @@ function SearchComponent(props) {
                 onValueChange={(itemValue, itemIndex) =>
                   setValue('nKiloMeterFrom', itemValue, true)
                 }>
-                <Picker.Item label="No minium" value="No minium" />
-                <Picker.Item label="JavaScript" value="js" />
+                <Picker.Item label="KiloMeters From" value="No minium" />
+                {Mile.map((v, k) => {
+                  return (
+                    <Picker.Item label={v.MileAges.toString()} value={v.ID} />
+                  );
+                })}
               </Picker>
             </View>
             <Text style={Styles.Text}>To</Text>
@@ -149,8 +178,12 @@ function SearchComponent(props) {
                 onValueChange={(itemValue, itemIndex) =>
                   setValue('nKiloMeterTo', itemValue, true)
                 }>
-                <Picker.Item label="No minium" value="No minium" />
-                <Picker.Item label="JavaScript" value="js" />
+                <Picker.Item label="Kilemeter to" value="" />
+                {Mile.map((v, k) => {
+                  return (
+                    <Picker.Item label={v.MileAges.toString()} value={v.ID} />
+                  );
+                })}
               </Picker>
             </View>
           </View>
@@ -164,8 +197,10 @@ function SearchComponent(props) {
                 onValueChange={(itemValue, itemIndex) =>
                   setValue('nYearFrom', itemValue, true)
                 }>
-                <Picker.Item label="No minium" value="No minium" />
-                <Picker.Item label="JavaScript" value="js" />
+                <Picker.Item label="Year From" value="No minium" />
+                {Years.map((v, k) => {
+                  return <Picker.Item label={v.Year.toString()} value={v.ID} />;
+                })}
               </Picker>
             </View>
             <Text style={Styles.Text}>To</Text>
@@ -177,8 +212,10 @@ function SearchComponent(props) {
                 onValueChange={(itemValue, itemIndex) =>
                   setValue('nYearTo', itemValue, true)
                 }>
-                <Picker.Item label="No minium" value="No minium" />
-                <Picker.Item label="JavaScript" value="js" />
+                <Picker.Item label="Year To" value="" />
+                {Years.map((v, k) => {
+                  return <Picker.Item label={v.Year.toString()} value={v.ID} />;
+                })}
               </Picker>
             </View>
           </View>

@@ -8,9 +8,12 @@ import {
   TextInput,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import {useDispatch} from 'react-redux';
+import * as Action from '../../redux/actions';
 function Model(props) {
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
+  const dispatch = useDispatch();
   return (
     <Modal
       animationType="slide"
@@ -91,8 +94,10 @@ function Model(props) {
               Register with facebook
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity style={Styles.btn}>
-            <Text style={Styles.btnText}>Regiseter</Text>
+          <TouchableOpacity
+            style={Styles.btn}
+            onPress={() => dispatch(Action.testDrive(name, password))}>
+            <Text style={Styles.btnText}>Register</Text>
           </TouchableOpacity>
         </View>
       </View>

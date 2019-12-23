@@ -1,24 +1,41 @@
-import React, {Component, useEffect} from 'react';
-import {View, Text, TextInput, ScrollView} from 'react-native';
+import React, {Component, useEffect, useState} from 'react';
+import {View, Text, TextInput, ScrollView, RefreshControl} from 'react-native';
 import Search from '../../Components/Home/SearchEngin';
 import SearchPost from '../../Components/YourSearch/YouSearchPost';
 import {useSelector, useDispatch} from 'react-redux';
 import {withNavigation} from 'react-navigation';
 import Header from '../../Components/Home/Header';
 import * as Action from '../../redux/actions';
+import Loader from '../../Components/Loader';
+
 function YourSerach(props) {
+  const [refresh, setRefresh] = useState(false);
+  const ID = useSelector(state => state.Auth.ID);
+  const handleRefrest = () => {
+    setRefresh(true);
+    Promise.all([dispatch(Action.getAds({UID: ID}))]);
+    setRefresh(false);
+  };
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(Action.getAds({}));
-  }, [props.navigation.state.key]);
+  }, []);
+
   return (
-    <View>
+    <React.Fragment>
       <Header />
-      <ScrollView style={{backgroundColor: '#F0F0F0', height: '100%'}}>
-        <Search />
-        <SearchPost />
+      <Search />
+      <ScrollView
+        style={{height: '100%'}}
+        refreshControl={
+          <RefreshControl refreshing={refresh} onRefresh={handleRefrest} />
+        }>
+        <View>
+          <SearchPost />
+        </View>
       </ScrollView>
-    </View>
+      <Loader />
+    </React.Fragment>
   );
 }
 export default withNavigation(YourSerach);

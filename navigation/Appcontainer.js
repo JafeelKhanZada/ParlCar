@@ -6,7 +6,7 @@ import {ProfileDrawer} from './Drawernavigation';
 import Brand from '../Screens/Brandscreen/Brandscreen';
 import Serach from '../Components/Home/SearchComponent';
 import Details from '../Components/YourSearch/CarDetails';
-import Header from '../Components/Home/Header';
+import Header from '../Components/Notification/NotificationHeader';
 import Notification from '../Screens/Notification/Notification';
 import DashboardHEader from '../Components/Dashboard/DashboardHeader';
 import Drawer from '../Components/Drwawer/Drawers';
@@ -15,9 +15,11 @@ const Appcontainer = createStackNavigator(
   {
     Drawer: {
       screen: ProfileDrawer,
-      navigationOptions: ({navigation}) => ({
-        header: null,
-      }),
+      navigationOptions: ({navigation}) => {
+        return {
+          header: null,
+        };
+      },
     },
     // DashboardDrawer: {
     //   screen: DashboardDrawer,
@@ -30,6 +32,9 @@ const Appcontainer = createStackNavigator(
     },
     Notification: {
       screen: Notification,
+      navigationOptions: ({navigation}) => ({
+        header: () => <Header navigation={navigation} />,
+      }),
     },
   },
   {

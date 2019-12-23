@@ -15,22 +15,20 @@ import * as Action from '../../redux/actions';
 import moment from 'moment';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import Icon from 'react-native-vector-icons/FontAwesome';
-
+import Loader from '../../Components/Loader';
 function Activeads(props) {
   const dispatch = useDispatch();
   const [activeAds, setActiveAds] = useState([]);
-  const Ads = useSelector(state => state.Ads.ActiveAds);
+  const Ads = useSelector(state => state.Ads.PendingAds);
   const ID = useSelector(state => state.Auth.ID);
   useEffect(() => {
     if (Ads) {
       setActiveAds(Ads);
     }
   }, [Ads]);
-  useEffect(() => {
-    dispatch(Action.getAds({Status: 1, UserId: ID}));
-  }, [props.navigation.state.key]);
   return (
     <View>
+      <Loader />
       <Header />
       <ScrollView
         style={{

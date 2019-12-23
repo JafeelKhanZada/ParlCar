@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   Image,
+  Alert,
 } from 'react-native';
 import {withNavigation} from 'react-navigation';
 import Header from '../Home/Header';
@@ -14,22 +15,21 @@ import {useSelector, useDispatch} from 'react-redux';
 import * as Action from '../../redux/actions';
 import moment from 'moment';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import Loader from '../../Components/Loader';
 
 function Activeads(props) {
   const dispatch = useDispatch();
   const [activeAds, setActiveAds] = useState([]);
-  const Ads = useSelector(state => state.Ads.ActiveAds);
+  const Ads = useSelector(state => state.Ads.ActivatedAds);
   const ID = useSelector(state => state.Auth.ID);
   useEffect(() => {
     if (Ads) {
       setActiveAds(Ads);
     }
   }, [Ads]);
-  useEffect(() => {
-    dispatch(Action.getAds({Status: 2, UserId: ID}));
-  }, [props.navigation.state.key]);
   return (
     <View>
+      <Loader />
       <Header />
       <ScrollView
         style={{
@@ -77,7 +77,7 @@ function Activeads(props) {
                         resizeMode="contain"
                         style={{height: '100%', width: '100%'}}
                         source={{
-                          uri: `data:image/${v.Images[0].ImageExtension};base64,${v.Images[0].nImage}`,
+                          uri: `http://207.180.230.73/palcar${v.Images[0].nImage}`,
                         }}
                       />
                     </View>
@@ -138,7 +138,14 @@ function Activeads(props) {
                         alignItems: 'center',
                         justifyContent: 'center',
                       }}
-                      onPress={() => dispatch(Action.deleteAd(v.ID, ID))}>
+                      onPress={() => {
+                        Promise.all([dispatch(Action.deleteAd(v.ID, ID))]).then(
+                          () => {
+                            Alert.alert('Ad Deleted Successfully');
+                            dispatch(Action.getActiveAds(ID));
+                          },
+                        );
+                      }}>
                       <Image
                         resizeMethod="resize"
                         resizeMode="contain"

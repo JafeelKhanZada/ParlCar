@@ -5,6 +5,7 @@ import Modal from '../reducer/Modals';
 import Showroom from './showroom';
 import Favourite from './Favourite';
 import Mis from './Mis';
+import Notification from './Notification';
 import * as Action from '../constant';
 const stateLoader = {value: false};
 const loaderReducer = (state = stateLoader, action) => {
@@ -30,5 +31,6 @@ const ROOT_REDUCER = combineReducers({
   Showroom,
   Favourite,
   Mis,
+  Notification,
 });
 export default ROOT_REDUCER;

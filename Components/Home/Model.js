@@ -12,24 +12,19 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import {Thumbnail} from 'native-base';
 import {ScrollView} from 'react-native-gesture-handler';
 import {useSelector, useDispatch} from 'react-redux';
-export default function Model(props) {
+import * as Action from '../../redux/actions';
+import {withNavigation} from 'react-navigation';
+function Model(props) {
   const dispatch = useDispatch();
   const data = useSelector(state => state.Showroom.ActiveShowRoom);
   return (
     <Modal animationType="fade" transparent={true} visible={props.modalVisible}>
       <View
         style={{
-          position: 'absolute',
-          height: '100%',
-          width: '100%',
-          opacity: 0.7,
-          backgroundColor: 'black',
-        }}></View>
-      <View
-        style={{
           justifyContent: 'center',
           alignItems: 'center',
           height: '100%',
+          backgroundColor: 'rgba(0,0,0,0.5)',
         }}>
         {data &&
           data.map((v, k) => {
@@ -60,7 +55,9 @@ export default function Model(props) {
                   }}>
                   <Thumbnail
                     large
-                    source={require('../../assests/images/showroom.png')}
+                    source={{
+                      uri: `http://207.180.230.73/palcar${v.Logo}`,
+                    }}
                   />
                   <Text
                     style={{
@@ -126,9 +123,7 @@ export default function Model(props) {
                         fontSize: 11,
                         color: '#333',
                       }}>
-                      Contrary to popular belief, Lorem Ipsum is not simply
-                      random text. It has roots in a piece of classical Latin
-                      literature from 45 BC, making it over 2000 years old.
+                      {v.Details}
                     </Text>
                   </ScrollView>
                 </View>
@@ -146,6 +141,11 @@ export default function Model(props) {
                       width: 150,
                       alignItems: 'center',
                       borderRadius: 3,
+                    }}
+                    onPress={() => {
+                      dispatch(Action.getAds({Name: v.ShowromName}));
+                      props.setModalVisible(!props.modalVisible);
+                      props.navigation.navigate('YourSerach');
                     }}>
                     <Text
                       style={{
@@ -165,3 +165,4 @@ export default function Model(props) {
     </Modal>
   );
 }
+export default withNavigation(Model);

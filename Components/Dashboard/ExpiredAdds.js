@@ -14,21 +14,20 @@ import {useSelector, useDispatch} from 'react-redux';
 import * as Action from '../../redux/actions';
 import moment from 'moment';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import Loader from '../../Components/Loader';
 function ExpireAds(props) {
   const dispatch = useDispatch();
   const [activeAds, setActiveAds] = useState([]);
-  const Ads = useSelector(state => state.Ads.ActiveAds);
+  const Ads = useSelector(state => state.Ads.DeletedAds);
   const ID = useSelector(state => state.Auth.ID);
   useEffect(() => {
     if (Ads) {
       setActiveAds(Ads);
     }
   }, [Ads]);
-  useEffect(() => {
-    dispatch(Action.getAds({Status: 4, UserId: ID}));
-  }, [props.navigation.state.key]);
   return (
     <View>
+      <Loader />
       <Header />
       <ScrollView
         style={{

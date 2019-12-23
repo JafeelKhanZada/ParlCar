@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -16,13 +16,21 @@ import Image5 from '../../assests/images/notificationWhite.png';
 import Image6 from '../../assests/images/feedback.png';
 import {Thumbnail} from 'native-base';
 import {useSelector, useDispatch} from 'react-redux';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import * as Action from '../../redux/actions';
 import {withNavigation} from 'react-navigation';
 import {heightPercentageToDP as Hp} from 'react-native-responsive-screen';
 function DrawerComponent(props) {
+  console.log(props.navigation);
   const dispatch = useDispatch();
   const Auth = useSelector(state => state.Auth.auth);
-  const User = useSelector(state => state.Auth.UserData);
+  const user = useSelector(state => state.Auth.UserData);
+  const [User, setUser] = useState([]);
+  const [counter, setCounter] = useState(0);
+  useEffect(() => {
+    setUser([user]);
+    console.log(user);
+  }, [user]);
   let Drawer = [
     {
       label: 'Dashboard',
@@ -63,6 +71,11 @@ function DrawerComponent(props) {
   ];
   return (
     <ScrollView style={{height: Hp('100%'), backgroundColor: '#222222'}}>
+      <TouchableOpacity
+        style={{alignSelf: 'flex-end', padding: 10}}
+        onPress={() => props.navigation.closeDrawer()}>
+        <Icon name="close" color="white" size={14} />
+      </TouchableOpacity>
       <View
         style={{
           justifyContent: 'center',
@@ -73,8 +86,7 @@ function DrawerComponent(props) {
           style={{borderWidth: 2, borderColor: 'white', marginTop: 30}}
           large
           source={{
-            uri: `data:image/jpeg
-            ;base64,${User.Logo}`,
+            uri: `http://207.180.230.73/palcar${User.map((v, k) => v.Logo)}`,
           }}
         />
         <Text
@@ -85,7 +97,7 @@ function DrawerComponent(props) {
             letterSpacing: 1,
             padding: 20,
           }}>
-          {User.ShowromName}
+          {User.map((v, k) => v.ShowromName)}
         </Text>
       </View>
       <View

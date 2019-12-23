@@ -58,7 +58,7 @@ function ProfileComponent(props) {
     {
       label: 'Feedback',
       Icon: Image6,
-      Search: 'DashboardDrawer',
+      Search: '',
     },
   ];
   return (

@@ -8,50 +8,47 @@ import {
   StyleSheet,
   Image,
 } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import {withNavigation} from 'react-navigation';
-class NotificationHeader extends Component {
-  render() {
-    return (
-      <View>
-        <View style={styles.container}>
-          <View style={styles.Drawer}>
-            <TouchableOpacity
-              onPress={() => {
-                this.props.navigation.toggleDrawer();
-              }}>
-              <Image
-                style={styles.menuimg}
-                source={require('../../assests/images/menu.png')}
-              />
-            </TouchableOpacity>
-          </View>
-          <View style={styles.logo}>
+function NotificationHeader(props) {
+  return (
+    <View>
+      <View style={styles.container}>
+        <View style={styles.Drawer}>
+          <TouchableOpacity
+            onPress={() => {
+              props.navigation.goBack();
+            }}>
+            <Icon name="arrow-left" size={20} style={{marginLeft: 10}} />
+          </TouchableOpacity>
+        </View>
+        <View style={styles.logo}>
+          <Image
+            style={styles.logoImg}
+            source={require('../../assests/images/logo.png')}
+          />
+        </View>
+        <View style={styles.HeaderNotification}>
+          <TouchableOpacity>
             <Image
-              style={styles.logoImg}
-              source={require('../../assests/images/logo.png')}
+              style={styles.notificationImg}
+              // source={require('../../assests/images/notification.png')}
             />
-          </View>
-          <View style={styles.HeaderNotification}>
-            <TouchableOpacity>
-              <Image
-                style={styles.notificationImg}
-                source={require('../../assests/images/notification.png')}
-              />
-            </TouchableOpacity>
-          </View>
+          </TouchableOpacity>
         </View>
       </View>
-    );
-  }
+    </View>
+  );
 }
 export default withNavigation(NotificationHeader);
 const styles = StyleSheet.create({
   container: {
     width: '100%',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     backgroundColor: 'white',
     flexDirection: 'row',
+    padding:5
   },
   Drawer: {
     width: '25%',

@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import Appcontainer from './navigation/Appcontainer';
 import Login from './Components/Login';
-import Loader from './Components/Loader';
 import SplashScreen from 'react-native-splash-screen';
 import {connect} from 'react-redux';
 import {AsyncStorage} from 'react-native';
@@ -24,7 +23,6 @@ class App extends Component {
       <React.Fragment>
         <Appcontainer />
         <Login />
-        <Loader />
       </React.Fragment>
     );
   }
@@ -40,6 +38,7 @@ const mapDispatchToProps = dispatch => {
       dispatch(Action.checkTOKEN(user));
       dispatch(Action.setToken(token));
       dispatch(Action.setType(user.Type));
+      dispatch(Action.getNotification(user.ID));
     },
   };
 };

@@ -13,14 +13,18 @@ import RegisterModal from './RegisterModal';
 import Callmodel from './Callmodel';
 import {Footer} from 'native-base';
 import {SliderBox} from 'react-native-image-slider-box';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
+import {withNavigation} from 'react-navigation';
 import moment from 'moment';
-function CarDetails() {
+import * as Action from '../../redux/actions';
+function CarDetails(props) {
   const AdDetail = useSelector(state => state.Ads.SelectedAd);
   const [Detail, setDetail] = useState([]);
   const [modalVisible, setModel] = useState(false);
   const [modalVisible1, setModel1] = useState(false);
   const [images, setImages] = useState(['']);
+  const dispatch = useDispatch();
+  const ID = useSelector(state => state.Auth.ID);
   useEffect(() => {
     if (AdDetail) {
       setDetail(AdDetail);
@@ -33,9 +37,10 @@ function CarDetails() {
       }
     }
   }, [AdDetail]);
+  console.log(Detail);
   const converstation = array => {
     let Arr = [];
-    for (let i = 0; i < array.length; i++) {
+    for (let i = 0; i < array.length - 1; i++) {
       Arr.push(`http://207.180.230.73/palcar/${array[i]}`);
     }
     return Arr;
@@ -65,11 +70,33 @@ function CarDetails() {
               paddingTop: 3,
               fontFamily: 'Poppins',
             }}>
-            Export lady owned Volvo XC60
+            {Detail && Detail.map((v, k) => v.BrandName)}
           </Text>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              Detail.map((v, k) => v.IsFavourite)[0] === false
+                ? dispatch(Action.addFavourite(Detail[0].ID, ID))
+                : Promise.all(
+                    [
+                      dispatch(
+                        Action.removeFavourite(
+                          Detail[0].FavID !== null ? Detail[0].FavID : '',
+                        ),
+                      ),
+                    ],
+                    props.navigation.navigate('Home'),
+                  );
+            }}>
             <View style={styles.Icon}>
-              <Icon name="heart" size={20} />
+              <Icon
+                name="heart"
+                color={
+                  Detail.map((v, k) => v.IsFavourite)[0] === false
+                    ? 'grey'
+                    : '#d81f25'
+                }
+                size={20}
+              />
             </View>
           </TouchableOpacity>
         </View>
@@ -219,7 +246,7 @@ CarDetails.navigationOptions = {
   // headerTitle instead of title
   headerTitle: () => <Header />,
 };
-export default CarDetails;
+export default withNavigation(CarDetails);
 const styles = StyleSheet.create({
   dot: {
     width: 10,
