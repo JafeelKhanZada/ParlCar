@@ -1,7 +1,7 @@
 import * as Action from '../constant';
 import * as Actions from './index';
 import axios from 'axios';
-import {AsyncStorage} from 'react-native';
+import { AsyncStorage } from 'react-native';
 export const toggleAuth = payload => {
   return {
     type: Action.TOGGLE_AUTH,
@@ -18,7 +18,7 @@ export const login = (username, password) => {
   let request = axios.post(
     'http://207.180.230.73/palcar/Api/UserAuthentication',
     config,
-    {headers: Action.headers},
+    { headers: Action.headers },
   );
   return dispatch => {
     dispatch(Actions.toggleLoader(true));
@@ -113,24 +113,24 @@ export const testDrive = (name, phone) => {
     nToken: 'sample string 2',
     nIsNew: true,
     nCurrentID: -1,
-    nSenderID: 1,
-    nRecieverID: 1,
+    nSenderID: null,
+    nRecieverID: null,
     nCity: 2,
-    nShowroom: 'sample string 8',
+    nShowroom: '',
     nVehicleID: 2,
     nStatus: 'Pending',
-    oNotes: 'sample string 11',
+    oNotes: '',
     nName: name,
     nPhoneNumber: phone,
   };
   let request = axios.post(
-    'http://207.180.230.73/palcar/Api/UserRegisteration',
+    'http://207.180.230.73/palcar/Api/SaveTestDriveRequest',
     config,
-    {headers: Action.headers},
+    { headers: Action.headers },
   );
   return dispatch => {
     return request.then(response => {
-      console.log(response);
+      alert(response.data.message)
     });
   };
 };
