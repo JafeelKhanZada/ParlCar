@@ -2,6 +2,7 @@ import * as Action from '../constant';
 const initState = {
   Login: false,
   Tab: 'BRAND',
+  Show:false
 };
 const ModalReducer = (state = initState, action) => {
   switch (action.type) {

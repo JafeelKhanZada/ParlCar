@@ -17,6 +17,7 @@ const MainContent = props => {
   const dispatch = useDispatch();
   const Favads = useSelector(state => state.Favourite.FavAds);
   const [Favdata, setfavdata] = useState([]);
+  const id = useSelector(state => state.Auth.UserData);
   useEffect(() => {
     setfavdata(Favads);
   }, [Favads]);
@@ -25,9 +26,9 @@ const MainContent = props => {
       {Favdata &&
         Favdata.map((val, k) => {
           return (
-            <React.Fragment>
-              {val.AdsData !== null ? (
-                val.AdsData.map((v, key) => {
+            <React.Fragment key={k}>
+              {val.NewFavAds !== null ? (
+                val.NewFavAds.map((v, key) => {
                   v.FavID = val.ID;
                   return (
                     <TouchableOpacity
@@ -39,9 +40,11 @@ const MainContent = props => {
                       onPress={() => {
                         dispatch(Action.selectAd([v]));
                         props.navigation.navigate('Details');
-                        dispatch(Action.getfav({nUserID: id}));
+                        dispatch(
+                          Action.getfav({nUserID: id.ID !== null ? id.ID : -1}),
+                        );
                       }}
-                      key={k}>
+                      key={key}>
                       <View style={styles.container}>
                         <View
                           style={{
@@ -54,7 +57,7 @@ const MainContent = props => {
                             resizeMethod="scale"
                             style={{width: 110, height: 90}}
                             source={{
-                              uri: `data:image/${v.Images[0].ImageExtension};base64,${v.Images[0].nImage}`,
+                              uri: `http://207.180.230.73/palcar${v.Images[0].nImage}`,
                             }}
                           />
                         </View>

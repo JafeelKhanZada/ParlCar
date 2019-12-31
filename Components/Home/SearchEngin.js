@@ -35,12 +35,14 @@ class SearchEngin extends Component {
           <React.Fragment></React.Fragment>
         )}
         <View style={{backgroundColor: 'white'}}>
-          <Item>
+          <Item style={{justifyContent: 'center'}}>
             <TouchableOpacity
               style={{
                 flexDirection: 'row',
                 alignItems: 'center',
-                padding: 12,
+                justifyContent: 'center',
+                padding: 5,
+                width: '100%',
               }}
               onPress={() => this.Visibel()}>
               <Icon
@@ -49,8 +51,30 @@ class SearchEngin extends Component {
                 color="#949494"
                 style={{color: '#949494', paddingLeft: 10}}
               />
-              <Text style={Styles.text}>Start searching for Used Cars</Text>
+              <Text style={Styles.text}>Start Searching</Text>
             </TouchableOpacity>
+          </Item>
+          <Item
+            style={{
+              width: '100%',
+              padding: 10,
+            }}>
+            <Text
+              style={{
+                fontSize: 12,
+                fontFamily: 'Poppins',
+                color: '#949494',
+                marginRight: 10,
+              }}>
+              Quick Search
+            </Text>
+            <View
+              style={{
+                width: '70%',
+                height: 1,
+                backgroundColor: 'rgba(141,141,141,.3)',
+              }}
+            />
           </Item>
         </View>
       </React.Fragment>
@@ -61,7 +85,6 @@ export default withNavigation(SearchEngin);
 const Styles = StyleSheet.create({
   text: {
     fontFamily: 'Poppins',
-    letterSpacing: 1,
     color: '#949494',
     fontSize: 12,
     paddingLeft: 10,

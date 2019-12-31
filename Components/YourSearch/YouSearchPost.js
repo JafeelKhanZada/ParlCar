@@ -69,7 +69,9 @@ const MainContent = props => {
                     resizeMethod="scale"
                     style={{width: 110, height: 90}}
                     source={{
-                      uri: `http://207.180.230.73/palcar${v.Images[0].nImage}`,
+                      uri: `http://207.180.230.73/palcar${
+                        v.Images !== null ? v.Images[0].nImage : ''
+                      }`,
                     }}
                   />
                 </View>

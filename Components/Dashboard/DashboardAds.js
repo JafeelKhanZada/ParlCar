@@ -16,10 +16,11 @@ function Notification(props) {
   const State = useSelector(state => state.Ads);
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(Action.getActiveAds(ID));
+    dispatch(Action.getActiveAds({UserId: ID}));
     dispatch(Action.getPending(ID));
     dispatch(Action.getExpiredAds(ID));
   }, []);
+  console.log(State);
   return (
     <View>
       <Text

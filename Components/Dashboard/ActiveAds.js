@@ -142,7 +142,7 @@ function Activeads(props) {
                         Promise.all([dispatch(Action.deleteAd(v.ID, ID))]).then(
                           () => {
                             Alert.alert('Ad Deleted Successfully');
-                            dispatch(Action.getActiveAds(ID));
+                            dispatch(Action.getActiveAds({UserId: ID}));
                           },
                         );
                       }}>

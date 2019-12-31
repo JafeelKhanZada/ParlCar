@@ -28,6 +28,7 @@ export const getBrands = () => {
   );
   return dispatch => {
     return request.then(response => {
+      
       dispatch({
         type: Action.GET_BRANDS,
         payload: response.data,

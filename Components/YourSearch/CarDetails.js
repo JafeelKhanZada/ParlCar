@@ -28,6 +28,7 @@ function CarDetails(props) {
   useEffect(() => {
     if (AdDetail) {
       setDetail(AdDetail);
+      console.log(AdDetail);
       if (AdDetail[0]) {
         if (AdDetail[0].ImagesForSlider !== '') {
           let arr = AdDetail[0].ImagesForSlider.split(',');
@@ -74,18 +75,16 @@ function CarDetails(props) {
           </Text>
           <TouchableOpacity
             onPress={() => {
+              console.log(Detail);
               Detail.map((v, k) => v.IsFavourite)[0] === false
                 ? dispatch(Action.addFavourite(Detail[0].ID, ID))
-                : Promise.all(
-                    [
-                      dispatch(
-                        Action.removeFavourite(
-                          Detail[0].FavID !== null ? Detail[0].FavID : '',
-                        ),
+                : Promise.all([
+                    dispatch(
+                      Action.removeFavourite(
+                        Detail[0].FavID !== null ? Detail[0].FavID : '',
                       ),
-                    ],
-                    props.navigation.navigate('Home'),
-                  );
+                    ),
+                  ]);
             }}>
             <View style={styles.Icon}>
               <Icon

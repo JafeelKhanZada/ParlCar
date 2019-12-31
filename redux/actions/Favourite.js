@@ -7,7 +7,7 @@ export const getfav = obj => {
   let Params = {
     nUserName: obj.nUserName || 'sample string 1',
     nToken: obj.nToken || 'sample string 2',
-    nUserID: obj.nUserID || null,
+    nUserID: obj.nUserID === null ? -1 : obj.nUserID || null,
     nAdsID: obj.nAdsID || null,
     nOrderBy: obj.nOrderBy || 'A.CreatedDate',
     nPageIndex: obj.nPageIndex || 0,
@@ -49,14 +49,17 @@ export const addFavourite = (id, userId) => {
     },
   );
   return dispatch => {
-    return request.then(response => {
-      dispatch(Actions.getSelected({ID: id}));
-      Alert.alert('Ad Added Favourite Successfully');
-      console.log(response);
+    request.then(response => {
+      if (response.data.result === true) {
+        dispatch(Actions.getSelected({ID: id, UID: userId}));
+        Alert.alert('Ad Added Favourite Successfully');
+        dispatch(Actions.getAds({UID: userId}));
+      }
     });
   };
 };
 export const removeFavourite = id => {
+  console.log(id);
   let config = {
     nUserName: 'sample string 1',
     nToken: 'sample string 2',
@@ -72,6 +75,7 @@ export const removeFavourite = id => {
   );
   return dispatch => {
     return request.then(response => {
+      console.log(response);
       Alert.alert('Ad Remove Favourite Successfully');
     });
   };

@@ -14,6 +14,7 @@ import Image3 from '../../assests/images/myAd.png';
 import Image4 from '../../assests/images/balance.png';
 import Image5 from '../../assests/images/notificationWhite.png';
 import Image6 from '../../assests/images/feedback.png';
+import Image7 from "../../assests/images/profile.png"
 import {Thumbnail} from 'native-base';
 import {useSelector, useDispatch} from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -64,8 +65,8 @@ function DrawerComponent(props) {
     },
     {
       label: 'Profile',
-      Icon: Image6,
-      Search: '',
+      Icon: Image7,
+      Search: 'Profile',
       // Icon: Image7
     },
   ];

@@ -18,18 +18,18 @@ function YourSerach(props) {
   };
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(Action.getAds({}));
+    dispatch(Action.getAds({UID: ID}));
   }, []);
 
   return (
     <React.Fragment>
       <Header />
-      <Search />
       <ScrollView
         style={{height: '100%'}}
         refreshControl={
           <RefreshControl refreshing={refresh} onRefresh={handleRefrest} />
         }>
+        <Search />
         <View>
           <SearchPost />
         </View>

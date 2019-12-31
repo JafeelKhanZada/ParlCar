@@ -93,6 +93,7 @@ export const getSelected = obj => {
     nPageSize: obj.Size || 10,
     oBrandID: obj.Brand || null,
     oCategoryID: obj.Category || null,
+    CuurentLoginUserID: obj.UID || -1,
   };
   return dispatch => {
     axios
@@ -111,14 +112,42 @@ export const getSelected = obj => {
       });
   };
 };
-export const getActiveAds = userId => {
+export const getActiveAds = obj => {
+  let config = {
+    nUserName: 'sample string 1',
+    nToken: 'sample string 2',
+    nShowRoom: obj.Name || '',
+    nAdsID: obj.ID || null,
+    nCity: obj.City || null,
+    nModel: obj.Model || '',
+    nPriceFrom: obj.PriceFrom || null,
+    nPriceTo: obj.PriceTo || null,
+    nYearFrom: obj.YearFrom || '',
+    nYearTo: obj.YearTo || '',
+    nOrderBy: obj.OrderBy || 'A.ID',
+    nKiloMeterFrom: obj.KileFrom || null,
+    nKiloMeterTo: obj.KiloTo || null,
+    nStatusID: obj.Status || 2,
+    nUserID: obj.UserId || null,
+    nPageIndex: obj.Index || 0,
+    nPageSize: obj.Size || 100,
+    oBrandID: obj.Brand || null,
+    oCategoryID: obj.Category || null,
+    CuurentLoginUserID: obj.UID || -1,
+  };
   return dispatch => {
-    dispatch(getAds({UserId: userId})).then(response => {
-      dispatch({
-        type: Action.GET_ACTIVE_ADS,
-        payload: response.AdsData !== null ? response.AdsData : [],
+    return axios
+      .post('http://207.180.230.73/palcar/Api/GetAllAds_Pagged', config, {
+        headers: Action.headers,
+      })
+      .then(response => {
+        console.log(response);
+        dispatch({
+          type: Action.GET_ACTIVE_ADS,
+          payload: response.data.AdsData !== null ? response.data.AdsData : [],
+        });
+        dispatch(getAds({UID: obj.UserId}));
       });
-    });
   };
 };
 export const getExpiredAds = userId => {

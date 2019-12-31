@@ -142,13 +142,12 @@ function AddNewAdds(props) {
           nImage: null,
         },
       ]);
-      dispatch(Action.getAds({UID: User.ID}));
-      dispatch(Action.getActiveAds(User.ID));
       let count = counter;
       count++;
       setCounter(count);
       reset(State);
       props.navigation.navigate('YourSerach');
+      dispatch(Action.getActiveAds({UserId: User.ID}));
     });
   };
   const Img = AddImage.map((v, k) => {
