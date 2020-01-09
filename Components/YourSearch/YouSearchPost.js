@@ -23,6 +23,7 @@ const MainContent = props => {
   const [Data, setData] = useState([]);
   const id = useSelector(state => state.Auth.ID);
   const [refresh, setRefresh] = useState(false);
+
   const handleRefrest = () => {
     setRefresh(true);
     Promise.all([dispatch(Action.getAds({UID: id}))]);

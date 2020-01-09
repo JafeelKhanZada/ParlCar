@@ -9,18 +9,33 @@ import * as Action from '../../redux/actions';
 import Loader from '../../Components/Loader';
 
 function YourSerach(props) {
+  console.log(props);
   const [refresh, setRefresh] = useState(false);
+  const [BrandId, setBrandId] = useState(null);
+  const [ShowRoom, setShowRoom] = useState(null);
+  useEffect(() => {
+    setBrandId(
+      props.navigation.state.params.brand !== undefined
+        ? props.navigation.state.params.brand
+        : null,
+    );
+  }, [props.navigation.state]);
+  useEffect(() => {
+    setShowRoom(
+      props.navigation.state.params.showroom !== undefined
+        ? props.navigation.state.params.showroom
+        : null,
+    );
+  }, [props.navigation.state]);
   const ID = useSelector(state => state.Auth.ID);
   const handleRefrest = () => {
     setRefresh(true);
-    Promise.all([dispatch(Action.getAds({UID: ID}))]);
+    Promise.all([
+      dispatch(Action.getAds({UID: ID, Brand: BrandId, Name: ShowRoom})),
+    ]);
     setRefresh(false);
   };
   const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(Action.getAds({UID: ID}));
-  }, []);
-
   return (
     <React.Fragment>
       <Header />

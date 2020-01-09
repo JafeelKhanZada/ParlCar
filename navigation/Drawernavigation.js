@@ -12,7 +12,7 @@ import PendingAds from '../Components/Dashboard/PendingAds';
 import DashboardAds from '../Screens/Dashboard/Dashboard';
 import Drawer from '../Components/Drwawer/Drawers';
 import Header from '../Components/Home/Header';
-import Profile from "../Components/Dashboard/Profile"
+import Profile from '../Components/Dashboard/Profile';
 // import DashboardDrawe from '../Components/Drwawer/DashboardDrawer';
 export const ProfileDrawer = createDrawerNavigator(
   {
@@ -21,6 +21,9 @@ export const ProfileDrawer = createDrawerNavigator(
     },
     AddNew: {
       screen: AddNew,
+    },
+    Dashboard: {
+      screen: DashboardAds,
     },
     Activeads: {
       screen: Activeads,
@@ -31,11 +34,8 @@ export const ProfileDrawer = createDrawerNavigator(
     PendingAds: {
       screen: PendingAds,
     },
-    Dashboard: {
-      screen: DashboardAds,
-    },
-    Profile:{
-      screen:Profile
+    Profile: {
+      screen: Profile,
     },
   },
   {

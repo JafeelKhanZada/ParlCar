@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   TextInput,
+  Alert,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {useDispatch} from 'react-redux';
@@ -96,7 +97,19 @@ function Model(props) {
           </TouchableOpacity>
           <TouchableOpacity
             style={Styles.btn}
-            onPress={() => dispatch(Action.testDrive(name, password))}>
+            onPress={() => {
+              if (name !== '' && password !== '') {
+                dispatch(Action.testDrive(name, password));
+                props.setModalVisible(!props.modalVisible);
+                setName('');
+                setPassword('');
+              } else {
+                Alert.alert(
+                  'Email/Password Wrong',
+                  'Check Email and Password Please!',
+                );
+              }
+            }}>
             <Text style={Styles.btnText}>Register</Text>
           </TouchableOpacity>
         </View>

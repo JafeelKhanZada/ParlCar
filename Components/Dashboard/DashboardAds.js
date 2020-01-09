@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   Image,
+  RefreshControl,
 } from 'react-native';
 import {withNavigation} from 'react-navigation';
 import {useDispatch, useSelector} from 'react-redux';
@@ -15,12 +16,23 @@ function Notification(props) {
   const ID = useSelector(state => state.Auth.ID);
   const State = useSelector(state => state.Ads);
   const dispatch = useDispatch();
+  const [refresh, setRefresh] = useState(false);
   useEffect(() => {
-    dispatch(Action.getActiveAds({UserId: ID}));
-    dispatch(Action.getPending(ID));
-    dispatch(Action.getExpiredAds(ID));
+    handleSubmit();
   }, []);
-  console.log(State);
+  const handleSubmit = () => {
+    return Promise.all([
+      dispatch(Action.getActiveAds({UserId: ID})),
+      dispatch(Action.getPending(ID)),
+      dispatch(Action.getExpiredAds(ID)),
+    ]);
+  };
+  const handleRefresh = () => {
+    setRefresh(true);
+    Promise.all([handleSubmit()]).then(() => {
+      setRefresh(false);
+    });
+  };
   return (
     <View>
       <Text
@@ -44,7 +56,10 @@ function Notification(props) {
           padding: 10,
           flexDirection: 'column',
         }}>
-        <ScrollView>
+        <ScrollView
+          refreshControl={
+            <RefreshControl refreshing={refresh} onRefresh={handleRefresh} />
+          }>
           <Text
             style={{
               fontSize: 15,

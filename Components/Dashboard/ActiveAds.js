@@ -139,11 +139,29 @@ function Activeads(props) {
                         justifyContent: 'center',
                       }}
                       onPress={() => {
-                        Promise.all([dispatch(Action.deleteAd(v.ID, ID))]).then(
-                          () => {
-                            Alert.alert('Ad Deleted Successfully');
-                            dispatch(Action.getActiveAds({UserId: ID}));
-                          },
+                        Alert.alert(
+                          'Deleting Ads?',
+                          'Are you sure for deleting ad?',
+                          [
+                            {
+                              text: 'Yes',
+                              onPress: async () =>
+                                await Promise.all([
+                                  await dispatch(Action.deleteAd(v.ID, ID)),
+                                ]).then(async () => {
+                                  await dispatch(
+                                    Action.getActiveAds({UserId: ID}),
+                                  );
+                                  Alert.alert('Ad Deleted Successfully');
+                                }),
+                            },
+                            {
+                              text: 'No',
+                              onPress: () => console.log('Cancel Pressed'),
+                              style: 'cancel',
+                            },
+                          ],
+                          {cancelable: false},
                         );
                       }}>
                       <Image

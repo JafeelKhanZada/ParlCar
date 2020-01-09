@@ -105,7 +105,7 @@ function AddNewAdds(props) {
     setCounter(count);
     setImages(image);
   };
-  const onSubmit = () => {
+  const onSubmit = async () => {
     let img = Images;
     const filterImage = img.filter(arr => arr.nImage !== null);
     let obj = {
@@ -115,7 +115,7 @@ function AddNewAdds(props) {
       Images: filterImage,
       ExtraVehicleInfo: [],
     };
-    Promise.all([dispatch(Action.saveAd(obj))]).then(() => {
+    await Promise.all([await dispatch(Action.saveAd(obj))]).then(() => {
       setImages([
         {
           ImageExtension: '',

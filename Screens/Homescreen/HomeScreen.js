@@ -10,13 +10,12 @@ import BRAND from '../../Components/Home/Brand';
 import {ScrollView} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {withNavigation} from 'react-navigation';
-// import * as Action from '../../redux/actions';
+import * as Action from '../../redux/actions';
 // import {Dimensions} from 'react-native';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 function HomeScreen(props) {
   const dispatch = useDispatch();
   const Type = useSelector(state => state.Modal.Tab);
-  const ID = useSelector(state => state.Auth.ID);
   return (
     <React.Fragment>
       <Header />

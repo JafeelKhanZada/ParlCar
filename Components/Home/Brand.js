@@ -6,16 +6,30 @@ import * as Action from '../../redux/actions';
 function Brand(props) {
   const dispatch = useDispatch();
   const Brands = useSelector(state => state.Mis.Brands);
+  const ID = useSelector(state => state.Auth.ID);
   const [renderBrands, setBrands] = useState([]);
   useEffect(() => {
-    dispatch(Action.getBrands());
-  }, [props.navigation.state.key]);
+    Promise.all([dispatch(Action.getBrands())]).then(() => {
+      dispatch(Action.getAds({UID: ID}));
+    });
+  }, []);
   useEffect(() => {
     setBrands(Brands);
   }, [Brands]);
   return (
     <React.Fragment>
       <View style={{...style.Root}}>
+        <TouchableOpacity
+          style={style.container}
+          onPress={() => {
+            dispatch(Action.getAds({UID: ID}));
+            props.navigation.navigate('YourSerach', {
+              brand: null,
+              showroom: null,
+            });
+          }}>
+          <Text style={style.headText}>All</Text>
+        </TouchableOpacity>
         {renderBrands.Brands &&
           renderBrands.Brands.map((v, k) => {
             return (
@@ -24,7 +38,10 @@ function Brand(props) {
                 key={k}
                 onPress={() => {
                   dispatch(Action.getAds({Brand: v.ID}));
-                  props.navigation.navigate('YourSerach');
+                  props.navigation.navigate('YourSerach', {
+                    brand: v.ID,
+                    showroom: null,
+                  });
                 }}>
                 <Image
                   style={{height: '60%', borderWidth: 1, width: '60%'}}
@@ -67,6 +84,13 @@ const style = StyleSheet.create({
     fontSize: 10,
     color: '#D6D6D6',
     marginTop: 10,
+  },
+  headText: {
+    fontFamily: 'Poppins-Medium',
+    fontSize: 20,
+    marginTop: 10,
+    letterSpacing: 2,
+    color: '#D6D6D6',
   },
 });
 export default withNavigation(Brand);

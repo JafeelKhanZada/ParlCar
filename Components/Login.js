@@ -21,6 +21,8 @@ function Login() {
   }, [Visibility]);
   const submitHandle = () => {
     dispatch(Action.login(name, password));
+    setName('');
+    setPassword('');
   };
   return (
     <Modal animationType="slide" transparent={true} visible={visible}>
@@ -66,6 +68,7 @@ function Login() {
               style={Styles.TextInputContainer}
               onChangeText={text => setPassword(text)}
               value={password}
+              secureTextEntry={true}
             />
           </View>
           <TouchableOpacity style={Styles.btn} onPress={() => submitHandle()}>

@@ -28,6 +28,7 @@ function Model(props) {
         }}>
         {data &&
           data.map((v, k) => {
+            console.log(v);
             return (
               <View
                 key={k}
@@ -145,7 +146,10 @@ function Model(props) {
                     onPress={() => {
                       dispatch(Action.getAds({Name: v.ShowromName}));
                       props.setModalVisible(!props.modalVisible);
-                      props.navigation.navigate('YourSerach');
+                      props.navigation.navigate('YourSerach', {
+                        showroom: v.ShowromName,
+                        brand: null,
+                      });
                     }}>
                     <Text
                       style={{
