@@ -20,6 +20,12 @@ export const getCity = () => {
     });
   };
 };
+export const setCityName = payload => {
+  return {
+    type: Action.SET_CITY,
+    payload,
+  };
+};
 export const getBrands = () => {
   const request = axios.post(
     'http://207.180.230.73/palcar/Api/GetAllBrands',
@@ -28,7 +34,6 @@ export const getBrands = () => {
   );
   return dispatch => {
     return request.then(response => {
-      
       dispatch({
         type: Action.GET_BRANDS,
         payload: response.data,
@@ -115,3 +120,19 @@ export const getBodyType = () => {
     });
   };
 };
+export const getCountry = () => {
+  let request = axios.post(
+    'http://207.180.230.73/palcar/Api/GetAllCountries',
+    {},
+    {headers: Action.headers},
+  );
+  return dispatch => {
+    return request.then(response => {
+      dispatch({
+        type: Action.GET_COUNTRY,
+        payload: response.data,
+      });
+    });
+  };
+};
+export const saveUser = data => {};

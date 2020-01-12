@@ -7,22 +7,37 @@ import {withNavigation} from 'react-navigation';
 import Header from '../../Components/Home/Header';
 import * as Action from '../../redux/actions';
 import Loader from '../../Components/Loader';
+import {heightPercentageToDP} from 'react-native-responsive-screen';
 
 function YourSerach(props) {
   console.log(props);
   const [refresh, setRefresh] = useState(false);
   const [BrandId, setBrandId] = useState(null);
   const [ShowRoom, setShowRoom] = useState(null);
+  const filter = useSelector(state => state.Filter);
+  const [data, setData] = useState({
+    nCity: null,
+    nModel: null,
+    nPriceFrom: null,
+    nPriceTo: null,
+    nYearFrom: null,
+    nYearTo: null,
+    nKiloMeterFrom: null,
+    nKiloMeterTo: null,
+  });
+  useEffect(() => {
+    setData(filter);
+  }, [filter]);
   useEffect(() => {
     setBrandId(
-      props.navigation.state.params.brand !== undefined
+      props.navigation.state.params !== undefined
         ? props.navigation.state.params.brand
         : null,
     );
   }, [props.navigation.state]);
   useEffect(() => {
     setShowRoom(
-      props.navigation.state.params.showroom !== undefined
+      props.navigation.state.params !== undefined
         ? props.navigation.state.params.showroom
         : null,
     );
@@ -31,7 +46,9 @@ function YourSerach(props) {
   const handleRefrest = () => {
     setRefresh(true);
     Promise.all([
-      dispatch(Action.getAds({UID: ID, Brand: BrandId, Name: ShowRoom})),
+      dispatch(
+        Action.getAds({UID: ID, Brand: BrandId, Name: ShowRoom, ...data}),
+      ),
     ]);
     setRefresh(false);
   };
@@ -45,7 +62,7 @@ function YourSerach(props) {
           <RefreshControl refreshing={refresh} onRefresh={handleRefrest} />
         }>
         <Search />
-        <View>
+        <View style={{minHeight: heightPercentageToDP('50%')}}>
           <SearchPost />
         </View>
       </ScrollView>

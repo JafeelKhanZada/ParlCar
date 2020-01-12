@@ -14,6 +14,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import * as Action from '../../redux/actions';
 import SvgAnimatedLinearGradient from 'react-native-svg-animated-linear-gradient';
 import {Circle, Rect} from 'react-native-svg';
+import {heightPercentageToDP as Hp} from 'react-native-responsive-screen';
 function Showroom(props) {
   const dispatch = useDispatch();
   const [modalVisible, visiblemodel] = useState(false);
@@ -29,7 +30,7 @@ function Showroom(props) {
   }, []);
   return (
     <View>
-      <View style={{...style.Showroom, padding: 10, alignItems: 'center'}}>
+      {/* <View style={{...style.Showroom, padding: 10, alignItems: 'center'}}>
         <Text
           style={{
             fontFamily: 'Poppins-Medium',
@@ -47,9 +48,9 @@ function Showroom(props) {
           }}>
           View All
         </Text>
-      </View>
+      </View> */}
       <View style={{paddingRight: 20, paddingLeft: 20}}>
-        <View style={style.Names}>
+        <View style={{...style.Names}}>
           {showroom.length !== 0 ? (
             showroom.map((v, k) => {
               return (
@@ -80,18 +81,12 @@ function Showroom(props) {
               primaryColor="#f4f4f4"
               secondaryColor="#E3E3E3"
               width={'100%'}>
-              <Rect x="0%" y="10" width="23%" height="50" />
-              <Rect x="25%" y="10" width="23%" height="50" />
-              <Rect x="50%" y="10" width="23%" height="50" />
-              <Rect x="75%" y="10" width="23%" height="50" />
-              <Rect x="0%" y="70" width="23%" height="50" />
-              <Rect x="25%" y="70" width="23%" height="50" />
-              <Rect x="50%" y="70" width="23%" height="50" />
-              <Rect x="75%" y="70" width="23%" height="50" />
-              <Rect x="0%" y="130" width="23%" height="50" />
-              <Rect x="25%" y="130" width="23%" height="50" />
-              <Rect x="50%" y="130" width="23%" height="50" />
-              <Rect x="75%" y="130" width="23%" height="50" />
+              <Rect x="0%" y="10" width="30%" height="80" />
+              <Rect x="34%" y="10" width="30%" height="80" />
+              <Rect x="68%" y="10" width="30%" height="80" />
+              <Rect x="0%" y="100" width="30%" height="80" />
+              <Rect x="34%" y="100" width="30%" height="80" />
+              <Rect x="68%" y="100" width="30%" height="80" />
             </SvgAnimatedLinearGradient>
           )}
         </View>
@@ -118,7 +113,7 @@ const style = StyleSheet.create({
   },
   Image: {
     padding: 5,
-    height: 55,
-    width: '25%',
+    height: 80,
+    width: '31%',
   },
 });

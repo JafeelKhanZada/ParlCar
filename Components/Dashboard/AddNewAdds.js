@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   Image,
+  Alert,
 } from 'react-native';
 import * as Action from '../../redux/actions';
 import {useSelector, useDispatch} from 'react-redux';
@@ -150,11 +151,47 @@ function AddNewAdds(props) {
       dispatch(Action.getActiveAds({UserId: User.ID}));
     });
   };
+  const handleImages = (k, id) => {
+    Alert.alert(
+      'Image Uploading',
+      'Have you want to change image or remove?',
+      [
+        {
+          text: 'Remove',
+          onPress: () => removeImage(id, k),
+        },
+        {
+          text: 'Change',
+          onPress: () => handleChoosePhoto(k),
+        },
+        {text: 'Cancel', onPress: () => console.log('OK Pressed')},
+      ],
+      {cancelable: false},
+    );
+  };
+  const removeImage = (v, k) => {
+    let Img = AddImage;
+    Img[k] = {
+      ImageExtension: '',
+      VehicleID: 3,
+      ID: -1,
+      nImage: null,
+    };
+    setImages(Img);
+    console.log(Img);
+    let co = counter;
+    co++;
+    setCounter(co);
+  };
   const Img = AddImage.map((v, k) => {
     return (
       <React.Fragment>
         <Loader />
-        <TouchableOpacity onPress={() => handleChoosePhoto(k)} key={k}>
+        <TouchableOpacity
+          onPress={() => {
+            v.nImage === null ? handleChoosePhoto(k) : handleImages(k, v);
+          }}
+          key={k}>
           {v.nImage === null ? (
             <View style={styles.plus}>
               <Text

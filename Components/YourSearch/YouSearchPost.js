@@ -43,7 +43,8 @@ const MainContent = props => {
     //       <RefreshControl refreshing={refresh} onRefresh={handleRefrest} />
     //     }>
     <View>
-      {Data &&
+      {Data.length > 0 ? (
+        Data &&
         Data.map((v, k) => {
           return (
             <TouchableOpacity
@@ -207,7 +208,24 @@ const MainContent = props => {
               </View>
             </TouchableOpacity>
           );
-        })}
+        })
+      ) : (
+        <View
+          style={{
+            width: '100%',
+            minHeight: 500,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+          <Text
+            style={{
+              fontFamily: 'Poppins-Medium',
+              letterSpacing: 1,
+            }}>
+            There Is No Ads Related Search...
+          </Text>
+        </View>
+      )}
     </View>
     //   </ScrollView>
     // </View>

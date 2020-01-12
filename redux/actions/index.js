@@ -5,3 +5,4 @@ export * from './showroom';
 export * from './Favourite';
 export * from './Mis';
 export * from './Notification';
+export * from './Search';

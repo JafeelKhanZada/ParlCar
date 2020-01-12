@@ -7,9 +7,23 @@ const initState = {
   MileList: [],
   YearsList: [],
   BodyType: [],
+  CityName: '',
+  Country: [],
 };
 const reducer = (state = initState, action) => {
   switch (action.type) {
+    case Action.GET_COUNTRY: {
+      return {
+        ...state,
+        Country: action.payload,
+      };
+    }
+    case Action.SET_CITY: {
+      return {
+        ...state,
+        CityName: action.payload,
+      };
+    }
     case Action.GET_CITY: {
       return {
         ...state,

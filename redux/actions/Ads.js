@@ -3,20 +3,21 @@ import * as Action from '../constant';
 import * as Actions from './index';
 import moment from 'moment';
 export const getAds = obj => {
+  console.log(obj);
   let config = {
     nUserName: 'sample string 1',
     nToken: 'sample string 2',
     nShowRoom: obj.Name || '',
     nAdsID: obj.ID || null,
-    nCity: obj.City || null,
-    nModel: obj.Model || '',
-    nPriceFrom: obj.PriceFrom || null,
-    nPriceTo: obj.PriceTo || null,
-    nYearFrom: obj.YearFrom || '',
-    nYearTo: obj.YearTo || '',
+    nCity: obj.nCity || null,
+    nModel: '',
+    nPriceFrom: obj.nPriceFrom || null,
+    nPriceTo: obj.nPriceTo || null,
+    nYearFrom: obj.nYearFrom || '',
+    nYearTo: obj.nYearTo || '',
     nOrderBy: obj.OrderBy || 'A.ID',
-    nKiloMeterFrom: obj.KileFrom || null,
-    nKiloMeterTo: obj.KiloTo || null,
+    nKiloMeterFrom: obj.nKiloMeterFrom || null,
+    nKiloMeterTo: obj.nKiloMeterTo || null,
     nStatusID: obj.Status || 2,
     nUserID: obj.UserId || null,
     nPageIndex: obj.Index || 0,
@@ -24,6 +25,8 @@ export const getAds = obj => {
     oBrandID: obj.Brand || null,
     oCategoryID: obj.Category || null,
     CuurentLoginUserID: obj.UID || -1,
+    nBodyType: null,
+    nkeywordTitle: obj.nModel || '',
   };
   return dispatch => {
     dispatch(Actions.toggleLoader(true));

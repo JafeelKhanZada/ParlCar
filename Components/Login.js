@@ -6,28 +6,42 @@ import {
   StyleSheet,
   TextInput,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import * as Action from '../redux/actions';
+import Loader from './Loader';
 function Login() {
   const dispatch = useDispatch();
   const [visible, setVisible] = useState(false);
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
+  const [dis, setDis] = useState(false);
   const Visibility = useSelector(state => state.Modal.Login);
   useEffect(() => {
     setVisible(Visibility);
   }, [Visibility]);
   const submitHandle = () => {
-    dispatch(Action.login(name, password));
-    setName('');
-    setPassword('');
+    if (name !== '' && password !== '') {
+      setDis(true);
+      Promise.all([dispatch(Action.login(name, password))]).then(() => {
+        setDis(false);
+      });
+    } else {
+      Alert.alert(
+        'Empty Email or Password!',
+        'Please Check Your Username/Email or Passowrd.',
+        [{text: 'OK', onPress: () => console.log('OK Pressed')}],
+        {cancelable: false},
+      );
+    }
   };
   return (
     <Modal animationType="slide" transparent={true} visible={visible}>
       <View style={Styles.Container} />
       <View style={Styles.Popup}>
+        {dis === true ? <Loader /> : <React.Fragment></React.Fragment>}
         <View style={Styles.Ads}>
           <TouchableOpacity
             style={{alignSelf: 'flex-end'}}

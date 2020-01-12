@@ -1,11 +1,16 @@
 import React, {useState, useEffect} from 'react';
 import {Picker} from 'react-native';
+import Geocode from 'react-geocode';
+import Geolocation from '@react-native-community/geolocation';
+
 import {
   TouchableOpacity,
   StyleSheet,
   KeyboardAvoidingView,
   Animated,
   TextInput,
+  Image,
+  Alert,
 } from 'react-native';
 import {View, Text, Item, Icon} from 'native-base';
 import useForm from 'react-hook-form';
@@ -13,11 +18,46 @@ import {useDispatch, useSelector} from 'react-redux';
 import {withNavigation} from 'react-navigation';
 import * as Action from '../../redux/actions';
 function SearchComponent(props) {
+  console.log('Search', props);
+  const dispatch = useDispatch();
+  const filter = useSelector(state => state.Filter);
+  const [brand, setBrand] = useState(null);
+  const [showroom, setShowroom] = useState(null);
+  useEffect(() => {
+    const {state} = props.navigation;
+    setBrand(state.params !== undefined ? state.params.brand : null);
+    setShowroom(state.params !== undefined ? state.params.showroom : null);
+  }, [props.navigation.state]);
+  async function watchPosition() {
+    Geocode.setApiKey('AIzaSyA7s1z3r04bAEN9KxrayKFv0sHMoXF6-ZI');
+    await Geolocation.getCurrentPosition(
+      position => {
+        Geocode.fromLatLng(
+          position.coords.latitude,
+          position.coords.longitude,
+        ).then(
+          response => {
+            const address = response.results[0].address_components;
+            dispatch(Action.setCityName(address[3].long_name));
+          },
+          error => {
+            Alert.alert(error.message);
+          },
+        );
+        console.log('Position -> ', position.coords);
+      },
+      error => Alert.alert(error.message),
+      {enableHighAccuracy: false, timeout: 50000},
+    );
+  }
+  const handleSearch = () => {
+    watchPosition();
+  };
   const [Price, setPrice] = useState([]);
   const [Mile, setMile] = useState([]);
   const [Years, setYears] = useState([]);
   const State = useSelector(state => state.Mis);
-  const dispatch = useDispatch();
+  const ID = useSelector(state => state.Auth.ID);
   const slide = () => {
     Animated.timing(x, {
       toValue: 0,
@@ -30,7 +70,26 @@ function SearchComponent(props) {
     dispatch(Action.getMile());
     dispatch(Action.getYears());
   }, []);
-  console.log(Price);
+  useEffect(() => {
+    const {
+      nCity,
+      nModel,
+      nPriceFrom,
+      nPriceTo,
+      nYearFrom,
+      nYearTo,
+      nKiloMeterFrom,
+      nKiloMeterTo,
+    } = filter;
+    setValue('nCity', nCity);
+    setValue('nModel', nModel);
+    setValue('nPriceFrom', nPriceFrom);
+    setValue('nPriceTo', nPriceTo);
+    setValue('nYearFrom', nYearFrom);
+    setValue('nYearTo', nYearTo);
+    setValue('nKiloMeterFrom', nKiloMeterFrom);
+    setValue('nKiloMeterTo', nKiloMeterTo);
+  }, [filter]);
   useEffect(() => {
     if (State.PriceList) {
       setPrice(State.PriceList);
@@ -43,7 +102,7 @@ function SearchComponent(props) {
     }
   }, [State]);
   const [x, setX] = useState(new Animated.Value(-500));
-  const {register, setValue, getValues} = useForm({
+  const {register, setValue, getValues, watch} = useForm({
     mode: 'onChange',
     defaultValues: {
       nCity: null,
@@ -56,8 +115,15 @@ function SearchComponent(props) {
       nKiloMeterTo: null,
     },
   });
+  const values = watch();
+  const cityName = useSelector(state => state.Mis.CityName);
+  useEffect(() => {
+    setValue('nCity', cityName);
+  }, [cityName]);
+
   const handleSubmit = data => {
-    dispatch(Action.getAds(data));
+    dispatch(Action.setSearch(data));
+    dispatch(Action.getAds({...data, UID: ID, Brand: brand, Name: showroom}));
     props.Visible(false);
     props.navigation.navigate('YourSerach');
   };
@@ -94,6 +160,15 @@ function SearchComponent(props) {
               placeholder="New York, Los Angeles"
               ref={register({name: 'nCity'}, {required: true})}
               onChangeText={text => setValue('nCity', text, true)}
+              value={values.nCity}
+              onBlur={e => dispatch(Action.setCityName(values.nCity))}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => handleSearch()}>
+            <Image
+              resizeMode="center"
+              source={require('../../assests/location.png')}
+              style={{width: 20}}
             />
           </TouchableOpacity>
         </Item>
@@ -111,6 +186,7 @@ function SearchComponent(props) {
               placeholder="Type a car name or model"
               ref={register({name: 'nModel'}, {required: true})}
               onChangeText={text => setValue('nModel', text, true)}
+              value={values.nModels}
             />
           </TouchableOpacity>
         </Item>
@@ -128,7 +204,7 @@ function SearchComponent(props) {
                 <Picker.Item label="Price From" value={''} />
                 {Price.map((v, k) => {
                   return (
-                    <Picker.Item label={v.Price.toString()} value={v.ID} />
+                    <Picker.Item label={v.Price.toString()} value={v.Price} />
                   );
                 })}
               </Picker>
@@ -145,7 +221,7 @@ function SearchComponent(props) {
                 <Picker.Item label="Price To" value="" />
                 {Price.map((v, k) => {
                   return (
-                    <Picker.Item label={v.Price.toString()} value={v.ID} />
+                    <Picker.Item label={v.Price.toString()} value={v.Price} />
                   );
                 })}
               </Picker>
@@ -158,13 +234,16 @@ function SearchComponent(props) {
                 selectedValue={getValues().nKiloMeterFrom}
                 style={{width: '100%', height: 30, color: '#c7c7c7'}}
                 ref={register({name: 'nKiloMeterFrom'}, {required: true})}
-                onValueChange={(itemValue, itemIndex) =>
-                  setValue('nKiloMeterFrom', itemValue, true)
-                }>
-                <Picker.Item label="KiloMeters From" value="No minium" />
+                onValueChange={(itemValue, itemIndex) => {
+                  setValue('nKiloMeterFrom', itemValue, true);
+                }}>
+                <Picker.Item label="KiloMeters From" value="" />
                 {Mile.map((v, k) => {
                   return (
-                    <Picker.Item label={v.MileAges.toString()} value={v.ID} />
+                    <Picker.Item
+                      label={v.MileAges.toString()}
+                      value={v.MileAges}
+                    />
                   );
                 })}
               </Picker>
@@ -181,7 +260,10 @@ function SearchComponent(props) {
                 <Picker.Item label="Kilemeter to" value="" />
                 {Mile.map((v, k) => {
                   return (
-                    <Picker.Item label={v.MileAges.toString()} value={v.ID} />
+                    <Picker.Item
+                      label={v.MileAges.toString()}
+                      value={v.MileAges}
+                    />
                   );
                 })}
               </Picker>
@@ -197,9 +279,11 @@ function SearchComponent(props) {
                 onValueChange={(itemValue, itemIndex) =>
                   setValue('nYearFrom', itemValue, true)
                 }>
-                <Picker.Item label="Year From" value="No minium" />
+                <Picker.Item label="Year From" value="" />
                 {Years.map((v, k) => {
-                  return <Picker.Item label={v.Year.toString()} value={v.ID} />;
+                  return (
+                    <Picker.Item label={v.Year.toString()} value={v.Year} />
+                  );
                 })}
               </Picker>
             </View>
@@ -214,7 +298,9 @@ function SearchComponent(props) {
                 }>
                 <Picker.Item label="Year To" value="" />
                 {Years.map((v, k) => {
-                  return <Picker.Item label={v.Year.toString()} value={v.ID} />;
+                  return (
+                    <Picker.Item label={v.Year.toString()} value={v.Year} />
+                  );
                 })}
               </Picker>
             </View>
@@ -299,6 +385,6 @@ const Styles = StyleSheet.create({
     color: '#949494',
     fontSize: 12,
     paddingLeft: 5,
-    width: '90%',
+    width: '77%',
   },
 });

@@ -105,8 +105,8 @@ function Model(props) {
                 setPassword('');
               } else {
                 Alert.alert(
-                  'Email/Password Wrong',
-                  'Check Email and Password Please!',
+                  'Name/Number are empty',
+                  'Check Name and Number Please!',
                 );
               }
             }}>
