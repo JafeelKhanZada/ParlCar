@@ -18,16 +18,18 @@ import {useDispatch, useSelector} from 'react-redux';
 import {withNavigation} from 'react-navigation';
 import * as Action from '../../redux/actions';
 function SearchComponent(props) {
-  console.log('Search', props);
   const dispatch = useDispatch();
   const filter = useSelector(state => state.Filter);
   const [brand, setBrand] = useState(null);
   const [showroom, setShowroom] = useState(null);
+  const brands = useSelector(state => state.Mis.Brands.Brands);
+  const models = useSelector(state => state.Mis.Model);
   useEffect(() => {
     const {state} = props.navigation;
     setBrand(state.params !== undefined ? state.params.brand : null);
     setShowroom(state.params !== undefined ? state.params.showroom : null);
-  }, [props.navigation.state]);
+  }, []);
+  const CITY = useSelector(state => state.Mis.City);
   async function watchPosition() {
     Geocode.setApiKey('AIzaSyA7s1z3r04bAEN9KxrayKFv0sHMoXF6-ZI');
     await Geolocation.getCurrentPosition(
@@ -62,13 +64,11 @@ function SearchComponent(props) {
     Animated.timing(x, {
       toValue: 0,
       duration: 1000,
+      useNativeDriver: true,
     }).start();
   };
   useEffect(() => {
     slide();
-    dispatch(Action.getPrice());
-    dispatch(Action.getMile());
-    dispatch(Action.getYears());
   }, []);
   useEffect(() => {
     const {
@@ -80,6 +80,8 @@ function SearchComponent(props) {
       nYearTo,
       nKiloMeterFrom,
       nKiloMeterTo,
+      Models,
+      Brand,
     } = filter;
     setValue('nCity', nCity);
     setValue('nModel', nModel);
@@ -89,6 +91,9 @@ function SearchComponent(props) {
     setValue('nYearTo', nYearTo);
     setValue('nKiloMeterFrom', nKiloMeterFrom);
     setValue('nKiloMeterTo', nKiloMeterTo);
+    setValue('Models', Models);
+    setValue('Brand', Brand);
+    setBrand(Brand);
   }, [filter]);
   useEffect(() => {
     if (State.PriceList) {
@@ -113,19 +118,41 @@ function SearchComponent(props) {
       nYearTo: null,
       nKiloMeterFrom: null,
       nKiloMeterTo: null,
+      Models: null,
+      Brand: null,
     },
   });
   const values = watch();
-  const cityName = useSelector(state => state.Mis.CityName);
-  useEffect(() => {
-    setValue('nCity', cityName);
-  }, [cityName]);
+  // const cityName = useSelector(state => state.Mis.CityName);
+  // useEffect(() => {
+  //   setValue('nCity', cityName);
+  // }, [cityName]);
 
-  const handleSubmit = data => {
-    dispatch(Action.setSearch(data));
-    dispatch(Action.getAds({...data, UID: ID, Brand: brand, Name: showroom}));
-    props.Visible(false);
-    props.navigation.navigate('YourSerach');
+  const handleSubmit = async data => {
+    await Promise.all([await dispatch(Action.setSearch(getValues()))]).then(
+      () => {
+        props.Visible(false);
+        dispatch(
+          Action.getAds({
+            ...data,
+            UID: ID,
+            Brand: brand === null ? values.Brand : brand,
+            UserId: showroom,
+          }),
+        );
+        props.navigation.navigate('YourSerach', {
+          brand: values.Brand,
+          showroom: null,
+        });
+      },
+    );
+  };
+  const handleChange = async id => {
+    Promise.all([await setValue('Brand', id)]).then(async () => {
+      setBrand(id);
+      dispatch(Action.models(id));
+      await dispatch(Action.setSearch({...getValues(), Brand: id}));
+    });
   };
   return (
     <KeyboardAvoidingView
@@ -146,7 +173,7 @@ function SearchComponent(props) {
           onPress={props.Visible}>
           <Icon name="close" size={7} color="#949494" />
         </TouchableOpacity>
-        <Item>
+        {/* <Item>
           <TouchableOpacity
             style={{flexDirection: 'row', alignItems: 'center', padding: 0}}>
             <Icon
@@ -163,16 +190,16 @@ function SearchComponent(props) {
               value={values.nCity}
               onBlur={e => dispatch(Action.setCityName(values.nCity))}
             />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => handleSearch()}>
+          </TouchableOpacity> */}
+        {/* <TouchableOpacity onPress={() => handleSearch()}>
             <Image
               resizeMode="center"
               source={require('../../assests/location.png')}
               style={{width: 20}}
             />
-          </TouchableOpacity>
-        </Item>
-        <Item>
+          </TouchableOpacity> */}
+        {/* </Item> */}
+        {/* <Item>
           <TouchableOpacity
             style={{flexDirection: 'row', alignItems: 'center', padding: 0}}>
             <Icon
@@ -189,86 +216,70 @@ function SearchComponent(props) {
               value={values.nModels}
             />
           </TouchableOpacity>
-        </Item>
+        </Item> */}
+
+        <View
+          style={{
+            ...Styles.dropContainer,
+            width: '100%',
+            paddingLeft: 20,
+            borderTopColor: 'transparent',
+          }}>
+          <Picker
+            selectedValue={getValues().nCity}
+            style={{width: '100%', height: 40, color: '#c7c7c7'}}
+            ref={register({name: 'nCity'}, {required: true})}
+            onValueChange={(itemValue, itemIndex) =>
+              setValue('nCity', itemValue)
+            }>
+            <Picker.Item label="City" value={''} />
+            {CITY &&
+              CITY.map((v, k) => {
+                return <Picker.Item label={v.CityName} value={v.CityName} />;
+              })}
+          </Picker>
+        </View>
+        <View
+          style={{
+            ...Styles.dropContainer,
+            width: '100%',
+            paddingLeft: 20,
+            borderTopColor: 'transparent',
+          }}>
+          <Picker
+            selectedValue={values.Brand}
+            style={{width: '100%', height: 40, color: '#c7c7c7'}}
+            ref={register({name: 'Brand'}, {required: true})}
+            onValueChange={(itemValue, itemIndex) => handleChange(itemValue)}>
+            <Picker.Item label="Brand" value={''} />
+            {brands &&
+              brands.map((v, k) => {
+                return <Picker.Item label={v.Title} value={v.ID} />;
+              })}
+          </Picker>
+        </View>
+        <View
+          style={{
+            ...Styles.dropContainer,
+            width: '100%',
+            paddingLeft: 20,
+            borderTopColor: 'transparent',
+          }}>
+          <Picker
+            selectedValue={getValues().Models}
+            style={{width: '100%', height: 40, color: '#c7c7c7'}}
+            ref={register({name: 'Models'}, {required: true})}
+            onValueChange={(itemValue, itemIndex) => {
+              setValue('Models', itemValue);
+            }}>
+            <Picker.Item label="Models" value={''} />
+            {models &&
+              models.map((v, k) => {
+                return <Picker.Item label={v.ModelTitle} value={v.ID} />;
+              })}
+          </Picker>
+        </View>
         <View style={Styles.rowContainer}>
-          <Text style={Styles.Heading}>Price</Text>
-          <View style={Styles.line}>
-            <View style={Styles.dropContainer}>
-              <Picker
-                selectedValue={getValues().nPriceFrom}
-                style={{width: '100%', height: 30, color: '#c7c7c7'}}
-                ref={register({name: 'nPriceFrom'}, {required: true})}
-                onValueChange={(itemValue, itemIndex) =>
-                  setValue('nPriceFrom', itemValue, true)
-                }>
-                <Picker.Item label="Price From" value={''} />
-                {Price.map((v, k) => {
-                  return (
-                    <Picker.Item label={v.Price.toString()} value={v.Price} />
-                  );
-                })}
-              </Picker>
-            </View>
-            <Text style={Styles.Text}>To</Text>
-            <View style={Styles.dropContainer}>
-              <Picker
-                selectedValue={getValues().nPriceTo}
-                style={{width: '100%', height: 30, color: '#c7c7c7'}}
-                ref={register({name: 'nPriceTo'}, {required: true})}
-                onValueChange={(itemValue, itemIndex) =>
-                  setValue('nPriceTo', itemValue, true)
-                }>
-                <Picker.Item label="Price To" value="" />
-                {Price.map((v, k) => {
-                  return (
-                    <Picker.Item label={v.Price.toString()} value={v.Price} />
-                  );
-                })}
-              </Picker>
-            </View>
-          </View>
-          <Text style={Styles.Heading}>Mileage</Text>
-          <View style={Styles.line}>
-            <View style={Styles.dropContainer}>
-              <Picker
-                selectedValue={getValues().nKiloMeterFrom}
-                style={{width: '100%', height: 30, color: '#c7c7c7'}}
-                ref={register({name: 'nKiloMeterFrom'}, {required: true})}
-                onValueChange={(itemValue, itemIndex) => {
-                  setValue('nKiloMeterFrom', itemValue, true);
-                }}>
-                <Picker.Item label="KiloMeters From" value="" />
-                {Mile.map((v, k) => {
-                  return (
-                    <Picker.Item
-                      label={v.MileAges.toString()}
-                      value={v.MileAges}
-                    />
-                  );
-                })}
-              </Picker>
-            </View>
-            <Text style={Styles.Text}>To</Text>
-            <View style={Styles.dropContainer}>
-              <Picker
-                selectedValue={getValues().nKiloMeterTo}
-                style={{width: '100%', height: 30, color: '#c7c7c7'}}
-                ref={register({name: 'nKiloMeterTo'}, {required: true})}
-                onValueChange={(itemValue, itemIndex) =>
-                  setValue('nKiloMeterTo', itemValue, true)
-                }>
-                <Picker.Item label="Kilemeter to" value="" />
-                {Mile.map((v, k) => {
-                  return (
-                    <Picker.Item
-                      label={v.MileAges.toString()}
-                      value={v.MileAges}
-                    />
-                  );
-                })}
-              </Picker>
-            </View>
-          </View>
           <Text style={Styles.Heading}>Year</Text>
           <View style={Styles.line}>
             <View style={Styles.dropContainer}>
@@ -279,7 +290,7 @@ function SearchComponent(props) {
                 onValueChange={(itemValue, itemIndex) =>
                   setValue('nYearFrom', itemValue, true)
                 }>
-                <Picker.Item label="Year From" value="" />
+                <Picker.Item label="From" value="" />
                 {Years.map((v, k) => {
                   return (
                     <Picker.Item label={v.Year.toString()} value={v.Year} />
@@ -296,13 +307,144 @@ function SearchComponent(props) {
                 onValueChange={(itemValue, itemIndex) =>
                   setValue('nYearTo', itemValue, true)
                 }>
-                <Picker.Item label="Year To" value="" />
+                <Picker.Item label="To" value="" />
                 {Years.map((v, k) => {
                   return (
                     <Picker.Item label={v.Year.toString()} value={v.Year} />
                   );
                 })}
               </Picker>
+            </View>
+          </View>
+
+          <Text style={Styles.Heading}>Mileage</Text>
+          <View style={Styles.line}>
+            <View style={{...Styles.dropContainer, padding: 0}}>
+              <TextInput
+                style={{
+                  ...Styles.text,
+                  width: '100%',
+                  paddingTop: 1,
+                  paddingBottom: 1,
+                }}
+                placeholder="Min"
+                ref={register({name: 'nKiloMeterFrom'}, {required: true})}
+                onChangeText={text => setValue('nKiloMeterFrom', text, true)}
+                value={values.nKiloMeterFrom}
+                keyboardType="numeric"
+              />
+              {/* <Picker
+                selectedValue={getValues().nKiloMeterFrom}
+                style={{width: '100%', height: 30, color: '#c7c7c7'}}
+                ref={register({name: 'nKiloMeterFrom'}, {required: true})}
+                onValueChange={(itemValue, itemIndex) => {
+                  setValue('nKiloMeterFrom', itemValue, true);
+                }}>
+                <Picker.Item label="Min" value="" />
+                {Mile.map((v, k) => {
+                  return (
+                    <Picker.Item
+                      label={v.MileAges.toString()}
+                      value={v.MileAges}
+                    />
+                  );
+                })}
+              </Picker> */}
+            </View>
+            <Text style={Styles.Text}>To</Text>
+            <View style={Styles.dropContainer}>
+              <TextInput
+                style={{
+                  ...Styles.text,
+                  width: '100%',
+                  paddingTop: 1,
+                  paddingBottom: 1,
+                }}
+                placeholder="Max"
+                ref={register({name: 'nKiloMeterTo'}, {required: true})}
+                onChangeText={text => setValue('nKiloMeterTo', text, true)}
+                value={values.nKiloMeterTo}
+                keyboardType="numeric"
+              />
+              {/* <Picker
+                selectedValue={getValues().nKiloMeterTo}
+                style={{width: '100%', height: 30, color: '#c7c7c7'}}
+                ref={register({name: 'nKiloMeterTo'}, {required: true})}
+                onValueChange={(itemValue, itemIndex) =>
+                  setValue('nKiloMeterTo', itemValue, true)
+                }>
+                <Picker.Item label="Max" value="" />
+                {Mile.map((v, k) => {
+                  return (
+                    <Picker.Item
+                      label={v.MileAges.toString()}
+                      value={v.MileAges}
+                    />
+                  );
+                })}
+              </Picker> */}
+            </View>
+          </View>
+          <Text style={Styles.Heading}>Price</Text>
+          <View style={Styles.line}>
+            <View style={Styles.dropContainer}>
+              <TextInput
+                style={{
+                  ...Styles.text,
+                  width: '100%',
+                  paddingTop: 1,
+                  paddingBottom: 1,
+                }}
+                placeholder="Min"
+                ref={register({name: 'nPriceFrom'}, {required: true})}
+                onChangeText={text => setValue('nPriceFrom', text, true)}
+                value={values.nPriceFrom}
+                keyboardType="numeric"
+              />
+              {/* <Picker
+                selectedValue={getValues().nPriceFrom}
+                style={{width: '100%', height: 30, color: '#c7c7c7'}}
+                ref={register({name: 'nPriceFrom'}, {required: true})}
+                onValueChange={(itemValue, itemIndex) =>
+                  setValue('nPriceFrom', itemValue, true)
+                }>
+                <Picker.Item label="Min" value={''} />
+                {Price.map((v, k) => {
+                  return (
+                    <Picker.Item label={v.Price.toString()} value={v.Price} />
+                  );
+                })}
+              </Picker> */}
+            </View>
+            <Text style={Styles.Text}>To</Text>
+            <View style={Styles.dropContainer}>
+              <TextInput
+                style={{
+                  ...Styles.text,
+                  width: '100%',
+                  paddingTop: 1,
+                  paddingBottom: 1,
+                }}
+                placeholder="Max"
+                ref={register({name: 'nPriceTo'}, {required: true})}
+                onChangeText={text => setValue('nPriceTo', text, true)}
+                value={values.nPriceTo}
+                keyboardType="numeric"
+              />
+              {/* <Picker
+                selectedValue={getValues().nPriceTo}
+                style={{width: '100%', height: 30, color: '#c7c7c7'}}
+                ref={register({name: 'nPriceTo'}, {required: true})}
+                onValueChange={(itemValue, itemIndex) =>
+                  setValue('nPriceTo', itemValue, true)
+                }>
+                <Picker.Item label="Max" value="" />
+                {Price.map((v, k) => {
+                  return (
+                    <Picker.Item label={v.Price.toString()} value={v.Price} />
+                  );
+                })}
+              </Picker> */}
             </View>
           </View>
           <TouchableOpacity

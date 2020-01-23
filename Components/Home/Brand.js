@@ -12,9 +12,7 @@ function Brand(props) {
   const ID = useSelector(state => state.Auth.ID);
   const [renderBrands, setBrands] = useState([]);
   useEffect(() => {
-    Promise.all([dispatch(Action.getBrands())]).then(() => {
-      dispatch(Action.getAds({UID: ID}));
-    });
+    dispatch(Action.getBrands());
   }, []);
   useEffect(() => {
     setBrands(Brands);
@@ -46,8 +44,9 @@ function Brand(props) {
                 dispatch(Action.getAds({UID: ID}));
                 dispatch(Action.resetSearch());
                 props.navigation.navigate('YourSerach', {
-                  brand: null,
-                  showroom: null,
+                  brand: 'x',
+                  showroom: '',
+                  back: false,
                 });
               }}>
               <Text style={style.headText}>All</Text>
@@ -59,7 +58,10 @@ function Brand(props) {
                     style={{...style.container}}
                     key={k}
                     onPress={() => {
-                      dispatch(Action.getAds({Brand: v.ID}));
+                      dispatch(Action.getAds({Brand: v.ID, UID: ID}));
+                      dispatch(
+                        Action.setSpecificSearch({name: 'Brand', val: v.ID}),
+                      );
                       props.navigation.navigate('YourSerach', {
                         brand: v.ID,
                         showroom: null,
@@ -93,6 +95,7 @@ const style = StyleSheet.create({
     padding: 10,
     paddingLeft: 20,
     paddingRight: 20,
+    backgroundColor:"white"
   },
   container: {
     width: '31%',

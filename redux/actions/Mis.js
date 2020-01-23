@@ -136,3 +136,44 @@ export const getCountry = () => {
   };
 };
 export const saveUser = data => {};
+export const models = id => {
+  let config = {
+    nBrandID: id,
+  };
+  let request = axios.post(
+    'http://207.180.230.73/palcar/Api/GetBrandModelByBrandID',
+    config,
+    {headers: Action.headers},
+  );
+  return dispatch => {
+    return request.then(response => {
+      dispatch({
+        type: Action.GET_MODEL_BY_BRAND_ID,
+        payload: response.data,
+      });
+    });
+  };
+};
+
+export const resetModel = () => {
+  return {
+    type: Action.GET_MODEL_BY_BRAND_ID,
+    payload: [],
+  };
+};
+export const getOption = () => {
+  let config = {};
+  let request = axios.post(
+    'http://207.180.230.73/palcar/Api/GetExtraVehicleItem',
+    config,
+    {headers: Action.headers},
+  );
+  return dispatch => {
+    return request.then(response => {
+      dispatch({
+        type: Action.GET_OPTION,
+        payload: response.data,
+      });
+    });
+  };
+};

@@ -8,9 +8,17 @@ const initState = {
   nYearTo: null,
   nKiloMeterFrom: null,
   nKiloMeterTo: null,
+  Models: null,
+  Brand: null,
 };
 const reducer = (state = initState, action) => {
   switch (action.type) {
+    case Action.SET_SPECIFIC_SEARCH: {
+      return {
+        ...state,
+        [action.payload.name]: action.payload.val,
+      };
+    }
     case Action.SET_CITY: {
       return {
         ...state,

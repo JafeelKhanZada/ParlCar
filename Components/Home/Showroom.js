@@ -20,13 +20,17 @@ function Showroom(props) {
   const [modalVisible, visiblemodel] = useState(false);
   const [showroom, setShowroom] = useState([]);
   const showrooms = useSelector(state => state.Showroom.TotalShowRoom);
+  const LOAD = useSelector(state => state.Showroom.Load);
+
   useEffect(() => {
     if (showrooms) {
       setShowroom(showrooms);
     }
   }, [showrooms]);
   useEffect(() => {
-    dispatch(Action.getShowroom());
+    console.log(1)
+    dispatch(Action.getShowroom({}));
+    dispatch(Action.resetSearch());
   }, []);
   return (
     <View>
@@ -51,31 +55,59 @@ function Showroom(props) {
       </View> */}
       <View style={{paddingRight: 20, paddingLeft: 20}}>
         <View style={{...style.Names}}>
-          {showroom.length !== 0 ? (
-            showroom.map((v, k) => {
-              return (
-                <TouchableOpacity
-                  style={style.Image}
-                  onPress={() => {
-                    dispatch(Action.setActiveShowroom([v]));
-                    visiblemodel(true);
-                  }}
-                  key={k}>
-                  <Image
-                    style={{height: '100%', borderWidth: 1, width: '100%'}}
-                    resizeMethod="resize"
-                    resizeMode="contain"
-                    source={
-                      v.Logo == null || v.Logo === ''
-                        ? require('../../assests/images/showroom.png')
-                        : {
-                            uri: `http://207.180.230.73/palcar${v.Logo}`,
-                          }
-                    }
-                  />
-                </TouchableOpacity>
-              );
-            })
+          {LOAD === false ? (
+            showroom.length !== 0 ? (
+              showroom.map((v, k) => {
+                return (
+                  <TouchableOpacity
+                    style={{...style.Image, alignItems: 'center'}}
+                    key={k}
+                    onPress={() => {
+                      dispatch(Action.setActiveShowroom([v]));
+                      visiblemodel(true);
+                    }}>
+                    <Image
+                      style={{height: 80, borderWidth: 1, width: '100%'}}
+                      resizeMethod="resize"
+                      resizeMode="contain"
+                      source={
+                        v.Logo == null || v.Logo === ''
+                          ? require('../../assests/images/showroom.png')
+                          : {
+                              uri: `http://207.180.230.73/palcar${v.Logo}`,
+                            }
+                      }
+                    />
+                    <Text
+                      style={{
+                        fontFamily: 'Poppins-Medium',
+                        textAlign: 'center',
+                        fontSize: 12,
+                      }}>
+                      {v.ShowromName}
+                    </Text>
+                  </TouchableOpacity>
+                );
+              })
+            ) : (
+              <React.Fragment>
+                <View
+                  style={{
+                    width: '100%',
+                    minHeight: 500,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}>
+                  <Text
+                    style={{
+                      fontFamily: 'Poppins-Medium',
+                      letterSpacing: 1,
+                    }}>
+                    There Is No Showroom Related Search...
+                  </Text>
+                </View>
+              </React.Fragment>
+            )
           ) : (
             <SvgAnimatedLinearGradient
               primaryColor="#f4f4f4"
@@ -106,14 +138,13 @@ const style = StyleSheet.create({
     justifyContent: 'space-between',
   },
   Names: {
-    marginTop: 10,
+    marginTop: 15,
     justifyContent: 'space-evenly',
     flexDirection: 'row',
     flexWrap: 'wrap',
   },
   Image: {
     padding: 5,
-    height: 80,
     width: '31%',
   },
 });

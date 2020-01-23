@@ -9,9 +9,45 @@ const initState = {
   BodyType: [],
   CityName: '',
   Country: [],
+  Model: [],
+  Color: [
+    'Black',
+    'Blue',
+    'Brown',
+    'Burgundy',
+    'Gold',
+    'Grey',
+    'Orange',
+    'Green',
+    'Purple',
+    'Red',
+    'Silver',
+    'Tan',
+    'Teal',
+    'White',
+    'Yellow',
+    'Other Color',
+  ],
+  CarOrigin: ['Private', 'Taxi'],
+  DOORS: ['2', '3', '4', '5+'],
+  TRANSMISSION: ['Automatic', 'Manual'],
+  FuelType: ['Gasoline', 'Diesel', 'Hybrid'],
+  Options: [],
 };
 const reducer = (state = initState, action) => {
   switch (action.type) {
+    case Action.GET_MODEL_BY_BRAND_ID: {
+      return {
+        ...state,
+        Model: action.payload,
+      };
+    }
+    case Action.GET_OPTION: {
+      return {
+        ...state,
+        Options: action.payload,
+      };
+    }
     case Action.GET_COUNTRY: {
       return {
         ...state,

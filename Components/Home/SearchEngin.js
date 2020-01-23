@@ -39,7 +39,6 @@ class SearchEngin extends Component {
         ).then(
           response => {
             const address = response.results[0].address_components;
-            console.log(address);
             this.props.Search(address[3].long_name);
           },
           error => {
@@ -72,8 +71,8 @@ class SearchEngin extends Component {
                   flexDirection: 'row',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  padding: 5,
-                  width: '80%',
+                  padding: 15,
+                  width: '100%',
                 }}
                 onPress={() => this.Visibel()}>
                 <Icon
@@ -84,37 +83,41 @@ class SearchEngin extends Component {
                 />
                 <Text style={Styles.text}>Start Searching</Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={this.handleSearch}>
+              {/* <TouchableOpacity onPress={this.handleSearch}>
                 <Image
                   resizeMode="center"
                   source={require('../../assests/location.png')}
                   style={{width: 20}}
                 />
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </React.Fragment>
           </Item>
-          <Item
-            style={{
-              width: '100%',
-              padding: 10,
-            }}>
-            <Text
+          {this.props.navigation.state.routeName === 'Home' ? (
+            <Item
               style={{
-                fontSize: 12,
-                fontFamily: 'Poppins',
-                color: '#949494',
-                marginRight: 10,
+                width: '100%',
+                padding: 10,
               }}>
-              Quick Search
-            </Text>
-            <View
-              style={{
-                width: '70%',
-                height: 1,
-                backgroundColor: 'rgba(141,141,141,.3)',
-              }}
-            />
-          </Item>
+              <Text
+                style={{
+                  fontSize: 12,
+                  fontFamily: 'Poppins',
+                  color: '#949494',
+                  marginRight: 10,
+                }}>
+                Quick Search
+              </Text>
+              <View
+                style={{
+                  width: '70%',
+                  height: 1,
+                  backgroundColor: 'rgba(141,141,141,.3)',
+                }}
+              />
+            </Item>
+          ) : (
+            <React.Fragment></React.Fragment>
+          )}
         </View>
       </React.Fragment>
     );

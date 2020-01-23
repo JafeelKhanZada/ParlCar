@@ -26,6 +26,8 @@ import Img3 from '../../assests/images/ProfileIcon/3.png';
 import Img4 from '../../assests/images/ProfileIcon/4.png';
 import Img5 from '../../assests/images/ProfileIcon/5.png';
 import Img6 from '../../assests/images/ProfileIcon/6.png';
+import Img7 from '../../assests/images/ProfileIcon/7.png';
+import Img8 from '../../assests/images/ProfileIcon/8.png';
 import Loader from '../Loader';
 import * as Action from '../../redux/actions';
 // import EditModal from "./EditProfile"
@@ -37,6 +39,7 @@ function HomeScreen(props) {
   const [ProfileData, setProfile] = useState([]);
   const [TotalCount, setTotalCount] = useState([]);
   const [visible, setVisible] = useState(false);
+  const ID = useSelector(state => state.Auth.ID);
   const city = useSelector(state => state.Mis.City);
   const country = useSelector(state => state.Mis.Country);
   const Userdata = useSelector(state => state.Auth.UserData);
@@ -72,38 +75,36 @@ function HomeScreen(props) {
   useEffect(() => {
     dispatch(Action.getCity());
     dispatch(Action.getCountry());
+    dispatch(Action.getActiveAds({UserId: ID}));
   }, []);
   useEffect(() => {
-    console.log('work');
-    if (ProfileData[0]) {
-      let v = ProfileData[0];
-      setValue('oShowromName', v.ShowromName);
-      setValue('oShowroomTelephone', v.ShowroomTelephone);
-      setValue('nCity', v.City);
-      setValue('nCountry', v.Country === 0 ? 1 : v.Country);
-      setValue('oAddress', v.Address);
-      setState({
-        nName: v.UserName,
-        nCurrentID: v.ID,
-        nType: v.Type,
-        oContactPersonName: v.ContactPersonName,
-        oActiveFromDate: v.ActiveFromDate,
-        oActiveToDate: v.ActiveToDate,
-        nStatus: v.Status,
-        oNormal_ads_Balance: v.Normal_ads_Balance,
-        oSponsored_ads_balance: v.Sponsored_ads_balance,
-        nCreatedBy: v.CreatedBy,
-        nGroupID: v.GroupID,
-        oLogo: null,
-        oLogoExtension: null,
-        nEmail: v.Email,
-      });
+    if (ProfileData) {
+      if (ProfileData[0]) {
+        let v = ProfileData[0];
+        setValue('oShowromName', v.ShowromName);
+        setValue('oShowroomTelephone', v.ShowroomTelephone);
+        setValue('nCity', v.City);
+        setValue('nCountry', v.Country === 0 ? 1 : v.Country);
+        setValue('oAddress', v.Address);
+        setState({
+          nName: v.UserName,
+          nCurrentID: v.ID,
+          nType: v.Type,
+          oContactPersonName: v.ContactPersonName,
+          oActiveFromDate: v.ActiveFromDate,
+          oActiveToDate: v.ActiveToDate,
+          nStatus: v.Status,
+          oNormal_ads_Balance: v.Normal_ads_Balance,
+          oSponsored_ads_balance: v.Sponsored_ads_balance,
+          nCreatedBy: v.CreatedBy,
+          nGroupID: v.GroupID,
+          oLogo: null,
+          oLogoExtension: null,
+          nEmail: v.Email,
+        });
+      }
     }
   }, [ProfileData, count]);
-  console.log({...getValues(), ...state});
-  useEffect(() => {
-    setTotalCount(adsLength);
-  }, [adsLength]);
   useEffect(() => {
     setProfile([Userdata]);
   }, [Userdata]);
@@ -140,174 +141,154 @@ function HomeScreen(props) {
       toBase64(response);
     });
   };
-  useEffect(() => {
-    let params = {
-      nUserName: 'sample string 1',
-      nToken: 'sample string 2',
-      nShowRoom: '',
-      nAdsID: null,
-      nCity: null,
-      nModel: '',
-      nPriceFrom: null,
-      nPriceTo: null,
-      nYearFrom: '',
-      nYearTo: '',
-      nOrderBy: 'A.City',
-      nKiloMeterFrom: null,
-      nKiloMeterTo: null,
-      nStatusID: 2,
-      nUserID: Userdata.ID,
-      nPageIndex: 0,
-      nPageSize: 4,
+  const handleChooseCamera = () => {
+    const options = {
+      noData: true,
     };
-    Axios.post('http://207.180.230.73/palcar/Api/GetAllAds_Pagged', params, {
-      headers: {
-        Authorization: 'bearer  ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789',
-        'Content-Type': 'application/json',
-      },
-    }).then(res => {
-      setTotalCount(res.data.TotalCount);
+    ImagePicker.launchCamera(options, response => {
+      toBase64(response);
     });
-  }, [Userdata.ID]);
+  };
   const values = watch();
   return (
     <React.Fragment>
       <Loader />
 
-      <View>
-        <Modal
-          visible={visible}
-          onRequestClose={() => setVisible(false)}
-          animationType="fade"
-          transparent={true}>
-          <React.Fragment>
+      <Modal
+        visible={visible}
+        onRequestClose={() => setVisible(false)}
+        animationType="fade"
+        transparent={true}>
+        <React.Fragment>
+          <View
+            style={{
+              width: '100%',
+              height: hp('100%'),
+              backgroundColor: 'rgba(0,0,0,.5)',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
             <View
               style={{
-                width: '100%',
-                height: hp('100%'),
-                backgroundColor: 'rgba(0,0,0,.5)',
+                width: '80%',
+                backgroundColor: 'white',
+                borderRadius: 5,
                 alignItems: 'center',
-                justifyContent: 'center',
+                padding: 10,
               }}>
-              <View
+              <TouchableOpacity
+                style={{alignSelf: 'flex-end', padding: 5}}
+                onPress={() => setVisible(false)}>
+                <Icons name="close" color="#c7c7c7" size={20} />
+              </TouchableOpacity>
+              <Text
                 style={{
-                  width: '80%',
-                  backgroundColor: 'white',
-                  borderRadius: 5,
-                  alignItems: 'center',
-                  padding: 10,
+                  fontFamily: 'Poppins-Medium',
+                  letterSpacing: 1,
                 }}>
-                <TouchableOpacity
-                  style={{alignSelf: 'flex-end', padding: 5}}
-                  onPress={() => setVisible(false)}>
-                  <Icons name="close" color="#c7c7c7" size={20} />
-                </TouchableOpacity>
-                <Text
+                Edit Profile
+              </Text>
+              <TextInput
+                name="oShowromName"
+                placeholder="Enter Showroom Name Here...."
+                style={styles.input}
+                value={values.oShowromName}
+                ref={register({name: 'oShowromName'}, {required: true})}
+                onChangeText={text => setValue('oShowromName', text, true)}
+              />
+              <TextInput
+                name="oShowroomTelephone"
+                placeholder="Enter Mobile Number Here...."
+                style={styles.input}
+                value={values.oShowroomTelephone}
+                ref={register({name: 'oShowroomTelephone'}, {required: true})}
+                onChangeText={text =>
+                  setValue('oShowroomTelephone', text, true)
+                }
+              />
+              <TextInput
+                name="oAddress"
+                placeholder="Enter Address Here...."
+                style={styles.input}
+                value={values.oAddress}
+                ref={register({name: 'oAddress'}, {required: true})}
+                onChangeText={text => setValue('oAddress', text, true)}
+              />
+              <View style={styles.input}>
+                <Picker
+                  textStyle={{backgroundColor: 'orange'}}
+                  selectedValue={values.nCity}
                   style={{
-                    fontFamily: 'Poppins-Medium',
-                    letterSpacing: 1,
-                  }}>
-                  Edit Profile
-                </Text>
-                <TextInput
-                  name="oShowromName"
-                  placeholder="Enter Showroom Name Here...."
-                  style={styles.input}
-                  value={values.oShowromName}
-                  ref={register({name: 'oShowromName'}, {required: true})}
-                  onChangeText={text => setValue('oShowromName', text, true)}
-                />
-                <TextInput
-                  name="oShowroomTelephone"
-                  placeholder="Enter Mobile Number Here...."
-                  style={styles.input}
-                  value={values.oShowroomTelephone}
-                  ref={register({name: 'oShowroomTelephone'}, {required: true})}
-                  onChangeText={text =>
-                    setValue('oShowroomTelephone', text, true)
-                  }
-                />
-                <TextInput
-                  name="oAddress"
-                  placeholder="Enter Address Here...."
-                  style={styles.input}
-                  value={values.oAddress}
-                  ref={register({name: 'oAddress'}, {required: true})}
-                  onChangeText={text => setValue('oAddress', text, true)}
-                />
-                <View style={styles.input}>
-                  <Picker
-                    textStyle={{backgroundColor: 'orange'}}
-                    selectedValue={values.nCity}
-                    style={{
-                      width: '100%',
-                      height: 25,
-                      color: '#CFCFCF',
-                      fontFamily: 'Poppins',
-                    }}
-                    ref={register({name: 'nCity'}, {required: true})}
-                    onValueChange={(itemValue, itemIndex) =>
-                      setValue('nCity', itemValue, true)
-                    }>
-                    <Picker.Item label="--City" value={-1} disabled />
-                    {city &&
-                      city.map((v, k) => {
-                        return <Picker.Item label={v.CityName} value={v.ID} />;
-                      })}
-                  </Picker>
-                </View>
-                <View style={styles.input}>
-                  <Picker
-                    selectedValue={getValues().nCountry}
-                    style={{width: '100%', height: 30, color: '#c7c7c7'}}
-                    ref={register({name: 'nCountry'}, {required: true})}
-                    onValueChange={(itemValue, itemIndex) =>
-                      setValue('nCountry', itemValue)
-                    }>
-                    <Picker.Item label="--Country" value={-1} disabled />
-                    {country &&
-                      country.map((v, k) => {
-                        return (
-                          <Picker.Item label={v.CountryName} value={v.Id} />
-                        );
-                      })}
-                  </Picker>
-                </View>
-                <TextInput
-                  name="oPassword"
-                  placeholder="Enter Password Here...."
-                  style={styles.input}
-                  value={values.oPassword}
-                  ref={register({name: 'oPassword'}, {required: true})}
-                  onChangeText={text => setValue('oPassword', text, true)}
-                />
-                <TouchableOpacity
-                  style={{
-                    margin: 10,
-                    backgroundColor: '#d81f25',
-                    width: 160,
-                    padding: 5,
-                    alignItems: 'center',
-                    borderRadius: 5,
+                    width: '100%',
+                    height: 25,
+                    color: '#CFCFCF',
+                    fontFamily: 'Poppins',
                   }}
-                  onPress={() => {
-                    dispatch(Action.updateUser({...getValues(), ...state}));
-                    setVisible(false);
-                  }}>
-                  <Text style={{color: 'white', fontFamily: 'Poppins-Medium'}}>
-                    Save
-                  </Text>
-                </TouchableOpacity>
+                  ref={register({name: 'nCity'}, {required: true})}
+                  onValueChange={(itemValue, itemIndex) =>
+                    setValue('nCity', itemValue, true)
+                  }>
+                  <Picker.Item label="--City" value={-1} disabled />
+                  {city &&
+                    city.map((v, k) => {
+                      return <Picker.Item label={v.CityName} value={v.ID} />;
+                    })}
+                </Picker>
               </View>
+              <View style={styles.input}>
+                <Picker
+                  selectedValue={getValues().nCountry}
+                  style={{width: '100%', height: 30, color: '#c7c7c7'}}
+                  ref={register({name: 'nCountry'}, {required: true})}
+                  onValueChange={(itemValue, itemIndex) =>
+                    setValue('nCountry', itemValue)
+                  }>
+                  <Picker.Item label="--Country" value={-1} disabled />
+                  {country &&
+                    country.map((v, k) => {
+                      return <Picker.Item label={v.CountryName} value={v.Id} />;
+                    })}
+                </Picker>
+              </View>
+              <TextInput
+                name="oPassword"
+                placeholder="Enter Password Here...."
+                style={styles.input}
+                value={values.oPassword}
+                ref={register({name: 'oPassword'}, {required: true})}
+                onChangeText={text => setValue('oPassword', text, true)}
+              />
+              <TouchableOpacity
+                style={{
+                  margin: 10,
+                  backgroundColor: '#d81f25',
+                  width: 160,
+                  padding: 5,
+                  alignItems: 'center',
+                  borderRadius: 5,
+                }}
+                onPress={() => {
+                  dispatch(Action.updateUser({...getValues(), ...state}));
+                  setVisible(false);
+                }}>
+                <Text style={{color: 'white', fontFamily: 'Poppins-Medium'}}>
+                  Save
+                </Text>
+              </TouchableOpacity>
             </View>
-          </React.Fragment>
-        </Modal>
+          </View>
+        </React.Fragment>
+      </Modal>
+      <ScrollView>
         <Header />
         <View style={styles.ProParent}>
           <Text style={styles.ProfileText}>Profile</Text>
         </View>
         <View
-          style={{height: hp('100%'), backgroundColor: '#F4F4F4', padding: 10}}>
+          style={{
+            backgroundColor: '#F4F4F4',
+            padding: 10,
+          }}>
           {ProfileData &&
             ProfileData.map((v, k) => {
               return (
@@ -316,11 +297,13 @@ function HomeScreen(props) {
                     style={{
                       backgroundColor: 'white',
                       marginTop: '30%',
-                      marginBottom: '30%',
                       position: 'relative',
                     }}>
                     <View
-                      style={{justifyContent: 'center', alignItems: 'center'}}>
+                      style={{
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                      }}>
                       <View
                         style={{
                           height: 180,
@@ -333,7 +316,11 @@ function HomeScreen(props) {
                         }}>
                         <TouchableOpacity>
                           <Image
-                            style={{height: 150, width: 150, borderRadius: 10}}
+                            style={{
+                              height: 150,
+                              width: 150,
+                              borderRadius: 10,
+                            }}
                             source={{
                               uri: `http://207.180.230.73/palcar${v.Logo}`,
                             }}
@@ -345,7 +332,7 @@ function HomeScreen(props) {
                               fontFamily: 'Poppins-Medium',
                               marginTop: 5,
                               fontSize: 12,
-                              color:"#5CA7FF"
+                              color: '#5CA7FF',
                             }}>
                             Update Picture
                           </Text>
@@ -372,7 +359,6 @@ function HomeScreen(props) {
                     </View>
                     <View
                       style={{
-                        height: hp('45%'),
                         width: '100%',
                       }}>
                       <View
@@ -536,9 +522,118 @@ function HomeScreen(props) {
                           </Text>
                         </View>
                         <Text style={{fontFamily: 'Poppins-Medium'}}>
-                          {TotalCount}
+                          {adsLength.length}
                         </Text>
                       </View>
+                      <View
+                        style={{
+                          width: '100%',
+                          flexDirection: 'row',
+                          padding: 10,
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                        }}>
+                        <View style={{flexDirection: 'row', width: '45%'}}>
+                          <Image
+                            resizeMethod="resize"
+                            resizeMode="contain"
+                            source={Img7}
+                            style={{height: 20, width: 20, paddingRight: 50}}
+                          />
+                          <Text
+                            style={{
+                              color: 'grey',
+                              fontFamily: 'Poppins-Light',
+                            }}>
+                            Sponser Ads
+                          </Text>
+                        </View>
+                        <Text style={{fontFamily: 'Poppins-Medium'}}>
+                          {v.SposerAds}
+                        </Text>
+                      </View>
+                      <View
+                        style={{
+                          width: '100%',
+                          flexDirection: 'row',
+                          padding: 10,
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                        }}>
+                        <View style={{flexDirection: 'row', width: '45%'}}>
+                          <Image
+                            resizeMethod="resize"
+                            resizeMode="contain"
+                            source={Img8}
+                            style={{height: 20, width: 20, paddingRight: 50}}
+                          />
+                          <Text
+                            style={{
+                              color: 'grey',
+                              fontFamily: 'Poppins-Light',
+                            }}>
+                            Normal Ads
+                          </Text>
+                        </View>
+                        <Text style={{fontFamily: 'Poppins-Medium'}}>
+                          {v.NormalAds}
+                        </Text>
+                      </View>
+                      <View
+                        style={{
+                          width: '100%',
+                          flexDirection: 'row',
+                          padding: 10,
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                        }}>
+                        <View style={{flexDirection: 'row', width: '45%'}}>
+                          <Image
+                            resizeMethod="resize"
+                            resizeMode="contain"
+                            source={Img7}
+                            style={{height: 20, width: 20, paddingRight: 50}}
+                          />
+                          <Text
+                            style={{
+                              color: 'grey',
+                              fontFamily: 'Poppins-Light',
+                            }}>
+                            Sponser Ad Credit
+                          </Text>
+                        </View>
+                        <Text style={{fontFamily: 'Poppins-Medium'}}>
+                          {v.Sponsored_ads_balance}
+                        </Text>
+                      </View>
+                      <View
+                        style={{
+                          width: '100%',
+                          flexDirection: 'row',
+                          padding: 10,
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                        }}>
+                        <View style={{flexDirection: 'row', width: '45%'}}>
+                          <Image
+                            resizeMethod="resize"
+                            resizeMode="contain"
+                            source={Img8}
+                            style={{height: 20, width: 20, paddingRight: 50}}
+                          />
+                          <Text
+                            style={{
+                              color: 'grey',
+                              fontFamily: 'Poppins-Light',
+                            }}>
+                            Normal Ad Credit
+                          </Text>
+                        </View>
+                        <Text style={{fontFamily: 'Poppins-Medium'}}>
+                          {v.Normal_ads_Balance}
+                        </Text>
+                      </View>
+
                       <View style={{paddingTop: 10, paddingBottom: 30}}>
                         <TouchableOpacity
                           style={{
@@ -569,8 +664,8 @@ function HomeScreen(props) {
               );
             })}
         </View>
-        {/* <EditModal  /> */}
-      </View>
+      </ScrollView>
+      {/* <EditModal  /> */}
     </React.Fragment>
   );
 }

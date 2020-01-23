@@ -1,5 +1,10 @@
 import axios from 'axios';
 import * as Action from '../constant';
+export const toggleNotification = () => {
+  return {
+    type: Action.TOGGLE_NOTI,
+  };
+};
 export const getNotification = id => {
   const config = {
     nUserName: 'sample string 1',
@@ -17,6 +22,7 @@ export const getNotification = id => {
     {headers: Action.headers},
   );
   return dispatch => {
+    dispatch(toggleNotification());
     return request.then(response => {
       dispatch({
         type: Action.GET_NOTIFICATION,
@@ -25,6 +31,7 @@ export const getNotification = id => {
             ? []
             : response.data.NotificationData,
       });
+      dispatch(toggleNotification());
     });
   };
 };

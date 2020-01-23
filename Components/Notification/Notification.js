@@ -8,6 +8,7 @@ import {Circle, Rect} from 'react-native-svg';
 function Notification(props) {
   const [Noti, setNoti] = useState([]);
   const Notification = useSelector(state => state.Notification.Notifcation);
+  const state = useSelector(state => state.Notification.getNot);
   // const dispatch = useDispatch();
   useEffect(() => {
     setNoti(Notification);
@@ -35,54 +36,77 @@ function Notification(props) {
           flexDirection: 'column',
         }}>
         <ScrollView>
-          {Noti.length !== 0 ? (
-            Noti.map((v, k) => {
-              return (
-                <View
-                  style={{
-                    width: '100%',
-                    backgroundColor: 'white',
-                    padding: 10,
-                    marginTop: 10,
-                  }}
-                  key={k}>
-                  <Text
-                    style={{color: 'tomato', fontSize: 12, fontWeight: 'bold'}}>
-                    What's new
-                  </Text>
-                  <Text style={{fontSize: 15, fontWeight: '300'}}>
-                    {v.Title}
-                  </Text>
+          {state !== true ? (
+            Noti.length > 0 ? (
+              Noti.map((v, k) => {
+                return (
                   <View
                     style={{
-                      flexDirection: 'row',
                       width: '100%',
-                      justifyContent: 'space-between',
-                    }}>
-                    <View style={{width: '40%'}}>
-                      {/* <TouchableOpacity
-                  style={{
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    padding: 5,
-                    backgroundColor: 'red',
-                  }}>
-                  <Text
-                    style={{color: 'white', fontWeight: 'bold', fontSize: 8}}>
-                    +99 new adds
-                  </Text>
-                </TouchableOpacity> */}
-                    </View>
+                      backgroundColor: 'white',
+                      padding: 10,
+                      marginTop: 10,
+                    }}
+                    key={k}>
                     <Text
-                      style={{fontWeight: 'bold', fontSize: 10, color: 'grey'}}>
-                      {moment(v.CreatedDate)
-                        .startOf('minute')
-                        .fromNow()}
+                      style={{
+                        color: 'tomato',
+                        fontSize: 12,
+                        fontWeight: 'bold',
+                      }}>
+                      What's new
                     </Text>
+                    <Text style={{fontSize: 15, fontWeight: '300'}}>
+                      {v.Title}
+                    </Text>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        width: '100%',
+                        justifyContent: 'space-between',
+                      }}>
+                      <View style={{width: '40%'}}>
+                        {/* <TouchableOpacity
+      style={{
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 5,
+        backgroundColor: 'red',
+      }}>
+      <Text
+        style={{color: 'white', fontWeight: 'bold', fontSize: 8}}>
+        +99 new Ads
+      </Text>
+    </TouchableOpacity> */}
+                      </View>
+                      <Text
+                        style={{
+                          fontWeight: 'bold',
+                          fontSize: 10,
+                          color: 'grey',
+                        }}>
+                        {moment(v.CreatedDate)
+                          .startOf('minute')
+                          .fromNow()}
+                      </Text>
+                    </View>
                   </View>
-                </View>
-              );
-            })
+                );
+              })
+            ) : (
+              <React.Fragment>
+                <Text
+                  style={{
+                    fontFamily: 'Poppins-Medium',
+                    letterSpacing: 1,
+                    fontSize: 17,
+                    textAlign: 'center',
+                    marginTop: 250,
+                  }}>
+                  No Notification!
+                </Text>
+              </React.Fragment>
+            )
           ) : (
             <React.Fragment>
               <View

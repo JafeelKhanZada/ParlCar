@@ -39,7 +39,10 @@ const MainContent = props => {
                       }}
                       onPress={() => {
                         dispatch(Action.selectAd([v]));
-                        props.navigation.navigate('Details');
+                        props.navigation.navigate('Details', {
+                          onGoBack: () => {},
+                          back: 'Favourite',
+                        });
                         dispatch(
                           Action.getfav({nUserID: id.ID !== null ? id.ID : -1}),
                         );
@@ -94,14 +97,14 @@ const MainContent = props => {
                               width: '70%',
                               paddingLeft: 5,
                             }}>
-                            <Text
+                            {/* <Text
                               style={{
                                 color: 'grey',
                                 fontSize: 8,
                                 ...styles.text,
                               }}>
                               User Cars for sale {v.BrandName}
-                            </Text>
+                            </Text> */}
                             <Text
                               style={{
                                 color: '#d81f25',

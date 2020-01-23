@@ -9,7 +9,6 @@ function Header(props) {
   useEffect(() => {
     setNoti(Notification);
   }, [Notification]);
-  console.log(props);
   return (
     <View>
       <View style={styles.container}>
@@ -33,14 +32,14 @@ function Header(props) {
           />
         </View>
         <View style={{...styles.HeaderNotification}}>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             style={{display: Auth === false ? 'none' : 'flex'}}
             onPress={() => props.navigation.navigate('Favourite')}>
             <Image
               style={styles.notificationImg}
               source={require('../../assests/images/heartRed.png')}
             />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           <TouchableOpacity
             style={{
               display: Auth === false ? 'none' : 'flex',

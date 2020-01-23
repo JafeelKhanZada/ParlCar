@@ -1,16 +1,16 @@
+import {Alert} from 'react-native';
 import axios from 'axios';
 import * as Action from '../constant';
 import * as Actions from './index';
 import moment from 'moment';
 export const getAds = obj => {
-  console.log(obj);
   let config = {
     nUserName: 'sample string 1',
     nToken: 'sample string 2',
     nShowRoom: obj.Name || '',
     nAdsID: obj.ID || null,
     nCity: obj.nCity || null,
-    nModel: '',
+    nModel: obj.Models || '',
     nPriceFrom: obj.nPriceFrom || null,
     nPriceTo: obj.nPriceTo || null,
     nYearFrom: obj.nYearFrom || '',
@@ -21,7 +21,7 @@ export const getAds = obj => {
     nStatusID: obj.Status || 2,
     nUserID: obj.UserId || null,
     nPageIndex: obj.Index || 0,
-    nPageSize: obj.Size || 100,
+    nPageSize: obj.Size || 10000,
     oBrandID: obj.Brand || null,
     oCategoryID: obj.Category || null,
     CuurentLoginUserID: obj.UID || -1,
@@ -35,7 +35,6 @@ export const getAds = obj => {
         headers: Action.headers,
       })
       .then(response => {
-        console.log(response);
         dispatch({
           type: Action.GET_ADS_PAGES,
           payload: response.data.AdsData === null ? [] : response.data.AdsData,
@@ -44,7 +43,6 @@ export const getAds = obj => {
         return response.data;
       })
       .catch(error => {
-        console.log(error);
       });
   };
 };
@@ -61,7 +59,7 @@ export const deleteAd = (id, nId) => {
     nAdsID: id,
   };
   return dispatch => {
-    axios
+    return axios
       .post('http://207.180.230.73/palcar/Api/DeleteAds', config, {
         headers: Action.headers,
       })
@@ -71,7 +69,6 @@ export const deleteAd = (id, nId) => {
         }
       })
       .catch(error => {
-        console.log(error);
       });
   };
 };
@@ -93,10 +90,12 @@ export const getSelected = obj => {
     nStatusID: obj.Status || 2,
     nUserID: obj.UserId || null,
     nPageIndex: obj.Index || 0,
-    nPageSize: obj.Size || 10,
+    nPageSize: obj.Size || 10000,
     oBrandID: obj.Brand || null,
     oCategoryID: obj.Category || null,
     CuurentLoginUserID: obj.UID || -1,
+    nBodyType: null,
+    nkeywordTitle: obj.nModel || '',
   };
   return dispatch => {
     axios
@@ -104,7 +103,6 @@ export const getSelected = obj => {
         headers: Action.headers,
       })
       .then(response => {
-        console.log(response);
         dispatch({
           type: Action.SELECT_AD,
           payload: response.data.AdsData === null ? [] : response.data.AdsData,
@@ -137,6 +135,8 @@ export const getActiveAds = obj => {
     oBrandID: obj.Brand || null,
     oCategoryID: obj.Category || null,
     CuurentLoginUserID: obj.UID || -1,
+    nBodyType: null,
+    nkeywordTitle: obj.nModel || '',
   };
   return dispatch => {
     return axios
@@ -144,7 +144,6 @@ export const getActiveAds = obj => {
         headers: Action.headers,
       })
       .then(response => {
-        console.log(response);
         dispatch({
           type: Action.GET_ACTIVE_ADS,
           payload: response.data.AdsData !== null ? response.data.AdsData : [],
@@ -190,10 +189,142 @@ export const saveAd = adData => {
     config,
     {headers: Action.headers},
   );
-  console.log(JSON.stringify(config));
   return dispatch => {
     request.then(response => {
-      console.log(response);
     });
+  };
+};
+export const getDeleteAD = obj => {
+  let config = {
+    nUserName: 'sample string 1',
+    nToken: 'sample string 2',
+    nShowRoom: obj.Name || '',
+    nAdsID: obj.ID || null,
+    nCity: obj.City || null,
+    nModel: obj.Model || '',
+    nPriceFrom: obj.PriceFrom || null,
+    nPriceTo: obj.PriceTo || null,
+    nYearFrom: obj.YearFrom || '',
+    nYearTo: obj.YearTo || '',
+    nOrderBy: obj.OrderBy || 'A.ID',
+    nKiloMeterFrom: obj.KileFrom || null,
+    nKiloMeterTo: obj.KiloTo || null,
+    nStatusID: obj.Status || 2,
+    nUserID: obj.UserId || null,
+    nPageIndex: obj.Index || 0,
+    nPageSize: obj.Size || 100000,
+    oBrandID: obj.Brand || null,
+    oCategoryID: obj.Category || null,
+    CuurentLoginUserID: obj.UID || -1,
+    nBodyType: null,
+    nkeywordTitle: obj.nModel || '',
+    nIsDeleted: true,
+  };
+  return dispatch => {
+    axios
+      .post('http://207.180.230.73/palcar/Api/GetAllAds_Pagged', config, {
+        headers: Action.headers,
+      })
+      .then(response => {
+        dispatch({
+          type: Action.GET_DELETED_AD,
+          payload:
+            response.data.AdsData === null
+              ? response.data.AdsData !== undefined
+                ? []
+                : []
+              : response.data.AdsData,
+        });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+};
+export const activateAd = obj => {
+  let config = {
+    nUserName: 'sample string 1',
+    nToken: 'sample string 2',
+    nAdsID: obj.id,
+    nCreatedBy: '',
+  };
+  return dispatch => {
+    return axios
+      .post('http://207.180.230.73/palcar/Api/ReActiveAds', config, {
+        headers: Action.headers,
+      })
+      .then(response => {
+        if (response.data.result === false) {
+          Alert.alert(response.data.message);
+        } else {
+          Alert.alert('Ad Re-Active Successfully!');
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+};
+export const saveView = id => {
+  let config = {
+    nUserName: '',
+    nToken: '',
+    nAdsID: id,
+  };
+  return dispatch => {
+    axios
+      .post('http://207.180.230.73/palcar/Api/SaveAdsViews', config, {
+        headers: Action.headers,
+      })
+      .then(response => {
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+};
+export const setHistoryAd = payload => {
+  return {
+    type: Action.GET_HISTORY_AD,
+    payload,
+  };
+};
+
+export const ViewUpdate = obj => {
+  let config = {
+    nUserName: 'sample string 1',
+    nToken: 'sample string 2',
+    nShowRoom: obj.Name || '',
+    nAdsID: obj.ID || null,
+    nCity: obj.City || null,
+    nModel: obj.Model || '',
+    nPriceFrom: obj.PriceFrom || null,
+    nPriceTo: obj.PriceTo || null,
+    nYearFrom: obj.YearFrom || '',
+    nYearTo: obj.YearTo || '',
+    nOrderBy: obj.OrderBy || 'A.ID',
+    nKiloMeterFrom: obj.KileFrom || null,
+    nKiloMeterTo: obj.KiloTo || null,
+    nStatusID: obj.Status || 2,
+    nUserID: obj.UserId || null,
+    nPageIndex: obj.Index || 0,
+    nPageSize: obj.Size || 100,
+    oBrandID: obj.Brand || null,
+    oCategoryID: obj.Category || null,
+    CuurentLoginUserID: obj.UID || -1,
+    nBodyType: null,
+    nkeywordTitle: obj.nModel || '',
+  };
+  return dispatch => {
+    return axios
+      .post('http://207.180.230.73/palcar/Api/GetAllAds_Pagged', config, {
+        headers: Action.headers,
+      })
+      .then(response => {
+        dispatch({
+          type: Action.GET_ACTIVE_ADS,
+          payload: response.data.AdsData !== null ? response.data.AdsData : [],
+        });
+      });
   };
 };

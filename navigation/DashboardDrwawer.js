@@ -1,9 +1,9 @@
 // import {createDrawerNavigator} from 'react-navigation-drawer';
-// import AddNew from '../Components/Dashboard/AddNewAdds';
+// import AddNew from '../Components/Dashboard/AddNewAds';
 // import Dashboard from '../Screens/Dashboard/Dashboard';
 // import DashboardDrawe from '../Components/Drwawer/DashboardDrawer';
 // import Activeads from '../Components/Dashboard/ActiveAds';
-// import Expiredads from '../Components/Dashboard/ExpiredAdds';
+// import Expiredads from '../Components/Dashboard/ExpiredAds';
 // import PendingAds from '../Components/Dashboard/PendingAds';
 // export const DashboardDrawer = createDrawerNavigator(
 //   {

@@ -1,6 +1,7 @@
 import * as Action from '../constant';
 const initState = {
   Notifcation: [],
+  getNot: false,
 };
 const reducer = (state = initState, action) => {
   switch (action.type) {
@@ -8,6 +9,12 @@ const reducer = (state = initState, action) => {
       return {
         ...state,
         Notifcation: action.payload,
+      };
+    }
+    case Action.TOGGLE_NOTI: {
+      return {
+        ...state,
+        getNot: !state.getNot,
       };
     }
     default: {

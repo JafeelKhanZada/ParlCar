@@ -3,14 +3,14 @@ import {View, Text, TextInput, ScrollView, RefreshControl} from 'react-native';
 import Search from '../../Components/Home/SearchEngin';
 import SearchPost from '../../Components/YourSearch/YouSearchPost';
 import {useSelector, useDispatch} from 'react-redux';
-import {withNavigation} from 'react-navigation';
+import {withNavigationFocus} from 'react-navigation';
 import Header from '../../Components/Home/Header';
 import * as Action from '../../redux/actions';
 import Loader from '../../Components/Loader';
 import {heightPercentageToDP} from 'react-native-responsive-screen';
 
 function YourSerach(props) {
-  console.log(props);
+  const ID = useSelector(state => state.Auth.ID);
   const [refresh, setRefresh] = useState(false);
   const [BrandId, setBrandId] = useState(null);
   const [ShowRoom, setShowRoom] = useState(null);
@@ -26,28 +26,73 @@ function YourSerach(props) {
     nKiloMeterTo: null,
   });
   useEffect(() => {
-    setData(filter);
-  }, [filter]);
-  useEffect(() => {
     setBrandId(
       props.navigation.state.params !== undefined
         ? props.navigation.state.params.brand
         : null,
     );
-  }, [props.navigation.state]);
-  useEffect(() => {
     setShowRoom(
       props.navigation.state.params !== undefined
         ? props.navigation.state.params.showroom
         : null,
     );
-  }, [props.navigation.state]);
-  const ID = useSelector(state => state.Auth.ID);
+  }, [props]);
+  useEffect(() => {
+    if (props.isFocused === true) {
+      const calBack = () => {
+        if (
+          props.navigation.state.params.showroom !== undefined &&
+          props.navigation.state.params.brand !== undefined
+        ) {
+          if (
+            props.navigation.state.params.showroom === null ||
+            props.navigation.state.params.showroom === ''
+          ) {
+            if (
+              props.navigation.state.params.brand === null ||
+              props.navigation.state.params.brand === ''
+            ) {
+              console.log(props, data);
+              if (data.nCity === null || data.nCity === '') {
+                if (data.nModel === null || data.nModel === '') {
+                  if (data.nPriceFrom === null || data.nPriceFrom === '')
+                    if (data.nPriceTo === null || data.nPriceTo === '')
+                      if (data.nYearFrom === null || data.nYearFrom === '')
+                        if (data.nYearTo === null || data.nYearTo === '')
+                          if (
+                            data.nKiloMeterFrom === null ||
+                            data.nKiloMeterFrom === ''
+                          )
+                            if (
+                              data.nKiloMeterTo === null ||
+                              data.nKiloMeterTo === ''
+                            )
+                              dispatch(Action.getAds({UID: ID}));
+                }
+              }
+            }
+          }
+        }
+      };
+      if (props.navigation.state.params !== undefined)
+        if (props.navigation.state.params.back !== undefined) {
+          if (props.navigation.state.params.back === false) {
+            calBack();
+          }
+        } else {
+          calBack();
+        }
+    }
+  }, [BrandId, ShowRoom, props]);
+  useEffect(() => {
+    setData(filter);
+  }, [filter]);
+
   const handleRefrest = () => {
     setRefresh(true);
     Promise.all([
       dispatch(
-        Action.getAds({UID: ID, Brand: BrandId, Name: ShowRoom, ...data}),
+        Action.getAds({UID: ID, UserId: ShowRoom, ...data, Brand: BrandId}),
       ),
     ]);
     setRefresh(false);
@@ -63,11 +108,11 @@ function YourSerach(props) {
         }>
         <Search />
         <View style={{minHeight: heightPercentageToDP('50%')}}>
-          <SearchPost />
+          <SearchPost brand={BrandId} showroom={ShowRoom} data={data} />
         </View>
       </ScrollView>
       <Loader />
     </React.Fragment>
   );
 }
-export default withNavigation(YourSerach);
+export default withNavigationFocus(YourSerach);

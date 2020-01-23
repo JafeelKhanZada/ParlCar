@@ -25,6 +25,7 @@ function Notification(props) {
       dispatch(Action.getActiveAds({UserId: ID})),
       dispatch(Action.getPending(ID)),
       dispatch(Action.getExpiredAds(ID)),
+      dispatch(Action.getDeleteAD({UserId: ID})),
     ]);
   };
   const handleRefresh = () => {
@@ -66,7 +67,7 @@ function Notification(props) {
               fontFamily: 'Poppins-Medium',
               paddingLeft: 5,
             }}>
-            My Adds
+            My Ads
           </Text>
           <View
             style={{
@@ -81,7 +82,7 @@ function Notification(props) {
                 color: 'tomato',
                 fontSize: 12,
               }}>
-              Active Adds
+              Active Ads
             </Text>
             <Text
               style={{
@@ -89,7 +90,7 @@ function Notification(props) {
                 fontSize: 15,
                 fontWeight: '300',
               }}>
-              {State.ActivatedAds.length} Adds
+              {State.ActivatedAds.length} Ads
             </Text>
             <View
               style={{
@@ -131,7 +132,7 @@ function Notification(props) {
                 color: 'tomato',
                 fontSize: 12,
               }}>
-              Expired Adds
+              Expired Ads
             </Text>
             <Text
               style={{
@@ -139,7 +140,7 @@ function Notification(props) {
                 fontSize: 15,
                 fontWeight: '300',
               }}>
-              {State.DeletedAds.length} Adds
+              {State.ExpiredAd.length} Ads
             </Text>
             <View
               style={{
@@ -181,7 +182,7 @@ function Notification(props) {
                 color: 'tomato',
                 fontSize: 12,
               }}>
-              Pending Adds
+              Pending Ads
             </Text>
             <Text
               style={{
@@ -189,7 +190,7 @@ function Notification(props) {
                 fontSize: 15,
                 fontWeight: '300',
               }}>
-              {State.PendingAds.length} Adds
+              {State.PendingAds.length} Ads
             </Text>
             <View
               style={{
@@ -199,6 +200,57 @@ function Notification(props) {
               }}>
               <TouchableOpacity
                 onPress={() => props.navigation.navigate('PendingAds')}
+                style={{
+                  width: 90,
+                  padding: 5,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  backgroundColor: '#d81f25',
+                  borderRadius: 3,
+                }}>
+                <Text
+                  style={{
+                    fontFamily: 'Poppins',
+                    color: 'white',
+                    fontFamily: 'Poppins',
+                    fontSize: 12,
+                  }}>
+                  View All
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+          <View
+            style={{
+              width: '100%',
+              backgroundColor: 'white',
+              padding: 10,
+              marginTop: 10,
+            }}>
+            <Text
+              style={{
+                fontFamily: 'Poppins-Medium',
+                color: 'tomato',
+                fontSize: 12,
+              }}>
+              Deleted Ads
+            </Text>
+            <Text
+              style={{
+                fontFamily: 'Poppins',
+                fontSize: 15,
+                fontWeight: '300',
+              }}>
+              {State.DeletedAd.length} Ads
+            </Text>
+            <View
+              style={{
+                flexDirection: 'row',
+                width: '100%',
+                justifyContent: 'flex-end',
+              }}>
+              <TouchableOpacity
+                onPress={() => props.navigation.navigate('DeletedAd')}
                 style={{
                   width: 90,
                   padding: 5,

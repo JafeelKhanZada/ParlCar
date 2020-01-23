@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   Image,
+  RefreshControl,
 } from 'react-native';
 import {withNavigation} from 'react-navigation';
 import Header from '../Home/Header';
@@ -18,8 +19,15 @@ import Loader from '../../Components/Loader';
 function ExpireAds(props) {
   const dispatch = useDispatch();
   const [activeAds, setActiveAds] = useState([]);
-  const Ads = useSelector(state => state.Ads.DeletedAds);
+  const Ads = useSelector(state => state.Ads.ExpiredAd);
   const ID = useSelector(state => state.Auth.ID);
+  const [refresh, setRefresh] = useState(false);
+  const handleRefresh = () => {
+    setRefresh(true);
+    Promise.all([dispatch(Action.getExpiredAds(ID))]).then(() => {
+      setRefresh(false);
+    });
+  };
   useEffect(() => {
     if (Ads) {
       setActiveAds(Ads);
@@ -33,7 +41,10 @@ function ExpireAds(props) {
         style={{
           backgroundColor: '#F4F4F4',
           height: hp('100%'),
-        }}>
+        }}
+        refreshControl={
+          <RefreshControl refreshing={refresh} onRefresh={handleRefresh} />
+        }>
         <Text
           style={{
             textAlign: 'center',
@@ -96,7 +107,7 @@ function ExpireAds(props) {
                           }}>
                           {v.BrandName}
                         </Text>
-                        <Text
+                        {/* <Text
                           style={{
                             color: 'lightgrey',
                             fontSize: 9,
@@ -104,7 +115,7 @@ function ExpireAds(props) {
                             letterSpacing: 1,
                           }}>
                           User car for sale
-                        </Text>
+                        </Text> */}
                       </View>
                       <View
                         style={{

@@ -5,7 +5,9 @@ const InitState = {
   SelectedAd: [],
   ActivatedAds: [],
   PendingAds: [],
-  DeletedAds: [],
+  ExpiredAd: [],
+  DeletedAd: [],
+  History: [],
 };
 const AdsReducer = (state = InitState, action) => {
   switch (action.type) {
@@ -13,6 +15,18 @@ const AdsReducer = (state = InitState, action) => {
       return {
         ...state,
         ActiveAds: action.payload,
+      };
+    }
+    case Action.GET_HISTORY_AD: {
+      return {
+        ...state,
+        History: action.payload,
+      };
+    }
+    case Action.GET_DELETED_AD: {
+      return {
+        ...state,
+        DeletedAd: action.payload,
       };
     }
     case Action.SELECT_AD: {
@@ -36,7 +50,7 @@ const AdsReducer = (state = InitState, action) => {
     case Action.GET_DELETED_ADS: {
       return {
         ...state,
-        DeletedAds: action.payload,
+        ExpiredAd: action.payload,
       };
     }
     default: {

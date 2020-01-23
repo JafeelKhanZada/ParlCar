@@ -27,6 +27,7 @@ const Appcontainer = createStackNavigator(
     //     header: <DashboardHEader navigation={navigation} />,
     //   }),
     // },
+  
     Details: {
       screen: Details,
     },

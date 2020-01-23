@@ -1,31 +1,27 @@
 import * as Action from '../constant';
 import axios from 'axios';
-export const getShowroom = (
-  keyword,
-  name,
-  showroom,
-  mail,
-  city,
-  group,
-  status,
-  order,
-  index,
-  size,
-) => {
+export const toggleShowroom = payload => {
+  return {
+    type: Action.SET_LOAD_SHOWROOM,
+    payload,
+  };
+};
+
+export const getShowroom = obj => {
   const config = {
     nUserName: 'sample string 1',
     token: 'sample string 2',
     nkeywordTitle: '',
     nName: '',
-    nShowromName: name || '',
+    nShowromName: obj.name || '',
     nType: 'Showroom',
     nEmail: '',
     nCity: null,
     nGroupID: null,
-    nStatus: '',
+    nStatus: null,
     nOrderBy: 'ID',
     nPageIndex: 0,
-    nPageSize: 12,
+    nPageSize: 2500,
   };
   let request = axios.post(
     'http://207.180.230.73/palcar/Api/GetAllUser_Pagged',
@@ -33,11 +29,13 @@ export const getShowroom = (
     {headers: Action.headers},
   );
   return dispatch => {
+    dispatch(toggleShowroom(true));
     request.then(response => {
       dispatch({
         type: Action.GET_SHOWROOM,
-        payload: response.data.UserData,
+        payload: response.data.UserData !== null ? response.data.UserData : [],
       });
+      dispatch(toggleShowroom(false));
     });
   };
 };

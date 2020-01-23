@@ -8,6 +8,7 @@ import {
   StyleSheet,
   Image,
   Alert,
+  RefreshControl,
 } from 'react-native';
 import {withNavigation} from 'react-navigation';
 import Header from '../Home/Header';
@@ -19,23 +20,30 @@ import Loader from '../../Components/Loader';
 
 function Activeads(props) {
   const dispatch = useDispatch();
-  const [activeAds, setActiveAds] = useState([]);
   const Ads = useSelector(state => state.Ads.ActivatedAds);
   const ID = useSelector(state => state.Auth.ID);
+  const [activeAds, setActiveAds] = useState([]);
+  const [refresh, setRefresh] = useState(false);
+  const handleRefresh = () => {
+    setRefresh(true);
+    Promise.all([dispatch(Action.getActiveAds({UserId: ID}))]).then(() => {
+      setRefresh(false);
+    });
+  };
   useEffect(() => {
     if (Ads) {
       setActiveAds(Ads);
     }
   }, [Ads]);
   return (
-    <View>
-      <Loader />
-      <Header />
-      <ScrollView
-        style={{
-          backgroundColor: '#F4F4F4',
-          height: hp('100%'),
-        }}>
+    <ScrollView
+      style={{height: '100%'}}
+      refreshControl={
+        <RefreshControl refreshing={refresh} onRefresh={handleRefresh} />
+      }>
+      <View>
+        <Loader />
+        <Header />
         <Text
           style={{
             textAlign: 'center',
@@ -48,11 +56,10 @@ function Activeads(props) {
             borderTopColor: 'lightgrey',
             fontFamily: 'Poppins-Bold',
           }}>
-          Active Adds
+          Active Ads
         </Text>
         <View
           style={{
-            height: '100%',
             width: '100%',
             padding: 10,
           }}>
@@ -97,7 +104,7 @@ function Activeads(props) {
                           }}>
                           {v.BrandName}
                         </Text>
-                        <Text
+                        {/* <Text
                           style={{
                             color: 'lightgrey',
                             fontSize: 9,
@@ -105,7 +112,7 @@ function Activeads(props) {
                             letterSpacing: 1,
                           }}>
                           User car for sale
-                        </Text>
+                        </Text> */}
                       </View>
                       <View
                         style={{
@@ -128,7 +135,7 @@ function Activeads(props) {
                             fontSize: 9,
                             fontFamily: 'Poppins-Bold',
                           }}>
-                          71,619 Views
+                          {v.TotalViews} Views
                         </Text>
                       </View>
                     </View>
@@ -149,15 +156,13 @@ function Activeads(props) {
                                 await Promise.all([
                                   await dispatch(Action.deleteAd(v.ID, ID)),
                                 ]).then(async () => {
-                                  await dispatch(
-                                    Action.getActiveAds({UserId: ID}),
-                                  );
-                                  Alert.alert('Ad Deleted Successfully');
+                                  dispatch(Action.getDeleteAD({UserId: ID}));
+                                  dispatch(Action.getActiveAds({UserId: ID}));
+                                  dispatch(Action.UPDATEUSER(ID));
                                 }),
                             },
                             {
                               text: 'No',
-                              onPress: () => console.log('Cancel Pressed'),
                               style: 'cancel',
                             },
                           ],
@@ -176,8 +181,8 @@ function Activeads(props) {
               );
             })}
         </View>
-      </ScrollView>
-    </View>
+      </View>
+    </ScrollView>
   );
 }
 export default withNavigation(Activeads);

@@ -6,7 +6,6 @@ import {useSelector, useDispatch} from 'react-redux';
 function Tabss() {
   const Type = useSelector(state => state.Modal.Tab);
   const dispatch = useDispatch();
-  console.log("Type",Type)
   return (
     <React.Fragment>
       <View style={{...Styles.container}}>

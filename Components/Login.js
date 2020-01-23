@@ -12,7 +12,9 @@ import {useSelector, useDispatch} from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import * as Action from '../redux/actions';
 import Loader from './Loader';
-function Login() {
+import {withNavigation} from 'react-navigation';
+function Login(props) {
+  const [AdID, setAdID] = useState(null);
   const dispatch = useDispatch();
   const [visible, setVisible] = useState(false);
   const [name, setName] = useState('');
@@ -20,36 +22,47 @@ function Login() {
   const [dis, setDis] = useState(false);
   const Visibility = useSelector(state => state.Modal.Login);
   useEffect(() => {
+    setAdID(props.id !== undefined && props.id !== true ? props.id : null);
+  }, [props]);
+  useEffect(() => {
     setVisible(Visibility);
   }, [Visibility]);
   const submitHandle = () => {
     if (name !== '' && password !== '') {
       setDis(true);
-      Promise.all([dispatch(Action.login(name, password))]).then(() => {
+      Promise.all([dispatch(Action.login(name, password, AdID))]).then(val => {
         setDis(false);
+        if (val[0] === true) {
+          setName('');
+          setPassword('');
+        }
       });
     } else {
       Alert.alert(
         'Empty Email or Password!',
-        'Please Check Your Username/Email or Passowrd.',
+        'Please Check Your Email or Passowrd.',
         [{text: 'OK', onPress: () => console.log('OK Pressed')}],
         {cancelable: false},
       );
     }
   };
   return (
-    <Modal animationType="slide" transparent={true} visible={visible}>
+    <Modal animationType="fade" transparent={true} visible={visible}>
       <View style={Styles.Container} />
       <View style={Styles.Popup}>
         {dis === true ? <Loader /> : <React.Fragment></React.Fragment>}
         <View style={Styles.Ads}>
           <TouchableOpacity
             style={{alignSelf: 'flex-end'}}
-            onPress={() => dispatch(Action.Toggle_PopUp(false))}>
-            <Icon name="close" color="#c7c7c7" size={20} />
+            onPress={() =>
+              props.id === true
+                ? props.navigation.navigate('Home')
+                : dispatch(Action.Toggle_PopUp(false))
+            }>
+            <Icon name="close" size={20} />
           </TouchableOpacity>
           <Text style={Styles.Text}>Login</Text>
-          <Text style={Styles.Text1}>Showroom User</Text>
+          <Text style={Styles.Text1}>User/Showroom</Text>
           <View style={Styles.TextContainer}>
             <Text
               style={{
@@ -58,10 +71,10 @@ function Login() {
                 textTransform: 'capitalize',
                 marginTop: 10,
               }}>
-              User Name
+              Email
             </Text>
             <TextInput
-              placeholder="Enter your username here."
+              placeholder="Enter your Email here."
               style={Styles.TextInputContainer}
               onChangeText={text => setName(text)}
               value={name}
@@ -85,8 +98,36 @@ function Login() {
               secureTextEntry={true}
             />
           </View>
-          <TouchableOpacity style={Styles.btn} onPress={() => submitHandle()}>
-            <Text style={Styles.btnText}>Login</Text>
+          <TouchableOpacity
+            style={[
+              Styles.btn,
+              {
+                backgroundColor: dis === false ? '#d81f25' : '#C7C7C7',
+              },
+            ]}
+            onPress={() => submitHandle()}
+            disabled={dis}>
+            <Text
+              style={{
+                ...Styles.btnText,
+              }}>
+              Login
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              dispatch(Action.Toggle_PopUp(false));
+              dispatch(Action.toggleSignUp(true));
+            }}>
+            <Text
+              style={{
+                ...Styles.btnText,
+                color: '#5CA7FF',
+                fontSize: 12,
+                marginTop: 10,
+              }}>
+              Sign Up
+            </Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -165,4 +206,4 @@ const Styles = StyleSheet.create({
     fontFamily: 'Poppins-Medium',
   },
 });
-export default Login;
+export default withNavigation(Login);

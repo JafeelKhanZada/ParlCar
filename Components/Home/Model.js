@@ -17,6 +17,7 @@ import {withNavigation} from 'react-navigation';
 function Model(props) {
   const dispatch = useDispatch();
   const data = useSelector(state => state.Showroom.ActiveShowRoom);
+  const ID = useSelector(state => state.Auth.ID);
   return (
     <Modal animationType="fade" transparent={true} visible={props.modalVisible}>
       <View
@@ -28,7 +29,6 @@ function Model(props) {
         }}>
         {data &&
           data.map((v, k) => {
-            console.log(v);
             return (
               <View
                 key={k}
@@ -144,10 +144,10 @@ function Model(props) {
                       borderRadius: 3,
                     }}
                     onPress={() => {
-                      dispatch(Action.getAds({Name: v.ShowromName}));
+                      dispatch(Action.getAds({UserId: v.ID, UID: ID}));
                       props.setModalVisible(!props.modalVisible);
                       props.navigation.navigate('YourSerach', {
-                        showroom: v.ShowromName,
+                        showroom: v.ID,
                         brand: null,
                       });
                     }}>

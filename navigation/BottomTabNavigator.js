@@ -1,66 +1,65 @@
 import React from 'react';
 import {createBottomTabNavigator} from 'react-navigation-tabs';
+import {createMaterialBottomTabNavigator} from 'react-navigation-material-bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Home from '../Screens/Homescreen/HomeScreen';
 import YourSerach from '../Screens/YourSearch/YourSerach';
 import Favourate from '../Screens/Favouratscreen/Favouratscreen';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import FoundationIcon from 'react-native-vector-icons/Foundation';
-import {Image} from 'react-native';
-export default Tabnavigator = createBottomTabNavigator(
+import Icon from 'react-native-vector-icons/AntDesign';
+import Icons from 'react-native-vector-icons/MaterialIcons';
+import {Image, TouchableOpacity, View} from 'react-native';
+// import {TouchableOpacity} from 'react-native-gesture-handler';
+export default Tabnavigator = createMaterialBottomTabNavigator(
   {
     Home: {
       screen: Home,
+      navigationOptions: {
+        tabBarLabel: 'Home',
+        tabBarIcon: ({tintColor}) => (
+          <Icon style={[{color: tintColor}]} size={20} name={'search1'} />
+        ),
+      },
     },
     YourSerach: {
       screen: YourSerach,
+      navigationOptions: {
+        tabBarOnPress: ({navigation, defaultHandler}) => {
+          console.log(navigation);
+          navigation.navigate('YourSerach', {
+            brand: null,
+            showroom: null,
+            back: false,
+          });
+          defaultHandler();
+        },
+        tabBarLabel: 'Your Search',
+        tabBarIcon: ({tintColor}) => (
+          <Icon style={[{color: tintColor}]} size={20} name={'clockcircleo'} />
+        ),
+      },
     },
     Favourite: {
       screen: Favourate,
-      tabBarOptions: {
-        showLabel: false,
+      navigationOptions: {
+        tabBarLabel: 'Favourite',
+        tabBarOnPress: ({navigation, defaultHandler}) => {
+          console.log(navigation);
+          navigation.navigate('Favourite');
+          defaultHandler();
+        },
+        tabBarIcon: ({tintColor}) => (
+          <Icon style={[{color: tintColor}]} size={20} name={'heart'} />
+        ),
       },
     },
   },
   {
     defaultNavigationOptions: ({navigation}) => ({
-      tabBarIcon: ({focused, horizontal, tintColor}) => {
-        const {routeName} = navigation.state;
-        let iconName;
-        if (routeName === 'Home') {
-          iconName = require('../assests/NewAssets/search.png');
-        }
-        if (routeName === 'YourSerach') {
-          iconName = require('../assests/NewAssets/history.png');
-        }
-        if (routeName === 'Favourite') {
-          iconName = require('../assests/NewAssets/heart.png');
-          // Sometimes we want to add badges to some icons.
-          // You can check the implementation below.
-        } else if (routeName === 'Settings') {
-          iconName = `ios-options`;
-        }
-
-        // You can return any component that you like here!
-        return (
-          <Image
-            source={iconName}
-            style={{width: 17, height: 17}}
-            resizeMethod="auto"
-            resizeMode="center"
-          />
-        );
-      },
+      initialRouteName: 'Home',
+      barStyle: {backgroundColor: '#BF1B20'},
+      inactiveColor: '#ABABAB',
     }),
-  
-    tabBarOptions: {
-      tabStyle: {
-        backgroundColor: '#d81f25',
-        height: '100%',
-      },
 
-      activeTintColor: 'white',
-      inactiveTintColor: 'white',
-    },
+    tabBarOptions: {},
   },
 );

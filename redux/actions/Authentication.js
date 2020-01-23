@@ -1,6 +1,7 @@
 import * as Action from '../constant';
 import * as Actions from './index';
 import axios from 'axios';
+import moment from 'moment';
 import {AsyncStorage, Alert} from 'react-native';
 export const toggleAuth = payload => {
   return {
@@ -8,7 +9,7 @@ export const toggleAuth = payload => {
     payload,
   };
 };
-export const login = (username, password) => {
+export const login = (username, password, adID) => {
   let config = {
     nUserName: 'sample string 1',
     token: 'sample string 2',
@@ -21,9 +22,7 @@ export const login = (username, password) => {
     {headers: Action.headers},
   );
   return dispatch => {
-    dispatch(Actions.toggleLoader(true));
-    request.then(response => {
-      dispatch(Actions.toggleLoader(false));
+    return request.then(response => {
       if (response.data.result === true) {
         dispatch(setType(response.data.UserData[0].Type));
         dispatch({
@@ -35,7 +34,13 @@ export const login = (username, password) => {
           payload: response.data.UserData[0].ID,
         });
         dispatch(Actions.getNotification(response.data.UserData[0].ID));
-
+        dispatch(Actions.getAds({UID: response.data.UserData[0].ID}));
+        adID === null && adID === 'R'
+          ? ''
+          : dispatch(
+              Actions.addFavourite(adID, response.data.UserData[0].ID, {}),
+            );
+        adID === 'R' ? dispatch(Actions.toggleReg(true)) : '';
         let token = AsyncStorage.getItem('TOKEN').then(res => res);
         if (token === null) {
           AsyncStorage.setItem('TOKEN', response.data.token).then(() => {
@@ -68,6 +73,7 @@ export const login = (username, password) => {
         }
         dispatch(toggleAuth(true));
         dispatch(Actions.Toggle_PopUp(false));
+        return true;
       } else {
         Alert.alert(
           'Invalid Email or Password!',
@@ -76,6 +82,7 @@ export const login = (username, password) => {
           {cancelable: false},
         );
         dispatch(Actions.toggleAuth(false));
+        return false;
       }
     });
   };
@@ -126,7 +133,6 @@ export const getUserById = id => {
   );
   return dispatch => {
     return request.then(response => {
-      console.log(response);
       if (response.data) {
         dispatch({
           type: Action.SET_USER_AUTHENTICATE,
@@ -179,7 +185,65 @@ export const updateUser = data => {
   return dispatch => {
     return request.then(response => {
       dispatch(getUserById(data.nCurrentID));
-      console.log(response);
+    });
+  };
+};
+export const saveUsers = data => {
+  let config = {
+    nUserName: 'sample string 1',
+    nToken: 'sample string 2',
+    nIsNew: true,
+    nCurrentID: -1,
+    oAddress: '',
+    oShowromName: '',
+    oShowroomTelephone: '',
+    oLogo: '',
+    oLogoExtension: '',
+    oActiveFromDate: moment(new Date()).format('YYYY-MM-DD'),
+    oActiveToDate: moment(new Date()).format('YYYY-MM-DD'),
+    nStatus: true,
+    oNormal_ads_Balance: null,
+    oSponsored_ads_balance: null,
+    nCreatedBy: 'Asad Noman',
+    nGroupID: 1,
+    nType: 'Normal',
+    ...data,
+  };
+  let request = axios.post(
+    'http://207.180.230.73/palcar/Api/UserRegisteration',
+    config,
+    {headers: Action.headers},
+  );
+  return dispatch => {
+    return request.then(response => {
+      if (response.data.result === false) {
+        Alert.alert(response.data.message);
+      } else {
+        dispatch(Actions.toggleSignUp(false));
+        dispatch(Actions.Toggle_PopUp(true));
+      }
+      return response.data.result;
+    });
+  };
+};
+export const UPDATEUSER = id => {
+  let config = {
+    nUserName: 'sample string 1',
+    token: 'sample string 2',
+    nUserID: id,
+  };
+  let request = axios.post(
+    'http://207.180.230.73/palcar/Api/GetUserByID',
+    config,
+    {headers: Action.headers},
+  );
+  return dispatch => {
+    return request.then(Response => {
+      AsyncStorage.setItem('UserData', JSON.stringify(Response.data)),
+        dispatch({
+          type: Action.SET_USER_AUTHENTICATE,
+          payload: Response.data,
+        });
     });
   };
 };

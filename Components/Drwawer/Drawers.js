@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import Profile from './ProfileDrawer';
 import Dashboard from './DashboardDrawer';
 import {useDispatch, useSelector} from 'react-redux';
+import Login from '../Login';
 import {withNavigation} from 'react-navigation';
 function Drawers() {
   const [type, setType] = useState('');
@@ -11,6 +12,7 @@ function Drawers() {
   }, [Type]);
   return (
     <React.Fragment>
+      <Login id={null} />
       {type === 'Showroom' ? <Dashboard /> : <Profile />}
     </React.Fragment>
   );

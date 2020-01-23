@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   Image,
+  Alert,
   RefreshControl,
 } from 'react-native';
 import {withNavigation} from 'react-navigation';
@@ -15,17 +16,17 @@ import {useSelector, useDispatch} from 'react-redux';
 import * as Action from '../../redux/actions';
 import moment from 'moment';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import Loader from '../../Components/Loader';
+import ICON from 'react-native-vector-icons/FontAwesome';
 function Activeads(props) {
   const dispatch = useDispatch();
   const [activeAds, setActiveAds] = useState([]);
-  const Ads = useSelector(state => state.Ads.PendingAds);
+  const Ads = useSelector(state => state.Ads.DeletedAd);
   const ID = useSelector(state => state.Auth.ID);
   const [refresh, setRefresh] = useState(false);
   const handleRefresh = () => {
     setRefresh(true);
-    Promise.all([dispatch(Action.getPending(ID))]).then(() => {
+    Promise.all([dispatch(Action.getDeleteAD({UserId: ID}))]).then(() => {
       setRefresh(false);
     });
   };
@@ -35,17 +36,14 @@ function Activeads(props) {
     }
   }, [Ads]);
   return (
-    <View>
-      <Loader />
-      <Header />
-      <ScrollView
-        refreshControl={
-          <RefreshControl refreshing={refresh} onRefresh={handleRefresh} />
-        }
-        style={{
-          backgroundColor: '#F4F4F4',
-          height: hp('100%'),
-        }}>
+    <ScrollView
+      style={{height: '100%'}}
+      refreshControl={
+        <RefreshControl refreshing={refresh} onRefresh={handleRefresh} />
+      }>
+      <View>
+        <Loader />
+        <Header />
         <Text
           style={{
             textAlign: 'center',
@@ -58,11 +56,10 @@ function Activeads(props) {
             borderTopColor: 'lightgrey',
             fontFamily: 'Poppins-Bold',
           }}>
-          Pending Ads
+          Deleted Ads
         </Text>
         <View
           style={{
-            height: '100%',
             width: '100%',
             padding: 10,
           }}>
@@ -87,7 +84,7 @@ function Activeads(props) {
                         resizeMode="contain"
                         style={{height: '100%', width: '100%'}}
                         source={{
-                          uri: `data:image/${v.Images[0].ImageExtension};base64,${v.Images[0].nImage}`,
+                          uri: `http://207.180.230.73/palcar${v.Images[0].nImage}`,
                         }}
                       />
                     </View>
@@ -127,36 +124,69 @@ function Activeads(props) {
                           style={{
                             color: 'grey',
                             fontSize: 9,
+                            letterSpacing: 1,
+                            fontFamily: 'Poppins',
+                          }}>
+                          {moment(v.CreatedDate).format('DD/MMMM/YYYY')}
+                        </Text>
+                        <Text
+                          style={{
+                            color: 'grey',
+                            fontSize: 9,
                             fontFamily: 'Poppins-Bold',
                           }}>
-                          1 Min
+                          {v.TotalViews} Views
                         </Text>
                       </View>
                     </View>
                     <TouchableOpacity
                       style={{
-                        width: '15%',
                         alignItems: 'center',
                         justifyContent: 'center',
+                        borderWidth: 1,
+                        borderColor: 'green',
+                        borderStyle: 'solid',
+                        borderRadius: 100,
+                        width: 30,
+                        height: 30,
+                      }}
+                      onPress={() => {
+                        Alert.alert(
+                          'Re-Active Ads?',
+                          'Are you sure for Re-Active ad?',
+                          [
+                            {
+                              text: 'Yes',
+                              onPress: async () =>
+                                await Promise.all([
+                                  await dispatch(
+                                    Action.activateAd({id: v.ID, user: ID}),
+                                  ),
+                                ]).then(async () => {
+                                  dispatch(Action.getAds({UID: ID}));
+                                  dispatch(Action.getDeleteAD({UserId: ID}));
+                                  dispatch(Action.getActiveAds({UserId: ID}));
+                                  dispatch(Action.UPDATEUSER(ID));
+
+                                }),
+                            },
+                            {
+                              text: 'No',
+                              style: 'cancel',
+                            },
+                          ],
+                          {cancelable: false},
+                        );
                       }}>
-                      <View
-                        style={{
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                          padding: 7,
-                          backgroundColor: 'lightgrey',
-                          borderRadius: 100,
-                        }}>
-                        <Icon name="check" size={16} color="green" />
-                      </View>
+                      <ICON name="check" color="green" />
                     </TouchableOpacity>
                   </View>
                 </React.Fragment>
               );
             })}
         </View>
-      </ScrollView>
-    </View>
+      </View>
+    </ScrollView>
   );
 }
 export default withNavigation(Activeads);

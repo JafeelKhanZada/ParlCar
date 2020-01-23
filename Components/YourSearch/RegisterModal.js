@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   Modal,
   Text,
@@ -9,28 +9,37 @@ import {
   Alert,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import * as Action from '../../redux/actions';
 function Model(props) {
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const dispatch = useDispatch();
+  const reg = useSelector(state => state.Modal.Reg);
+  const User = useSelector(state => state.Auth.UserData);
+  const Auth = useSelector(state => state.Auth.auth);
+  useEffect(() => {
+    if (User) {
+      setName(User.UserName);
+      setPassword(User.ShowroomTelephone);
+    }
+  }, [User]);
   return (
     <Modal
       animationType="slide"
       transparent={true}
-      visible={props.modalVisible}
+      visible={reg}
       onRequestClose={() => {
-        props.setModalVisible(!props.modalVisible);
+        dispatch(Action.toggleReg(false));
       }}>
       <View style={Styles.Popup}>
         <View style={Styles.Ads}>
           <TouchableOpacity
             style={{alignSelf: 'flex-end'}}
-            onPress={() => props.setModalVisible(!props.modalVisible)}>
+            onPress={() => dispatch(Action.toggleReg(false))}>
             <Icon name="close" color="#c7c7c7" size={20} />
           </TouchableOpacity>
-          <Text style={Styles.Text}>REGISTER</Text>
+          <Text style={Styles.Text}>REQUEST</Text>
           <Text style={Styles.Text1}>TEST DRIVE</Text>
           <View style={Styles.TextContainer}>
             <Text
@@ -47,6 +56,7 @@ function Model(props) {
               style={Styles.TextInputContainer}
               onChangeText={text => setName(text)}
               value={name}
+              editable={false}
             />
           </View>
           <View style={Styles.TextContainer}>
@@ -60,13 +70,14 @@ function Model(props) {
               Number
             </Text>
             <TextInput
+              keyboardType="numeric"
               placeholder="Enter your number here."
               style={Styles.TextInputContainer}
               onChangeText={text => setPassword(text)}
               value={password}
             />
           </View>
-          <Text
+          {/* <Text
             style={{
               fontFamily: 'Poppins-Bold',
               marginTop: 10,
@@ -74,27 +85,31 @@ function Model(props) {
               letterSpacing: 2,
             }}>
             Or
-          </Text>
-          <TouchableOpacity
-            style={{
-              ...Styles.btn,
-              backgroundColor: '#4268B3',
-              flexDirection: 'row',
-              width: 'auto',
-              paddingLeft: 10,
-              paddingRight: 20,
-              marginBottom: 10,
-            }}>
-            <Icon name="facebook" color="white" />
-            <Text
+          </Text> */}
+          {Auth === false ? (
+            <TouchableOpacity
               style={{
-                ...Styles.btnText,
-                fontFamily: 'Poppins',
-                paddingLeft: 20,
+                ...Styles.btn,
+                backgroundColor: '#4268B3',
+                flexDirection: 'row',
+                width: 'auto',
+                paddingLeft: 10,
+                paddingRight: 20,
+                marginBottom: 10,
               }}>
-              Register with facebook
-            </Text>
-          </TouchableOpacity>
+              <Icon name="facebook" color="white" />
+              <Text
+                style={{
+                  ...Styles.btnText,
+                  fontFamily: 'Poppins',
+                  paddingLeft: 20,
+                }}>
+                Register with facebook
+              </Text>
+            </TouchableOpacity>
+          ) : (
+            <React.Fragment></React.Fragment>
+          )}
           <TouchableOpacity
             style={Styles.btn}
             onPress={() => {
@@ -110,7 +125,7 @@ function Model(props) {
                 );
               }
             }}>
-            <Text style={Styles.btnText}>Register</Text>
+            <Text style={Styles.btnText}>Submit</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -145,6 +160,7 @@ const Styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     padding: 15,
+    paddingBottom:30
   },
   Text: {
     fontSize: 16,
@@ -182,6 +198,7 @@ const Styles = StyleSheet.create({
     padding: 2,
     alignItems: 'center',
     borderRadius: 2,
+    marginTop:20
   },
   btnText: {
     color: 'white',

@@ -11,7 +11,7 @@ export const getfav = obj => {
     nAdsID: obj.nAdsID || null,
     nOrderBy: obj.nOrderBy || 'A.CreatedDate',
     nPageIndex: obj.nPageIndex || 0,
-    nPageSize: obj.nPageSize || 4,
+    nPageSize: obj.nPageSize || 1000,
   };
   return dispatch => {
     dispatch(Actions.toggleLoader(true));
@@ -24,7 +24,6 @@ export const getfav = obj => {
         },
       )
       .then(res => {
-        console.log(res);
         dispatch({
           type: Action.GET_FAV_DATA,
           payload: res.data.FavouriteAdsData,
@@ -33,7 +32,7 @@ export const getfav = obj => {
       });
   };
 };
-export const addFavourite = (id, userId) => {
+export const addFavourite = (id, userId, data) => {
   let config = {
     nUserName: 'sample string 1',
     nToken: 'sample string 2',
@@ -53,13 +52,13 @@ export const addFavourite = (id, userId) => {
       if (response.data.result === true) {
         dispatch(Actions.getSelected({ID: id, UID: userId}));
         Alert.alert('Ad Added Favourite Successfully');
-        dispatch(Actions.getAds({UID: userId}));
+        dispatch(Actions.getAds({UID: userId, ...data}));
+        dispatch(Actions.getfav({nUserID: userId}));
       }
     });
   };
 };
-export const removeFavourite = id => {
-  console.log(id);
+export const removeFavourite = (id, userId, adID, data) => {
   let config = {
     nUserName: 'sample string 1',
     nToken: 'sample string 2',
@@ -75,8 +74,10 @@ export const removeFavourite = id => {
   );
   return dispatch => {
     return request.then(response => {
-      console.log(response);
+      dispatch(Actions.getSelected({ID: adID, UID: userId}));
       Alert.alert('Ad Remove Favourite Successfully');
+      dispatch(Actions.getAds({UID: userId, ...data}));
+      dispatch(Actions.getfav({nUserID: userId}));
     });
   };
 };

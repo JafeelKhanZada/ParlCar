@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -21,8 +21,12 @@ import {withNavigation} from 'react-navigation';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import {useSelector, useDispatch} from 'react-redux';
 function ProfileComponent(props) {
-  console.log(props);
   const Auth = useSelector(state => state.Auth.auth);
+  const User = useSelector(state => state.Auth);
+  const [type, setType] = useState(null);
+  useEffect(() => {
+    setType(User.Type);
+  }, [User]);
   const dispatch = useDispatch();
   let Drawer = [
     {
@@ -34,6 +38,43 @@ function ProfileComponent(props) {
       label: 'Sell a car',
       Icon: Image2,
       Search: 'AddNew',
+    },
+    {
+      label: 'Bank Icons',
+      Icon: Image3,
+      Search: '',
+    },
+    {
+      label: 'Inshurance Quotes',
+      Icon: Image4,
+      Search: '',
+    },
+    {
+      label: 'Recovery Number',
+      Icon: Image5,
+      Search: '',
+    },
+    {
+      label: 'Service work shops',
+      Icon: Image6,
+      Search: '',
+    },
+    {
+      label: 'Feedback',
+      Icon: Image6,
+      Search: '',
+    },
+  ];
+  let Drawers = [
+    {
+      label: 'Home',
+      Icon: Image1,
+      Search: 'Home',
+    },
+    {
+      label: 'Search',
+      Icon: Image2,
+      Search: 'YourSerach',
     },
     {
       label: 'Bank Icons',
@@ -94,48 +135,99 @@ function ProfileComponent(props) {
           height: '100%',
           width: '100%',
         }}>
-        {Drawer.map((res, i) => {
-          return (
-            <TouchableOpacity
-              onPress={() => props.navigation.navigate(res.Search)}
-              style={{
-                backgroundColor:
-                  props.navigation.state.index === i
-                    ? '#363535'
-                    : 'transparent',
-              }}
-              key={i}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  width: '100%',
-                  alignItems: 'center',
-                  padding: 7,
-                  borderBottomColor: '#c7c7c7',
-                }}>
-                <View
+        {type === 'user'
+          ? Drawer.map((res, i) => {
+              return (
+                <TouchableOpacity
+                  onPress={() => {
+                    i === 1 && Auth === false
+                      ? dispatch(Action.Toggle_PopUp(true))
+                      : props.navigation.navigate(res.Search);
+                  }}
                   style={{
-                    justifyContent: 'center',
-                  }}>
-                  <Image
-                    resizeMethod="auto"
-                    resizeMode="center"
-                    style={{height: 30, width: 40}}
-                    source={res.Icon}
-                  />
-                </View>
-                <Text
+                    backgroundColor:
+                      props.navigation.state.index === i
+                        ? '#363535'
+                        : 'transparent',
+                  }}
+                  key={i}>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      width: '100%',
+                      alignItems: 'center',
+                      padding: 7,
+                      borderBottomColor: '#c7c7c7',
+                    }}>
+                    <View
+                      style={{
+                        justifyContent: 'center',
+                      }}>
+                      <Image
+                        resizeMethod="auto"
+                        resizeMode="center"
+                        style={{height: 30, width: 40}}
+                        source={res.Icon}
+                      />
+                    </View>
+                    <Text
+                      style={{
+                        color: 'white',
+                        fontSize: 12,
+                        fontFamily: 'Poppins-Medium',
+                      }}>
+                      {res.label}
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+              );
+            })
+          : Drawers.map((res, i) => {
+              return (
+                <TouchableOpacity
+                  onPress={() => {
+                    i === 1 && Auth === false
+                      ? dispatch(Action.Toggle_PopUp(true))
+                      : props.navigation.navigate(res.Search);
+                  }}
                   style={{
-                    color: 'white',
-                    fontSize: 12,
-                    fontFamily: 'Poppins-Medium',
-                  }}>
-                  {res.label}
-                </Text>
-              </View>
-            </TouchableOpacity>
-          );
-        })}
+                    backgroundColor:
+                      props.navigation.state.index === i
+                        ? '#363535'
+                        : 'transparent',
+                  }}
+                  key={i}>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      width: '100%',
+                      alignItems: 'center',
+                      padding: 7,
+                      borderBottomColor: '#c7c7c7',
+                    }}>
+                    <View
+                      style={{
+                        justifyContent: 'center',
+                      }}>
+                      <Image
+                        resizeMethod="auto"
+                        resizeMode="center"
+                        style={{height: 30, width: 40}}
+                        source={res.Icon}
+                      />
+                    </View>
+                    <Text
+                      style={{
+                        color: 'white',
+                        fontSize: 12,
+                        fontFamily: 'Poppins-Medium',
+                      }}>
+                      {res.label}
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+              );
+            })}
         <TouchableOpacity
           style={{
             justifyContent: 'center',

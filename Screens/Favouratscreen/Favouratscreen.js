@@ -22,6 +22,9 @@ function Fav(props) {
   useEffect(() => {
     dispatch(Action.getfav({nUserID: ID}));
   }, []);
+  // useEffect(() => {
+  //   dispatch(Action.resetSearch());
+  // }, [props]);
   const [refresh, setRefresh] = useState(false);
   const refreshing = () => {
     setRefresh(true);

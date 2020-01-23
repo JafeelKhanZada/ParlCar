@@ -1,12 +1,12 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {View, StyleSheet, Button, Text, TouchableOpacity} from 'react-native';
 import {withNavigation} from 'react-navigation';
 import * as Action from '../../redux/actions';
 import {useSelector, useDispatch} from 'react-redux';
 const Navbutton = props => {
-  const Type = useSelector(state => state.Modal.Tab);
   const dispatch = useDispatch();
-  console.log('Type', Type);
+  
+  const Type = useSelector(state => state.Modal.Tab);
   return (
     <View>
       <View style={styles.button}>
