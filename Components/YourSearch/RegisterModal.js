@@ -112,10 +112,12 @@ function Model(props) {
             <React.Fragment></React.Fragment>
           )}
           <TouchableOpacity
-            style={Styles.btn}
+            style={{
+              ...Styles.btn,
+            }}
             onPress={() => {
               if (name !== '' && password !== '') {
-                dispatch(Action.testDrive(name, password, ID, props.rec));
+                dispatch(Action.testDrive(name, password, ID, props.rec,props.car));
                 dispatch(Action.toggleReg(false));
               } else {
                 Alert.alert(

@@ -77,10 +77,10 @@ function YourSerach(props) {
       if (props.navigation.state.params !== undefined)
         if (props.navigation.state.params.back !== undefined) {
           if (props.navigation.state.params.back === false) {
-            calBack();
+            // calBack();
           }
         } else {
-          calBack();
+          // calBack();
         }
     }
   }, [BrandId, ShowRoom, props]);
@@ -107,7 +107,7 @@ function YourSerach(props) {
           <RefreshControl refreshing={refresh} onRefresh={handleRefrest} />
         }>
         <Search />
-        <View style={{minHeight: heightPercentageToDP('50%')}}>
+        <View style={{minHeight: heightPercentageToDP('70%')}}>
           <SearchPost brand={BrandId} showroom={ShowRoom} data={data} />
         </View>
       </ScrollView>

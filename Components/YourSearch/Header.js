@@ -22,6 +22,10 @@ class Header extends Component {
                   this.props.navigation.navigate('YourSerach', {
                     back: true,
                   });
+                } else if (
+                  this.props.navigation.state.params.back === 'Notification'
+                ) {
+                  this.props.navigation.navigate('Notification');
                 } else {
                   this.props.navigation.navigate('Favourite');
                 }

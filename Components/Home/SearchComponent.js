@@ -511,7 +511,6 @@ const Styles = StyleSheet.create({
     },
     shadowOpacity: 1,
     shadowRadius: 10,
-
     elevation: 20,
   },
   Heading: {

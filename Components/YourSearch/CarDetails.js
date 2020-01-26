@@ -28,6 +28,7 @@ function CarDetails(props) {
   const dispatch = useDispatch();
   const datas = useSelector(state => state.Filter);
   const ID = useSelector(state => state.Auth.ID);
+  const [dis, setDis] = useState(false);
   const [IID, setIID] = useState(null);
   const [UID, setUID] = useState(null);
   useEffect(() => {
@@ -46,6 +47,9 @@ function CarDetails(props) {
           AdDetail[0].UserData.length > 0
         ) {
           setUID(AdDetail[0].UserData[0].ID);
+          if (AdDetail[0].UserData[0].ID === ID) {
+            setDis(true);
+          }
         }
       }
     }
@@ -222,12 +226,13 @@ function CarDetails(props) {
           <View style={{flexDirection: 'row', width: '100%'}}>
             <TouchableOpacity
               style={{width: '50%'}}
+              disabled={dis}
               onPress={() => visiblemodel1(true)}>
               <View
                 style={{
                   width: '100%',
                   height: '100%',
-                  backgroundColor: '#d81f25',
+                  backgroundColor: dis === false ? '#d81f25' : 'grey',
                   justifyContent: 'center',
                   alignItems: 'center',
                 }}>
@@ -244,6 +249,7 @@ function CarDetails(props) {
             <View style={{width: '1%'}}></View>
             <TouchableOpacity
               style={{width: '50%'}}
+              disabled={dis}
               onPress={async () => {
                 if (auth === true) {
                   dispatch(Action.toggleReg(true));
@@ -256,7 +262,7 @@ function CarDetails(props) {
                 style={{
                   width: '100%',
                   height: '100%',
-                  backgroundColor: '#d81f25',
+                  backgroundColor: dis === false ? '#d81f25' : 'grey',
                   justifyContent: 'center',
                   alignItems: 'center',
                 }}>
@@ -281,6 +287,8 @@ function CarDetails(props) {
           modalVisible={modalVisible}
           setModalVisible={visiblemodel}
           rec={UID}
+          dis={dis}
+          car={IID}
         />
       </View>
     </React.Fragment>

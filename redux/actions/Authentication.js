@@ -147,7 +147,7 @@ export const getUserById = id => {
     });
   };
 };
-export const testDrive = (name, phone, send, rec) => {
+export const testDrive = (name, phone, send, rec, car) => {
   let config = {
     nUserName: 'sample string 1',
     nToken: 'sample string 2',
@@ -157,7 +157,7 @@ export const testDrive = (name, phone, send, rec) => {
     nRecieverID: rec,
     nCity: 2,
     nShowroom: '',
-    nVehicleID: 2,
+    nVehicleID: car,
     nStatus: 'Pending',
     oNotes: '',
     nName: name,

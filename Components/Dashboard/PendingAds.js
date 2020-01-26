@@ -87,7 +87,13 @@ function Activeads(props) {
                         resizeMode="contain"
                         style={{height: '100%', width: '100%'}}
                         source={{
-                          uri: `data:image/${v.Images[0].ImageExtension};base64,${v.Images[0].nImage}`,
+                          uri: `http://207.180.230.73/palcar${
+                            v.Images !== undefined &&
+                            v.Images !== null &&
+                            v.Images.length > 0
+                              ? v.Images[0].nImage
+                              : ''
+                          }`,
                         }}
                       />
                     </View>
