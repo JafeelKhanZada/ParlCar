@@ -5,12 +5,19 @@ const initState = {
   Show: false,
   SignUp: false,
   Reg: false,
+  Forget: false,
 };
 const ModalReducer = (state = initState, action) => {
   switch (action.type) {
     default: {
       return {
         ...state,
+      };
+    }
+    case Action.TOGGLE_FORGET: {
+      return {
+        ...state,
+        Forget: action.payload,
       };
     }
     case Action.TOGGLEPOPUP: {

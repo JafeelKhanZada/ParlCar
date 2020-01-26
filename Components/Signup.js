@@ -23,7 +23,7 @@ const State = {
   nPassword: '',
   nCity: null,
   nCountry: null,
-  oContactPersonName: '',
+  oShowroomTelephone: '',
   nEmail: '',
 };
 function SIGNUP(props) {
@@ -198,17 +198,17 @@ function SIGNUP(props) {
                 <TextInput
                   placeholder="Enter your number here."
                   ref={register(
-                    {name: 'oContactPersonName'},
+                    {name: 'oShowroomTelephone'},
                     {required: false},
                   )}
                   style={{
                     ...Styles.TextInputContainer,
-                    borderColor: errors.oContactPersonName ? 'red' : '#CFCFCF',
+                    borderColor: errors.oShowroomTelephone ? 'red' : '#CFCFCF',
                   }}
                   onChangeText={text =>
-                    setValue('oContactPersonName', text, false)
+                    setValue('oShowroomTelephone', text, false)
                   }
-                  value={value.oContactPersonName}
+                  value={value.oShowroomTelephone}
                 />
               </View>
               <View

@@ -39,6 +39,7 @@ const MainContent = props => {
     setData(Ads);
   }, [Ads]);
   const handleClick = async v => {
+    dispatch(Action.saveView(v.ID));
     dispatch(Action.selectAd([v]));
     props.navigation.navigate('Details', {
       onGoBack: () =>
@@ -46,7 +47,6 @@ const MainContent = props => {
       back: 'YourSerach',
     });
     dispatch(Action.getfav({nUserID: id}));
-    dispatch(Action.saveView(v.ID));
     let History = await AsyncStorage.getItem('History').then(res => res);
     let Arr = [];
     if (History === null) {
@@ -172,13 +172,20 @@ const MainContent = props => {
                       style={{paddingRight: 10}}
                     /> */}
                     <TouchableOpacity>
-                      {v.UserData ? (
+                      {v.UserData !== undefined &&
+                      v.UserData !== null &&
+                      v.UserData.length > 0 ? (
                         <Image
                           style={styles.LeftLogo}
                           resizeMethod="resize"
                           resizeMode="contain"
                           source={{
-                            uri: `http://207.180.230.73/palcar/${v.UserData[0].Logo}`,
+                            uri: `http://207.180.230.73/palcar/${
+                              v.UserData[0].Logo !== undefined &&
+                              v.UserData[0].Logo !== null
+                                ? v.UserData[0].Logo
+                                : ''
+                            }`,
                           }}
                         />
                       ) : (
@@ -191,9 +198,9 @@ const MainContent = props => {
                       width: '70%',
                       paddingLeft: 5,
                     }}>
-                    <Text style={{color: 'grey', fontSize: 8, ...styles.text}}>
+                    {/* <Text style={{color: 'grey', fontSize: 8, ...styles.text}}>
                       {v.Model}
-                    </Text>
+                    </Text> */}
                     <Text
                       style={{
                         color: '#d81f25',
@@ -223,7 +230,8 @@ const MainContent = props => {
                     <TouchableOpacity
                       style={{
                         width: '30%',
-                        backgroundColor: 'orange',
+                        backgroundColor:
+                          v.AdsType === 'Sponsored' ? 'orange' : 'white',
                         justifyContent: 'center',
                         alignItems: 'center',
                         borderRadius: 3,
@@ -362,13 +370,20 @@ const MainContent = props => {
                       style={{paddingRight: 10}}
                     /> */}
                     <TouchableOpacity>
-                      {v.UserData ? (
+                      {v.UserData !== undefined &&
+                      v.UserData !== null &&
+                      v.UserData.length > 0 ? (
                         <Image
                           style={styles.LeftLogo}
                           resizeMethod="resize"
                           resizeMode="contain"
                           source={{
-                            uri: `http://207.180.230.73/palcar/${v.UserData[0].Logo}`,
+                            uri: `http://207.180.230.73/palcar/${
+                              v.UserData[0].Logo !== undefined &&
+                              v.UserData[0].Logo !== null
+                                ? v.UserData[0].Logo
+                                : ''
+                            }`,
                           }}
                         />
                       ) : (
@@ -381,9 +396,9 @@ const MainContent = props => {
                       width: '70%',
                       paddingLeft: 5,
                     }}>
-                    <Text style={{color: 'grey', fontSize: 8, ...styles.text}}>
+                    {/* <Text style={{color: 'grey', fontSize: 8, ...styles.text}}>
                       {v.Model}
-                    </Text>
+                    </Text> */}
                     <Text
                       style={{
                         color: '#d81f25',
@@ -413,7 +428,8 @@ const MainContent = props => {
                     <TouchableOpacity
                       style={{
                         width: '30%',
-                        backgroundColor: 'orange',
+                        backgroundColor:
+                          v.AdsType === 'Sponsored' ? 'orange' : 'white',
                         justifyContent: 'center',
                         alignItems: 'center',
                         borderRadius: 3,

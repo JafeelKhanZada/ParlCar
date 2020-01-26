@@ -29,3 +29,9 @@ export const toggleReg = payload => {
     payload,
   };
 };
+export const toggleForget = payload => {
+  return {
+    type: Action.TOGGLE_FORGET,
+    payload,
+  };
+};

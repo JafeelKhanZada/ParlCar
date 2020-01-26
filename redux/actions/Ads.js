@@ -42,8 +42,7 @@ export const getAds = obj => {
         dispatch(Actions.toggleLoader(false));
         return response.data;
       })
-      .catch(error => {
-      });
+      .catch(error => {});
   };
 };
 export const selectAd = payload => {
@@ -68,8 +67,7 @@ export const deleteAd = (id, nId) => {
           dispatch(getAds({UID: nId}));
         }
       })
-      .catch(error => {
-      });
+      .catch(error => {});
   };
 };
 export const getSelected = obj => {
@@ -190,7 +188,12 @@ export const saveAd = adData => {
     {headers: Action.headers},
   );
   return dispatch => {
-    request.then(response => {
+    return request.then(response => {
+      console.log(response);
+      if (response.data.result === false) {
+        Alert.alert('Error', response.data.message);
+      }
+      return response.data.result;
     });
   };
 };
@@ -277,6 +280,7 @@ export const saveView = id => {
         headers: Action.headers,
       })
       .then(response => {
+        console.log(response);
       })
       .catch(error => {
         console.log(error);

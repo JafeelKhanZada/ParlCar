@@ -29,6 +29,7 @@ function CarDetails(props) {
   const datas = useSelector(state => state.Filter);
   const ID = useSelector(state => state.Auth.ID);
   const [IID, setIID] = useState(null);
+  const [UID, setUID] = useState(null);
   useEffect(() => {
     if (AdDetail) {
       setDetail(AdDetail);
@@ -38,6 +39,13 @@ function CarDetails(props) {
           let arr = AdDetail[0].ImagesForSlider.split(',');
           const newarr = converstation(arr);
           setImages(newarr);
+        }
+        if (
+          AdDetail[0].UserData !== null &&
+          AdDetail[0].UserData !== undefined &&
+          AdDetail[0].UserData.length > 0
+        ) {
+          setUID(AdDetail[0].UserData[0].ID);
         }
       }
     }
@@ -272,6 +280,7 @@ function CarDetails(props) {
         <RegisterModal
           modalVisible={modalVisible}
           setModalVisible={visiblemodel}
+          rec={UID}
         />
       </View>
     </React.Fragment>

@@ -10,6 +10,11 @@ import {
   Alert,
 } from 'react-native';
 import {CheckBox} from 'native-base';
+import RadioForm, {
+  RadioButton,
+  RadioButtonInput,
+  RadioButtonLabel,
+} from 'react-native-simple-radio-button';
 // import Checkbox from 'react-native-modest-checkbox';
 import * as Action from '../../redux/actions';
 import {useSelector, useDispatch} from 'react-redux';
@@ -64,7 +69,6 @@ const State = {
   nFuelType: null,
   nEngineSize: '',
   nNotes: '',
-  nAdType: null,
 };
 function AddNewAds(props) {
   const dispatch = useDispatch();
@@ -94,13 +98,15 @@ function AddNewAds(props) {
   const [normalAd, setNormalAd] = useState(0);
   const [sponserAd, setSponserAd] = useState(0);
   const [ExtraVehicleInfo, setExtraVehicleInfo] = useState([]);
-
+  const [value3Index, setvalue3Index] = useState(null);
+  const [err, setErr] = useState(false);
+  const [dis, setDIS] = useState(false);
   useEffect(() => {
     setOPT(Option);
   }, [Option, counter]);
   const TYPE = [
-    {name: 'Normal Ad', value: 'normal'},
-    {name: 'Sponser Ad', value: 'sponser'},
+    {label: 'Normal Ad', value: 'normal'},
+    {label: 'Sponser Ad', value: 'sponser'},
   ];
   useEffect(() => {
     setCity(city);
@@ -171,7 +177,7 @@ function AddNewAds(props) {
     let nKiloMeters = getValues().nKiloMeters === '' ? false : true;
     let nColor = getValues().nColor === null ? false : true;
     let nFuelType = getValues().nFuelType === null ? false : true;
-    let Type = getValues().nAdType === null ? false : true;
+    let Type = value3Index === null ? false : true;
     let nEngineSize = getValues().nEngineSize === '' ? false : true;
     if (city !== true) {
       setError('nCity');
@@ -204,7 +210,7 @@ function AddNewAds(props) {
       setError('nEngineSize');
     }
     if (Type !== true) {
-      setError('nAdType');
+      setErr(true); // setError('nAdType');
     }
   };
 
@@ -217,10 +223,14 @@ function AddNewAds(props) {
       nCreatedBy: User.UserName,
       Images: filterImage,
       ExtraVehicleInfo,
+      nAdType: value3Index,
     };
     if (filterImage.length === 0) {
       validate();
       Alert.alert('Please Add At Least One Picture!');
+    } else if (value3Index === null) {
+      validate();
+      Alert.alert('Please Select Ad Type!');
     } else if (obj.nCity === null) {
       validate();
       Alert.alert('Please Select City!');
@@ -248,9 +258,6 @@ function AddNewAds(props) {
     } else if (obj.nFuelType === null) {
       validate();
       Alert.alert('Please Select Fuel Type!');
-    } else if (obj.nAdType === null) {
-      validate();
-      Alert.alert('Please Select Ad Type!');
     } else if (obj.nEngineSize === '') {
       validate();
       Alert.alert('Please Enter Engine Size!');
@@ -260,44 +267,48 @@ function AddNewAds(props) {
       } else if (values.nAdType === 'sponser' && sponserAd <= 0) {
         Alert.alert('Your Sponser Ad Credit Is Finished!');
       } else {
-        await Promise.all([await dispatch(Action.saveAd(obj))]).then(() => {
-          setImages([
-            {
-              ImageExtension: '',
-              VehicleID: 3,
-              ID: -1,
-              nImage: null,
-            },
-            {
-              ImageExtension: '',
-              VehicleID: 3,
-              ID: -1,
-              nImage: null,
-            },
-            {
-              ImageExtension: '',
-              VehicleID: 3,
-              ID: -1,
-              nImage: null,
-            },
-            {
-              ImageExtension: '',
-              VehicleID: 3,
-              ID: -1,
-              nImage: null,
-            },
-          ]);
-          let count = counter;
-          count++;
-          reset(State);
-          dispatch(Action.getActiveAds({UserId: User.ID}));
-          dispatch(Action.resetModel());
-          setCounter(count);
-          setExtraVehicleInfo([]);
-          setValue('nShowRoomName', User.ShowromName);
-          setValue('nCity', User.City);
-          props.navigation.navigate('YourSerach');
-          dispatch(Action.UPDATEUSER(User.ID));
+        setDIS(true);
+        await Promise.all([await dispatch(Action.saveAd(obj))]).then(res => {
+          setDIS(false);
+          if (res[0] === true) {
+            setImages([
+              {
+                ImageExtension: '',
+                VehicleID: 3,
+                ID: -1,
+                nImage: null,
+              },
+              {
+                ImageExtension: '',
+                VehicleID: 3,
+                ID: -1,
+                nImage: null,
+              },
+              {
+                ImageExtension: '',
+                VehicleID: 3,
+                ID: -1,
+                nImage: null,
+              },
+              {
+                ImageExtension: '',
+                VehicleID: 3,
+                ID: -1,
+                nImage: null,
+              },
+            ]);
+            let count = counter;
+            count++;
+            reset(State);
+            dispatch(Action.getActiveAds({UserId: User.ID}));
+            props.navigation.navigate('YourSerach');
+            dispatch(Action.resetModel());
+            setCounter(count);
+            setExtraVehicleInfo([]);
+            setValue('nShowRoomName', User.ShowromName);
+            setValue('nCity', User.City);
+            dispatch(Action.UPDATEUSER(User.ID));
+          }
         });
       }
     }
@@ -372,7 +383,8 @@ function AddNewAds(props) {
       file !== '' &&
       file.didCancel !== true
     ) {
-      let extension = file.type.split('/')[1];
+      let files = file.path.split('.');
+      let extension = files[files.length - 1];
       RNFS.readFile(file.path, 'base64').then(res => {
         let Image = Images;
         Image[k].ImageExtension = extension;
@@ -390,6 +402,7 @@ function AddNewAds(props) {
       noData: true,
     };
     ImagePicker.showImagePicker(options, response => {
+      console.log(response);
       toBase64(response, k);
     });
   };
@@ -416,6 +429,81 @@ function AddNewAds(props) {
                 </TouchableOpacity>
               </View>
               <View>
+                <View>
+                  <Text
+                    style={{
+                      fontFamily: 'Poppins',
+                      fontSize: 11,
+                      marginBottom: 10,
+                      color: err === true ? '#CB3837' : '#333',
+                      marginLeft: 5,
+                    }}>
+                    Ad Type*
+                  </Text>
+                  <RadioForm
+                    formHorizontal={true}
+                    labelHorizontal={true}
+                    animation={true}>
+                    {/* To create radio buttons, loop through your array of options */}
+                    {TYPE.map((obj, i) => (
+                      <RadioButton labelHorizontal={true} key={i}>
+                        {/*  You can set RadioButtonLabel before RadioButtonInput */}
+                        <RadioButtonInput
+                          obj={obj}
+                          index={i}
+                          isSelected={value3Index === obj.value}
+                          onPress={val => {
+                            setvalue3Index(val);
+                            setErr(false);
+                          }}
+                          borderWidth={1}
+                          buttonInnerColor={'#d81f25'}
+                          buttonOuterColor={
+                            value3Index === obj.value
+                              ? '#d81f25'
+                              : err === true
+                              ? '#CB3837'
+                              : '#333'
+                          }
+                          buttonSize={12}
+                          buttonOuterSize={18}
+                          buttonStyle={{}}
+                          buttonWrapStyle={{marginLeft: i !== 0 ? 30 : 5}}
+                        />
+                        <RadioButtonLabel
+                          obj={obj}
+                          index={i}
+                          onPress={val => {
+                            setvalue3Index(val);
+                            setErr(false);
+                          }}
+                          labelStyle={{
+                            fontSize: 12,
+                            color: err === true ? '#CB3837' : '#333',
+                            fontFamily: 'Poppins',
+                            marginTop: -4,
+                            marginLeft: 10,
+                          }}
+                        />
+                      </RadioButton>
+                    ))}
+                  </RadioForm>
+                  {value3Index !== null ? (
+                    <Text
+                      style={{
+                        fontFamily: 'Poppins',
+                        padding: 2,
+                        fontSize: 10,
+                        textTransform: 'capitalize',
+                      }}>
+                      {`Total Credit Of ${value3Index} : ${
+                        values.nAdType === 'normal' ? normalAd : sponserAd
+                      }`}
+                    </Text>
+                  ) : (
+                    <React.Fragment></React.Fragment>
+                  )}
+                </View>
                 <View
                   style={{
                     ...styles.textInp,
@@ -703,42 +791,6 @@ function AddNewAds(props) {
                       })}
                   </Picker>
                 </View>
-                <View
-                  style={{
-                    ...styles.textInp,
-                    borderColor: errors.nAdType ? 'red' : '#CFCFCF',
-                  }}>
-                  <Picker
-                    style={{
-                      width: '100%',
-                      height: 28,
-                      fontFamily: 'Poppins',
-                    }}
-                    selectedValue={values.nAdType}
-                    ref={register({name: 'nAdType'}, {required: true})}
-                    onValueChange={(itemValue, itemIndex) => {
-                      setValue('nAdType', itemValue, true);
-                    }}>
-                    <Picker.Item label="--Ad Type*" value={null} disabled />
-                    {TYPE &&
-                      TYPE.map((v, k) => {
-                        return <Picker.Item label={v.name} value={v.value} />;
-                      })}
-                  </Picker>
-                </View>
-                <Text
-                  style={{
-                    fontFamily: 'Poppins',
-                    padding: 2,
-                    fontSize: 10,
-                    textTransform: 'capitalize',
-                  }}>
-                  {values.nAdType !== null
-                    ? `Total Credit Of ${getValues().nAdType} : ${
-                        values.nAdType === 'normal' ? normalAd : sponserAd
-                      }`
-                    : ''}
-                </Text>
                 <TextInput
                   ref={register({name: 'nEngineSize'}, {required: true})}
                   onChangeText={text => setValue('nEngineSize', text, true)}
@@ -809,13 +861,14 @@ function AddNewAds(props) {
                     marginTop: 10,
                   }}>
                   <TouchableOpacity
+                    disabled={dis}
                     style={{
                       width: 140,
                       padding: 5,
-                      backgroundColor: '#d81f25',
                       justifyContent: 'center',
                       alignItems: 'center',
                       borderRadius: 5,
+                      backgroundColor: dis === false ? '#d81f25' : '#C7C7C7',
                     }}
                     onPress={() => onSubmit()}>
                     <Text

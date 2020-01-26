@@ -16,7 +16,7 @@ export default Tabnavigator = createMaterialBottomTabNavigator(
       navigationOptions: {
         tabBarLabel: 'Home',
         tabBarIcon: ({tintColor}) => (
-          <Icon style={[{color: tintColor}]} size={20} name={'search1'} />
+          <Icon style={[{color: tintColor}]} size={20} name={'home'} />
         ),
       },
     },

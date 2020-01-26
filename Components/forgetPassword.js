@@ -14,33 +14,27 @@ import * as Action from '../redux/actions';
 import Loader from './Loader';
 import {withNavigation} from 'react-navigation';
 function Login(props) {
-  const [AdID, setAdID] = useState(null);
   const dispatch = useDispatch();
   const [visible, setVisible] = useState(false);
   const [name, setName] = useState('');
-  const [password, setPassword] = useState('');
   const [dis, setDis] = useState(false);
-  const Visibility = useSelector(state => state.Modal.Login);
-  useEffect(() => {
-    setAdID(props.id !== undefined && props.id !== true ? props.id : null);
-  }, [props]);
+  const Visibility = useSelector(state => state.Modal.Forget);
   useEffect(() => {
     setVisible(Visibility);
   }, [Visibility]);
   const submitHandle = () => {
-    if (name !== '' && password !== '') {
+    if (name !== '') {
       setDis(true);
-      Promise.all([dispatch(Action.login(name, password, AdID))]).then(val => {
+      Promise.all([dispatch(Action.forgetPassword(name))]).then(val => {
         setDis(false);
         if (val[0] === true) {
           setName('');
-          setPassword('');
         }
       });
     } else {
       Alert.alert(
-        'Empty Email or Password!',
-        'Please Check Your Email or Passowrd.',
+        'Empty Email or Username!',
+        'Please Check Your Email or Username.',
         [{text: 'OK', onPress: () => console.log('OK Pressed')}],
         {cancelable: false},
       );
@@ -57,11 +51,11 @@ function Login(props) {
             onPress={() =>
               props.id === true
                 ? props.navigation.navigate('Home')
-                : dispatch(Action.Toggle_PopUp(false))
+                : dispatch(Action.toggleForget(false))
             }>
             <Icon name="close" size={20} />
           </TouchableOpacity>
-          <Text style={Styles.Text}>Login</Text>
+          <Text style={Styles.Text}>Forget Password</Text>
           <Text style={Styles.Text1}>User/Showroom</Text>
           <View style={Styles.TextContainer}>
             <Text
@@ -74,37 +68,11 @@ function Login(props) {
               Email
             </Text>
             <TextInput
-              placeholder="Enter your Email here."
+              placeholder="Enter your Email or here."
               style={Styles.TextInputContainer}
               onChangeText={text => setName(text)}
               value={name}
             />
-          </View>
-          <View style={Styles.TextContainer}>
-            <Text
-              style={{
-                ...Styles.Text,
-                fontSize: 14,
-                textTransform: 'capitalize',
-                marginTop: 10,
-              }}>
-              Password
-            </Text>
-            <TextInput
-              placeholder="Enter your password here."
-              style={Styles.TextInputContainer}
-              onChangeText={text => setPassword(text)}
-              value={password}
-              secureTextEntry={true}
-            />
-            <TouchableOpacity
-              style={{alignItems: 'flex-end', width: '100%', padding: 4}}
-              onPress={() => {
-                dispatch(Action.Toggle_PopUp(false));
-                dispatch(Action.toggleForget(true));
-              }}>
-              <Text style={{fontSize: 8}}>Forget Password?</Text>
-            </TouchableOpacity>
           </View>
           <TouchableOpacity
             style={[
@@ -119,12 +87,12 @@ function Login(props) {
               style={{
                 ...Styles.btnText,
               }}>
-              Login
+              Submit
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
-              dispatch(Action.toggleForget(false));
+              dispatch(Action.Toggle_PopUp(false));
               dispatch(Action.toggleSignUp(true));
             }}>
             <Text
@@ -214,4 +182,5 @@ const Styles = StyleSheet.create({
     fontFamily: 'Poppins-Medium',
   },
 });
-export default withNavigation(Login);
+// export default withNavigation(Login);
+export default Login;

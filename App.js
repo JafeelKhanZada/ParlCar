@@ -4,6 +4,7 @@ import SplashScreen from 'react-native-splash-screen';
 import {connect} from 'react-redux';
 import {AsyncStorage} from 'react-native';
 import * as Action from './redux/actions';
+import Forget from './Components/forgetPassword';
 class App extends Component {
   componentDidMount() {
     AsyncStorage.getItem('History').then(res => {
@@ -27,6 +28,7 @@ class App extends Component {
   render() {
     return (
       <React.Fragment>
+        <Forget />
         <Appcontainer />
       </React.Fragment>
     );

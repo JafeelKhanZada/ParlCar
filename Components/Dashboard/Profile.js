@@ -28,6 +28,7 @@ import Img5 from '../../assests/images/ProfileIcon/5.png';
 import Img6 from '../../assests/images/ProfileIcon/6.png';
 import Img7 from '../../assests/images/ProfileIcon/7.png';
 import Img8 from '../../assests/images/ProfileIcon/8.png';
+import DP from '../../assests/dp.jpg';
 import Loader from '../Loader';
 import * as Action from '../../redux/actions';
 // import EditModal from "./EditProfile"
@@ -116,7 +117,8 @@ function HomeScreen(props) {
       file !== '' &&
       file.didCancel !== true
     ) {
-      let extension = file.type.split('/')[1];
+      let files = file.path.split('.');
+      let extension = files[files.length - 1];
       RNFS.readFile(file.path, 'base64').then(async res => {
         let obj = state;
         obj.oLogo = res;
@@ -141,14 +143,7 @@ function HomeScreen(props) {
       toBase64(response);
     });
   };
-  const handleChooseCamera = () => {
-    const options = {
-      noData: true,
-    };
-    ImagePicker.launchCamera(options, response => {
-      toBase64(response);
-    });
-  };
+
   const values = watch();
   return (
     <React.Fragment>
@@ -188,32 +183,41 @@ function HomeScreen(props) {
                 }}>
                 Edit Profile
               </Text>
-              <TextInput
-                name="oShowromName"
-                placeholder="Enter Showroom Name Here...."
-                style={styles.input}
-                value={values.oShowromName}
-                ref={register({name: 'oShowromName'}, {required: true})}
-                onChangeText={text => setValue('oShowromName', text, true)}
-              />
-              <TextInput
-                name="oShowroomTelephone"
-                placeholder="Enter Mobile Number Here...."
-                style={styles.input}
-                value={values.oShowroomTelephone}
-                ref={register({name: 'oShowroomTelephone'}, {required: true})}
-                onChangeText={text =>
-                  setValue('oShowroomTelephone', text, true)
-                }
-              />
-              <TextInput
-                name="oAddress"
-                placeholder="Enter Address Here...."
-                style={styles.input}
-                value={values.oAddress}
-                ref={register({name: 'oAddress'}, {required: true})}
-                onChangeText={text => setValue('oAddress', text, true)}
-              />
+              {state.nType === 'Showroom' ? (
+                <React.Fragment>
+                  <TextInput
+                    name="oShowromName"
+                    placeholder="Enter Showroom Name Here...."
+                    style={styles.input}
+                    value={values.oShowromName}
+                    ref={register({name: 'oShowromName'}, {required: true})}
+                    onChangeText={text => setValue('oShowromName', text, true)}
+                  />
+                  <TextInput
+                    name="oShowroomTelephone"
+                    placeholder="Enter Mobile Number Here...."
+                    style={styles.input}
+                    value={values.oShowroomTelephone}
+                    ref={register(
+                      {name: 'oShowroomTelephone'},
+                      {required: true},
+                    )}
+                    onChangeText={text =>
+                      setValue('oShowroomTelephone', text, true)
+                    }
+                  />
+                  <TextInput
+                    name="oAddress"
+                    placeholder="Enter Address Here...."
+                    style={styles.input}
+                    value={values.oAddress}
+                    ref={register({name: 'oAddress'}, {required: true})}
+                    onChangeText={text => setValue('oAddress', text, true)}
+                  />
+                </React.Fragment>
+              ) : (
+                <React.Fragment></React.Fragment>
+              )}
               <View style={styles.input}>
                 <Picker
                   textStyle={{backgroundColor: 'orange'}}
@@ -250,14 +254,14 @@ function HomeScreen(props) {
                     })}
                 </Picker>
               </View>
-              <TextInput
+              {/* <TextInput
                 name="oPassword"
                 placeholder="Enter Password Here...."
                 style={styles.input}
                 value={values.oPassword}
                 ref={register({name: 'oPassword'}, {required: true})}
                 onChangeText={text => setValue('oPassword', text, true)}
-              />
+              /> */}
               <TouchableOpacity
                 style={{
                   margin: 10,
@@ -315,16 +319,27 @@ function HomeScreen(props) {
                           alignItems: 'center',
                         }}>
                         <TouchableOpacity>
-                          <Image
-                            style={{
-                              height: 150,
-                              width: 150,
-                              borderRadius: 10,
-                            }}
-                            source={{
-                              uri: `http://207.180.230.73/palcar${v.Logo}`,
-                            }}
-                          />
+                          {v.Logo === null || v.Logo === '' ? (
+                            <Image
+                              style={{
+                                height: 150,
+                                width: 150,
+                                borderRadius: 10,
+                              }}
+                              source={DP}
+                            />
+                          ) : (
+                            <Image
+                              style={{
+                                height: 150,
+                                width: 150,
+                                borderRadius: 10,
+                              }}
+                              source={{
+                                uri: `http://207.180.230.73/palcar${v.Logo}`,
+                              }}
+                            />
+                          )}
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => handleChoosePhoto()}>
                           <Text
@@ -498,141 +513,167 @@ function HomeScreen(props) {
                           ********
                         </Text>
                       </View>
-                      <View
-                        style={{
-                          width: '100%',
-                          flexDirection: 'row',
-                          padding: 10,
-                          alignItems: 'center',
-                          justifyContent: 'space-between',
-                        }}>
-                        <View style={{flexDirection: 'row', width: '45%'}}>
-                          <Image
-                            resizeMethod="resize"
-                            resizeMode="contain"
-                            source={Img6}
-                            style={{height: 20, width: 20, paddingRight: 50}}
-                          />
-                          <Text
+                      {state.nType === 'Showroom' ? (
+                        <React.Fragment>
+                          <View
                             style={{
-                              color: 'grey',
-                              fontFamily: 'Poppins-Light',
+                              width: '100%',
+                              flexDirection: 'row',
+                              padding: 10,
+                              alignItems: 'center',
+                              justifyContent: 'space-between',
                             }}>
-                            No. of Ads
-                          </Text>
-                        </View>
-                        <Text style={{fontFamily: 'Poppins-Medium'}}>
-                          {adsLength.length}
-                        </Text>
-                      </View>
-                      <View
-                        style={{
-                          width: '100%',
-                          flexDirection: 'row',
-                          padding: 10,
-                          alignItems: 'center',
-                          justifyContent: 'space-between',
-                        }}>
-                        <View style={{flexDirection: 'row', width: '45%'}}>
-                          <Image
-                            resizeMethod="resize"
-                            resizeMode="contain"
-                            source={Img7}
-                            style={{height: 20, width: 20, paddingRight: 50}}
-                          />
-                          <Text
+                            <View style={{flexDirection: 'row', width: '45%'}}>
+                              <Image
+                                resizeMethod="resize"
+                                resizeMode="contain"
+                                source={Img6}
+                                style={{
+                                  height: 20,
+                                  width: 20,
+                                  paddingRight: 50,
+                                }}
+                              />
+                              <Text
+                                style={{
+                                  color: 'grey',
+                                  fontFamily: 'Poppins-Light',
+                                }}>
+                                No. of Ads
+                              </Text>
+                            </View>
+                            <Text style={{fontFamily: 'Poppins-Medium'}}>
+                              {adsLength.length}
+                            </Text>
+                          </View>
+                          <View
                             style={{
-                              color: 'grey',
-                              fontFamily: 'Poppins-Light',
+                              width: '100%',
+                              flexDirection: 'row',
+                              padding: 10,
+                              alignItems: 'center',
+                              justifyContent: 'space-between',
                             }}>
-                            Sponser Ads
-                          </Text>
-                        </View>
-                        <Text style={{fontFamily: 'Poppins-Medium'}}>
-                          {v.SposerAds}
-                        </Text>
-                      </View>
-                      <View
-                        style={{
-                          width: '100%',
-                          flexDirection: 'row',
-                          padding: 10,
-                          alignItems: 'center',
-                          justifyContent: 'space-between',
-                        }}>
-                        <View style={{flexDirection: 'row', width: '45%'}}>
-                          <Image
-                            resizeMethod="resize"
-                            resizeMode="contain"
-                            source={Img8}
-                            style={{height: 20, width: 20, paddingRight: 50}}
-                          />
-                          <Text
+                            <View style={{flexDirection: 'row', width: '45%'}}>
+                              <Image
+                                resizeMethod="resize"
+                                resizeMode="contain"
+                                source={Img7}
+                                style={{
+                                  height: 20,
+                                  width: 20,
+                                  paddingRight: 50,
+                                }}
+                              />
+                              <Text
+                                style={{
+                                  color: 'grey',
+                                  fontFamily: 'Poppins-Light',
+                                }}>
+                                Sponser Ads
+                              </Text>
+                            </View>
+                            <Text style={{fontFamily: 'Poppins-Medium'}}>
+                              {v.SposerAds}
+                            </Text>
+                          </View>
+                          <View
                             style={{
-                              color: 'grey',
-                              fontFamily: 'Poppins-Light',
+                              width: '100%',
+                              flexDirection: 'row',
+                              padding: 10,
+                              alignItems: 'center',
+                              justifyContent: 'space-between',
                             }}>
-                            Normal Ads
-                          </Text>
-                        </View>
-                        <Text style={{fontFamily: 'Poppins-Medium'}}>
-                          {v.NormalAds}
-                        </Text>
-                      </View>
-                      <View
-                        style={{
-                          width: '100%',
-                          flexDirection: 'row',
-                          padding: 10,
-                          alignItems: 'center',
-                          justifyContent: 'space-between',
-                        }}>
-                        <View style={{flexDirection: 'row', width: '45%'}}>
-                          <Image
-                            resizeMethod="resize"
-                            resizeMode="contain"
-                            source={Img7}
-                            style={{height: 20, width: 20, paddingRight: 50}}
-                          />
-                          <Text
+                            <View style={{flexDirection: 'row', width: '45%'}}>
+                              <Image
+                                resizeMethod="resize"
+                                resizeMode="contain"
+                                source={Img8}
+                                style={{
+                                  height: 20,
+                                  width: 20,
+                                  paddingRight: 50,
+                                }}
+                              />
+                              <Text
+                                style={{
+                                  color: 'grey',
+                                  fontFamily: 'Poppins-Light',
+                                }}>
+                                Normal Ads
+                              </Text>
+                            </View>
+                            <Text style={{fontFamily: 'Poppins-Medium'}}>
+                              {v.NormalAds}
+                            </Text>
+                          </View>
+                          <View
                             style={{
-                              color: 'grey',
-                              fontFamily: 'Poppins-Light',
+                              width: '100%',
+                              flexDirection: 'row',
+                              padding: 10,
+                              alignItems: 'center',
+                              justifyContent: 'space-between',
                             }}>
-                            Sponser Ad Credit
-                          </Text>
-                        </View>
-                        <Text style={{fontFamily: 'Poppins-Medium'}}>
-                          {v.Sponsored_ads_balance}
-                        </Text>
-                      </View>
-                      <View
-                        style={{
-                          width: '100%',
-                          flexDirection: 'row',
-                          padding: 10,
-                          alignItems: 'center',
-                          justifyContent: 'space-between',
-                        }}>
-                        <View style={{flexDirection: 'row', width: '45%'}}>
-                          <Image
-                            resizeMethod="resize"
-                            resizeMode="contain"
-                            source={Img8}
-                            style={{height: 20, width: 20, paddingRight: 50}}
-                          />
-                          <Text
+                            <View style={{flexDirection: 'row', width: '45%'}}>
+                              <Image
+                                resizeMethod="resize"
+                                resizeMode="contain"
+                                source={Img7}
+                                style={{
+                                  height: 20,
+                                  width: 20,
+                                  paddingRight: 50,
+                                }}
+                              />
+                              <Text
+                                style={{
+                                  color: 'grey',
+                                  fontFamily: 'Poppins-Light',
+                                }}>
+                                Sponser Ad Credit
+                              </Text>
+                            </View>
+                            <Text style={{fontFamily: 'Poppins-Medium'}}>
+                              {v.Sponsored_ads_balance}
+                            </Text>
+                          </View>
+                          <View
                             style={{
-                              color: 'grey',
-                              fontFamily: 'Poppins-Light',
+                              width: '100%',
+                              flexDirection: 'row',
+                              padding: 10,
+                              alignItems: 'center',
+                              justifyContent: 'space-between',
                             }}>
-                            Normal Ad Credit
-                          </Text>
-                        </View>
-                        <Text style={{fontFamily: 'Poppins-Medium'}}>
-                          {v.Normal_ads_Balance}
-                        </Text>
-                      </View>
+                            <View style={{flexDirection: 'row', width: '45%'}}>
+                              <Image
+                                resizeMethod="resize"
+                                resizeMode="contain"
+                                source={Img8}
+                                style={{
+                                  height: 20,
+                                  width: 20,
+                                  paddingRight: 50,
+                                }}
+                              />
+                              <Text
+                                style={{
+                                  color: 'grey',
+                                  fontFamily: 'Poppins-Light',
+                                }}>
+                                Normal Ad Credit
+                              </Text>
+                            </View>
+                            <Text style={{fontFamily: 'Poppins-Medium'}}>
+                              {v.Normal_ads_Balance}
+                            </Text>
+                          </View>
+                        </React.Fragment>
+                      ) : (
+                        <React.Fragment></React.Fragment>
+                      )}
 
                       <View style={{paddingTop: 10, paddingBottom: 30}}>
                         <TouchableOpacity

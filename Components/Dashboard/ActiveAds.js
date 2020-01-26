@@ -36,75 +36,76 @@ function Activeads(props) {
     }
   }, [Ads]);
   return (
-    <ScrollView
-      style={{height: '100%'}}
-      refreshControl={
-        <RefreshControl refreshing={refresh} onRefresh={handleRefresh} />
-      }>
-      <View>
-        <Loader />
-        <Header />
-        <Text
-          style={{
-            textAlign: 'center',
-            fontSize: 15,
-            padding: 10,
-            borderBottomWidth: 1,
-            borderBottomColor: 'lightgrey',
-            backgroundColor: 'white',
-            borderTopWidth: 1,
-            borderTopColor: 'lightgrey',
-            fontFamily: 'Poppins-Bold',
-          }}>
-          Active Ads
-        </Text>
-        <View
-          style={{
-            width: '100%',
-            padding: 10,
-          }}>
-          {activeAds &&
-            activeAds.map((v, k) => {
-              return (
-                <React.Fragment key={k}>
-                  <View
-                    style={{
-                      height: 70,
-                      padding: 3,
-                      paddingLeft: 0,
-                      paddingRight: 10,
-                      width: '100%',
-                      backgroundColor: 'white',
-                      flexDirection: 'row',
-                      marginTop: k === 0 ? 0 : 6,
-                    }}>
-                    <View style={{width: '30%', backgroundColor: 'white'}}>
-                      <Image
-                        resizeMethod="resize"
-                        resizeMode="contain"
-                        style={{height: '100%', width: '100%'}}
-                        source={{
-                          uri: `http://207.180.230.73/palcar${v.Images[0].nImage}`,
-                        }}
-                      />
-                    </View>
+    <React.Fragment>
+      <Loader />
+      <ScrollView
+        style={{height: '100%'}}
+        refreshControl={
+          <RefreshControl refreshing={refresh} onRefresh={handleRefresh} />
+        }>
+        <View>
+          <Header />
+          <Text
+            style={{
+              textAlign: 'center',
+              fontSize: 15,
+              padding: 10,
+              borderBottomWidth: 1,
+              borderBottomColor: 'lightgrey',
+              backgroundColor: 'white',
+              borderTopWidth: 1,
+              borderTopColor: 'lightgrey',
+              fontFamily: 'Poppins-Bold',
+            }}>
+            Active Ads
+          </Text>
+          <View
+            style={{
+              width: '100%',
+              padding: 10,
+            }}>
+            {activeAds &&
+              activeAds.map((v, k) => {
+                return (
+                  <React.Fragment key={k}>
                     <View
                       style={{
-                        width: '60%',
-                        padding: 5,
-                        justifyContent: 'space-between',
+                        height: 70,
+                        padding: 3,
+                        paddingLeft: 0,
+                        paddingRight: 10,
+                        width: '100%',
+                        backgroundColor: 'white',
+                        flexDirection: 'row',
+                        marginTop: k === 0 ? 0 : 6,
                       }}>
-                      <View>
-                        <Text
-                          style={{
-                            fontWeight: 'bold',
-                            fontSize: 12,
-                            fontFamily: 'Poppins-Light',
-                            letterSpacing: 1,
-                          }}>
-                          {v.BrandName}
-                        </Text>
-                        {/* <Text
+                      <View style={{width: '30%', backgroundColor: 'white'}}>
+                        <Image
+                          resizeMethod="resize"
+                          resizeMode="contain"
+                          style={{height: '100%', width: '100%'}}
+                          source={{
+                            uri: `http://207.180.230.73/palcar${v.Images[0].nImage}`,
+                          }}
+                        />
+                      </View>
+                      <View
+                        style={{
+                          width: '60%',
+                          padding: 5,
+                          justifyContent: 'space-between',
+                        }}>
+                        <View>
+                          <Text
+                            style={{
+                              fontWeight: 'bold',
+                              fontSize: 12,
+                              fontFamily: 'Poppins-Light',
+                              letterSpacing: 1,
+                            }}>
+                            {v.BrandName}
+                          </Text>
+                          {/* <Text
                           style={{
                             color: 'lightgrey',
                             fontSize: 9,
@@ -113,76 +114,77 @@ function Activeads(props) {
                           }}>
                           User car for sale
                         </Text> */}
+                        </View>
+                        <View
+                          style={{
+                            width: '100%',
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                          }}>
+                          <Text
+                            style={{
+                              color: 'grey',
+                              fontSize: 9,
+                              letterSpacing: 1,
+                              fontFamily: 'Poppins',
+                            }}>
+                            {moment(v.CreatedDate).format('DD/MMMM/YYYY')}
+                          </Text>
+                          <Text
+                            style={{
+                              color: 'grey',
+                              fontSize: 9,
+                              fontFamily: 'Poppins-Bold',
+                            }}>
+                            {v.TotalViews} Views
+                          </Text>
+                        </View>
                       </View>
-                      <View
+                      <TouchableOpacity
                         style={{
-                          width: '100%',
-                          flexDirection: 'row',
-                          justifyContent: 'space-between',
+                          width: '15%',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        }}
+                        onPress={() => {
+                          Alert.alert(
+                            'Deleting Ads?',
+                            'Are you sure for deleting ad?',
+                            [
+                              {
+                                text: 'Yes',
+                                onPress: async () =>
+                                  await Promise.all([
+                                    await dispatch(Action.deleteAd(v.ID, ID)),
+                                  ]).then(async () => {
+                                    dispatch(Action.getDeleteAD({UserId: ID}));
+                                    dispatch(Action.getActiveAds({UserId: ID}));
+                                    dispatch(Action.UPDATEUSER(ID));
+                                  }),
+                              },
+                              {
+                                text: 'No',
+                                style: 'cancel',
+                              },
+                            ],
+                            {cancelable: false},
+                          );
                         }}>
-                        <Text
-                          style={{
-                            color: 'grey',
-                            fontSize: 9,
-                            letterSpacing: 1,
-                            fontFamily: 'Poppins',
-                          }}>
-                          {moment(v.CreatedDate).format('DD/MMMM/YYYY')}
-                        </Text>
-                        <Text
-                          style={{
-                            color: 'grey',
-                            fontSize: 9,
-                            fontFamily: 'Poppins-Bold',
-                          }}>
-                          {v.TotalViews} Views
-                        </Text>
-                      </View>
+                        <Image
+                          resizeMethod="resize"
+                          resizeMode="contain"
+                          style={{height: 15, width: 15}}
+                          source={require('../../assests/images/delRed.png')}
+                        />
+                      </TouchableOpacity>
                     </View>
-                    <TouchableOpacity
-                      style={{
-                        width: '15%',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                      }}
-                      onPress={() => {
-                        Alert.alert(
-                          'Deleting Ads?',
-                          'Are you sure for deleting ad?',
-                          [
-                            {
-                              text: 'Yes',
-                              onPress: async () =>
-                                await Promise.all([
-                                  await dispatch(Action.deleteAd(v.ID, ID)),
-                                ]).then(async () => {
-                                  dispatch(Action.getDeleteAD({UserId: ID}));
-                                  dispatch(Action.getActiveAds({UserId: ID}));
-                                  dispatch(Action.UPDATEUSER(ID));
-                                }),
-                            },
-                            {
-                              text: 'No',
-                              style: 'cancel',
-                            },
-                          ],
-                          {cancelable: false},
-                        );
-                      }}>
-                      <Image
-                        resizeMethod="resize"
-                        resizeMode="contain"
-                        style={{height: 15, width: 15}}
-                        source={require('../../assests/images/delRed.png')}
-                      />
-                    </TouchableOpacity>
-                  </View>
-                </React.Fragment>
-              );
-            })}
+                  </React.Fragment>
+                );
+              })}
+          </View>
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </React.Fragment>
   );
 }
 export default withNavigation(Activeads);

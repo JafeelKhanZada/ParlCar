@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   Image,
+  AsyncStorage
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import * as Action from '../../redux/actions';
@@ -15,6 +16,7 @@ import Image2 from '../../assests/images/addNew.png';
 import Image3 from '../../assests/images/myAd.png';
 import Image4 from '../../assests/images/myAd.png';
 import Image5 from '../../assests/images/notificationWhite.png';
+import Image7 from '../../assests/images/profile.png';
 import Image6 from '../../assests/images/feedback.png';
 import ProfileImg from '../../assests/NewAssets/logo.png';
 import {withNavigation} from 'react-navigation';
@@ -97,9 +99,9 @@ function ProfileComponent(props) {
       Search: '',
     },
     {
-      label: 'Feedback',
-      Icon: Image6,
-      Search: '',
+      label: 'Profile',
+      Icon: Image7,
+      Search: 'Profile',
     },
   ];
   return (
@@ -237,7 +239,13 @@ function ProfileComponent(props) {
           onPress={() => {
             Auth !== true
               ? dispatch(Action.Toggle_PopUp(true))
-              : dispatch(Action.logout());
+              : Promise.all([
+                  dispatch(Action.logout()),
+                  AsyncStorage.clear(),
+                  dispatch(Action.toggleButton('BRAND')),
+                  dispatch(Action.setHistoryAd([])),
+                  props.navigation.navigate('Home'),
+                ]);
           }}>
           <Image
             source={require('../../assests/images/logOut.png')}

@@ -60,7 +60,7 @@ function DrawerComponent(props) {
     {
       label: 'Notification',
       Icon: Image5,
-      Search: '',
+      Search: 'Notification',
     },
     {
       label: 'Feedback',
@@ -114,7 +114,9 @@ function DrawerComponent(props) {
           {Drawer.map((res, i) => {
             return (
               <TouchableOpacity
-                onPress={() => props.navigation.navigate(res.Search)}
+                onPress={() =>
+                  res.Search !== '' ? props.navigation.navigate(res.Search) : ''
+                }
                 style={{
                   backgroundColor:
                     props.navigation.state.index === i

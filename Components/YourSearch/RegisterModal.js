@@ -18,6 +18,7 @@ function Model(props) {
   const reg = useSelector(state => state.Modal.Reg);
   const User = useSelector(state => state.Auth.UserData);
   const Auth = useSelector(state => state.Auth.auth);
+  const ID = useSelector(State => State.Auth.ID);
   useEffect(() => {
     if (User) {
       setName(User.UserName);
@@ -26,7 +27,7 @@ function Model(props) {
   }, [User]);
   return (
     <Modal
-      animationType="slide"
+      animationType="fade"
       transparent={true}
       visible={reg}
       onRequestClose={() => {
@@ -114,10 +115,8 @@ function Model(props) {
             style={Styles.btn}
             onPress={() => {
               if (name !== '' && password !== '') {
-                dispatch(Action.testDrive(name, password));
-                props.setModalVisible(!props.modalVisible);
-                setName('');
-                setPassword('');
+                dispatch(Action.testDrive(name, password, ID, props.rec));
+                dispatch(Action.toggleReg(false));
               } else {
                 Alert.alert(
                   'Name/Number are empty',
@@ -160,7 +159,7 @@ const Styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     padding: 15,
-    paddingBottom:30
+    paddingBottom: 30,
   },
   Text: {
     fontSize: 16,
@@ -198,7 +197,7 @@ const Styles = StyleSheet.create({
     padding: 2,
     alignItems: 'center',
     borderRadius: 2,
-    marginTop:20
+    marginTop: 20,
   },
   btnText: {
     color: 'white',

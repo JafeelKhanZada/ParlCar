@@ -35,6 +35,10 @@ export const login = (username, password, adID) => {
         });
         dispatch(Actions.getNotification(response.data.UserData[0].ID));
         dispatch(Actions.getAds({UID: response.data.UserData[0].ID}));
+        dispatch(Actions.getActiveAds({UserId: response.data.UserData[0].ID}));
+        dispatch(Actions.getPending(response.data.UserData[0].ID));
+        dispatch(Actions.getExpiredAds(response.data.UserData[0].ID));
+        dispatch(Actions.getDeleteAD({UserId: response.data.UserData[0].ID}));
         adID === null && adID === 'R'
           ? ''
           : dispatch(
@@ -143,14 +147,14 @@ export const getUserById = id => {
     });
   };
 };
-export const testDrive = (name, phone) => {
+export const testDrive = (name, phone, send, rec) => {
   let config = {
     nUserName: 'sample string 1',
     nToken: 'sample string 2',
     nIsNew: true,
     nCurrentID: -1,
-    nSenderID: null,
-    nRecieverID: null,
+    nSenderID: send,
+    nRecieverID: rec,
     nCity: 2,
     nShowroom: '',
     nVehicleID: 2,
@@ -166,6 +170,7 @@ export const testDrive = (name, phone) => {
   );
   return dispatch => {
     return request.then(response => {
+      console.log(response);
       alert(response.data.message);
     });
   };
@@ -184,6 +189,7 @@ export const updateUser = data => {
   );
   return dispatch => {
     return request.then(response => {
+      console.log(response);
       dispatch(getUserById(data.nCurrentID));
     });
   };
@@ -220,7 +226,12 @@ export const saveUsers = data => {
         Alert.alert(response.data.message);
       } else {
         dispatch(Actions.toggleSignUp(false));
-        dispatch(Actions.Toggle_PopUp(true));
+        Alert.alert('Sign Up Successfuly!', '', [
+          {
+            text: 'Ok',
+            onPress: () => dispatch(Actions.Toggle_PopUp(true)),
+          },
+        ]);
       }
       return response.data.result;
     });
@@ -244,6 +255,32 @@ export const UPDATEUSER = id => {
           type: Action.SET_USER_AUTHENTICATE,
           payload: Response.data,
         });
+    });
+  };
+};
+export const forgetPassword = name => {
+  let config = {
+    nUserName: 'sample string 1',
+    token: 'sample string 2',
+    nName: name,
+  };
+  let request = axios.post(
+    'http://207.180.230.73/palcar/Api/ForgetUserPassword',
+    config,
+    {headers: Action.headers},
+  );
+  return dispatch => {
+    return request.then(Response => {
+      if (Response.data.result === true) {
+        dispatch(Actions.toggleForget(false));
+        Alert.alert("You're Password Reset", 'Kindly Check Your Email Please!');
+      } else {
+        Alert.alert(
+          'Wrong Email/Username',
+          'Kindly Check Your Email/Username Please!',
+        );
+      }
+      return Response.data.result;
     });
   };
 };
