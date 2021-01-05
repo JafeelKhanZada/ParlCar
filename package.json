@@ -12,7 +12,7 @@
   "dependencies": {
     "@bam.tech/react-native-make": "^1.0.3",
     "@react-native-community/geolocation": "^2.0.2",
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "base64-img": "^1.0.4",
     "fs": "0.0.1-security",
     "image-to-base64": "^2.0.1",
